@@ -1,0 +1,57 @@
+Post Explanation :
+
+There are 3 places to present the posts
+
+	1	public square, where collect all the public post for every one to browse.
+	2	work group, where collect post that is created in workgroup
+	3	personal, where collect user created personally post and all post who joined.
+
+new post in workgroup
+
+	the post could be private or public.
+    As for private post(scope = PRIVATE), this post only be visible to attendees, other members can not see it.
+    As for public post, it might be visible in public(scope = SQUARE) or work group(scope = GROUP) scope only.
+    a post has comment on/off setting, which indicate if user can comment on it.
+
+new post in personal
+
+    the post could be private or public
+    As for private the user could add any available users to join discussion.
+    As for public the post will be visible in public square, all user can view it.
+
+== 1 - square presents posts
+
+    all the public posts from work group and personal scope.
+
+== 2 - workgroup presents posts
+
+    A - work group private post related with current user
+    B - work group public post
+
+== 2 - personal presents posts
+    A - personal created public & private posts
+    B - personal joined posts.
+
+=====================================================================
+select pts.*,
+ src.source_name,
+ wgroup.workgroup_name,
+ usrs.user_name
+from gp_posts pts
+left join (
+	select
+	source_id, source_name
+	from gp_sources
+) src on src.source_id = pts.source_id
+left join(
+	select
+	workgroup_id,
+	workgroup_name
+	from gp_workgroups
+) wgroup on pts.workgroup_id = wgroup.workgroup_id
+left join(
+	select
+	account,
+	full_name as user_name
+	from gp_users
+) usrs on usrs.account = pts.owner

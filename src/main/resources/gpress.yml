@@ -1,0 +1,50 @@
+# System information
+system:
+  version: "0.1"
+  app: gpress.node
+  instance: 1
+  audit.enable: true             # audit enable
+  jgrp.prefix: api               # jgroup prefix
+  authen.type: 
+    - MOBILE
+    - EMAIL
+    - INLINE
+
+# Web server setting
+web:
+  context.path: 
+  interim.key: vUUBD21*fXnKs*Fd
+  cache.json: true
+
+# file upload/download cache setting
+file: 
+  upload.path: /gdev/gp_temp # the file upload path
+  resume.path: /gdev/gp_temp # the file resume path
+  cache.path: /gdev/gp_temp  # the file cache path
+
+# Database default setting
+database:
+  table.prefix: gp_
+  query.max.rows: 2000
+
+# sync and convert authen setting
+authen:
+  sync.princ: 1101
+  sync.cred: sslssl
+  convert.princ: 1101
+  convert.cred: sslssl
+
+# Secret crypto default setting, both ass.iv and aes.key is 16bytes
+secret:
+  aes.iv: "IeeJ#}pr6%nA3ydE"      # crypto utils use this as default
+  aes.key: "i2yJaV1u0[vE9+Pw"     # crypto utils use this as default
+
+# Jwt sign and verify settings
+jwt:
+  jwks.pub: jwks/public.json
+  jwks.pri: jwks/private.json
+  clock.skew: 700                 # in seconds
+
+# Validation resources
+validate:
+  message: messages

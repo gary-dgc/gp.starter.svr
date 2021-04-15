@@ -1,0 +1,8 @@
+enabled: true
+allowedOrigins:
+- "*"
+- http://localhost:3000
+- http://localhost:8027
+allowedMethods:
+- GET
+- POST

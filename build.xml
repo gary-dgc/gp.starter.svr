@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="obal.web" basedir="." default="refres_all">
+	<property environment="env" />
+    <property name="project.root" value="${basedir}" />
+	<property name="dir.java.src" value="src/main/java" />
+	<property name="dir.java.res" value="src/main/resources" />
+	<property name="dir.java.webapp" value="src/main/webapp" />
+	<property name="dir.lib" value="lib" />
+	<property name="dir.java.class" value="target/classes" />
+	<property name="dir.java.gpweb" value="target/gp.web"/>
+	<!-- Properties and Paths -->
+	<property file="build.properties" />
+	
+	<path id="project.class.path">
+		<pathelement location="${dir.java.bin}"/>
+		<fileset dir="${dir.lib}" id="lib.path">
+			<include name="**/*.jar"/>
+		</fileset>	   
+	</path>
+	
+	<target name="refres_all" depends="refresh_webapp,refresh_classes,refresh_resources">
+	</target>
+
+	<target name="refresh_webapp" description="Refresh Source files">
+
+		<echo level="info">Web files</echo>
+        <copy todir="${dir.java.gpweb}">
+           <fileset dir="${dir.java.webapp}">
+           </fileset>
+        </copy>
+    </target>
+
+ 	<target name="refresh_classes" description="Refresh class files">
+
+		<echo level="info">class files</echo>
+        <copy todir="${dir.java.gpweb}/WEB-INF/classes">
+           <fileset dir="${dir.java.class}">
+           </fileset>
+        </copy>
+    </target>
+	
+	<target name="refresh_resources" description="Refresh resource files">
+
+		<echo level="info">resource files</echo>
+        <copy todir="${dir.java.gpweb}/WEB-INF/classes">
+           <fileset dir="${dir.java.res}">
+           </fileset>
+        </copy>
+    </target>
+	
+</project>

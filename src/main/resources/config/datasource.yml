@@ -1,0 +1,14 @@
+primary:
+  DriverClassName: org.h2.jdbcx.JdbcDataSource
+  jdbcUrl: jdbc:mysql://localhost/gpress_node?characterEncoding=UTF-8&useEncoding=true&autoReconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false
+  username: gpadmin
+  password: CRYPT:jhWy/rTtMEt7oGQc7GlWTAZy6mhrXK+FVLh2Hg8v4yY=
+  parameters:
+    maximumPoolSize: '10'
+secondary:
+  DriverClassName: org.h2.jdbcx.JdbcDataSource
+  jdbcUrl: jdbc:mysql://localhost/gpress_node?characterEncoding=UTF-8&useEncoding=true&autoReconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false
+  username: gpadmin
+  password: CRYPT:jhWy/rTtMEt7oGQc7GlWTAZy6mhrXK+FVLh2Hg8v4yY=
+  parameters:
+    maximumPoolSize: '10'

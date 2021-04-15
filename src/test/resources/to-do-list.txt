@@ -1,0 +1,69 @@
+1 the file should support hidden feature. 
+  manager browse all the cabinet entries.
+  contributor only browse his own hidden entries and other visible ones
+  consumer cannot browse any hidden entries.
+
+2. after workgroup bind to a org_id, the workgroup can only visible to org_id scope (include sub org).
+
+3. [done]orghierfacade, remove member add coreexception message.
+
+4. [done]make workgrou support manager feature dao update, new func not yet.
+
+5. [done]gp_group_mbrs.workgroup_id issue
+
+6. orghier add route-ids to links all the hierarchy routes
+
+7. the workgroup can loosely bind to org node. even re-bind to other org node.
+
+8. the org node is a hierarchy structure data, each node can hold his own members. 
+
+9. the work group could hold one parent workgroup, once bind this is not changeable. java side is ok, dao already been modified with parent id. the table not yet.
+
+10. bug when save file not save the fize size.
+
+11. create folder not set classification
+
+12. update grid list next way ,make it use next.do only.
+
+13. clarify the classification level
+
+14. the work group gallery need update from gentelella-1.3.0/production/media_gallery.html
+
+15. popover over header z-index issue
+
+16. [done]meta personal information presentation.
+
+
+17. [done]2016-7-5 move jquery link in jsp to the include.jsp
+
+
+18. [done]result.setMessage(getMessage("mesg.find.user.meta"));
+
+
+19. [done]identifier gp_instances - > gp_sources
+
+
+20. intant message and other resource delete post reading
+
+21. [done]field name change : audit table change verb into operation
+
+
+https://jsoup.org/cookbook/input/parse-body-fragment
+
+22. how support follower function
+
+23. workgroup post clarification.
+    present in post page :
+    a - member create in group post page. they belongs to work group
+    b - member create in his personal page. but user want to broadcast them to public
+
+23 [done]change post.title to post.subject
+
+24 publish post need workgroup admin approvement.
+
+b3log
+===========Mysql scripts =============
+mysql> grant select on mysql.proc to 'gpadmin'@'%';
+mysql> flush privileges;
+
+

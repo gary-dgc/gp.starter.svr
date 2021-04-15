@@ -1,0 +1,8 @@
+/target/
+/gp.logs/
+/.classpath
+/.project
+/.DS_Store
+/testfile.dat
+/.gp.launch.sh.swp
+/dependency-reduced-pom.xml
