@@ -22,6 +22,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.gp.audit.CoreAuditor;
 import com.gp.bind.BindScanner;
 import com.gp.common.Filters;
 import com.gp.common.GroupUsers;
@@ -96,9 +97,9 @@ public class CoreDelegate implements CoreAdapter{
 		
 		initial();
 		AuthenTypes.add(AuthenType.INTERIM);
+		CoreAuditor.initial(this::persistAudit);
 	}
 	
-	@Override
 	public void persistAudit(Audit audit)  {
 		
 		if(Objects.isNull(audit))
