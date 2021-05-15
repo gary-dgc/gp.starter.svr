@@ -31,7 +31,7 @@ import com.gp.bean.BeanAccessor;
 import com.gp.bean.BeanMeta;
 import com.gp.bind.BindScanner;
 import com.gp.common.Filters;
-import com.gp.common.GeneralConstants;
+import com.gp.common.GeneralConsts;
 import com.gp.common.IdKeys;
 import com.gp.common.InfoId;
 import com.gp.common.KeyValuePair;
@@ -273,7 +273,7 @@ public class CommonHandler extends BaseApiSupport {
 		Long orgId = null;
 		if(!Strings.isNullOrEmpty(orgIdStr)){
 		
-			orgId = NumberUtils.toLong(orgIdStr, GeneralConstants.ORGHIER_ROOT);
+			orgId = NumberUtils.toLong(orgIdStr, GeneralConsts.HIER_ROOT);
 		}else{
 			
 			result.setData(olist);
@@ -289,14 +289,12 @@ public class CommonHandler extends BaseApiSupport {
 			DataBuilder builder = new DataBuilder();
 			
 			builder.set("id", orghier.getId().toString());
-			if(GeneralConstants.ORGHIER_ROOT != orghier.getOrgPid()){
+			if(GeneralConsts.HIER_ROOT != orghier.getOrgPid()){
 				builder.set("parent", orghier.getOrgPid().toString());
 			}
 			
 			builder.set(orghier, "org_name", "description", "email");
-			builder.set("admin_uid", orghier.getAdminUid().toString());
-			builder.set("manager_uid", orghier.getManagerUid().toString());
-			
+		
 			String avatarUrl = ServiceApiHelper.absoluteBinaryUrl(orghier.getAvatarUrl());
 			builder.set("avatar_url", avatarUrl);
 			
@@ -327,14 +325,12 @@ public class CommonHandler extends BaseApiSupport {
 			DataBuilder builder = new DataBuilder();
 			
 			builder.set("id", orghier.getId().toString());
-			if(GeneralConstants.ORGHIER_ROOT != orghier.getOrgPid()){
+			if(GeneralConsts.HIER_ROOT != orghier.getOrgPid()){
 				builder.set("parent", orghier.getOrgPid().toString());
 			}
 			
 			builder.set(orghier, "org_name", "description", "email");
-			builder.set("admin_uid", orghier.getAdminUid().toString());
-			builder.set("manager_uid", orghier.getManagerUid().toString());
-			
+		
 			String avatarUrl = ServiceApiHelper.absoluteBinaryUrl(orghier.getAvatarUrl());
 			builder.set("avatar_url", avatarUrl);
 			

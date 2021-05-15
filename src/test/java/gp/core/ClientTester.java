@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
 import com.gp.common.GeneralConfig;
-import com.gp.common.GeneralConstants;
-import com.gp.core.CoreConstants;
+import com.gp.common.GeneralConsts;
+import com.gp.core.CoreConsts;
 import com.gp.exception.BaseException;
 import com.gp.util.CryptoUtils;
 import com.gp.util.JsonUtils;
@@ -61,7 +61,7 @@ public class ClientTester {
 //        *  - device
 		AuthenData authen = new AuthenData();
 		authen.setAudience("1101"); // client id
-		authen.setGrantType(CoreConstants.GRANT_PASSWD);
+		authen.setGrantType(CoreConsts.GRANT_PASSWD);
 		authen.setPrincipal("dev1");
 		authen.setCredential("1");
 		
@@ -102,7 +102,7 @@ public class ClientTester {
 //        *  - device
     	AuthenData authen = new AuthenData();
 		authen.setAudience("1101"); // client id
-		authen.setGrantType(CoreConstants.GRANT_PASSWD);
+		authen.setGrantType(CoreConsts.GRANT_PASSWD);
 		authen.setPrincipal("dev1");
 		authen.setCredential("1");
 		
@@ -133,7 +133,7 @@ public class ClientTester {
 //        *  - client_id, client_secret, scope
     	AuthenData authen = new AuthenData();
 		authen.setAudience("1101"); // client id
-		authen.setGrantType(CoreConstants.GRANT_CLIENT_CRED);
+		authen.setGrantType(CoreConsts.GRANT_CLIENT_CRED);
 		authen.setPrincipal("1101");
 		authen.setCredential("sslssl");
 		
@@ -166,7 +166,7 @@ public class ClientTester {
 //        *  - device
     	AuthenData authen = new AuthenData();
 		authen.setAudience("1101"); // client id
-		authen.setGrantType(CoreConstants.GRANT_PASSWD);
+		authen.setGrantType(CoreConsts.GRANT_PASSWD);
 		authen.setPrincipal("dev1");
 		authen.setCredential("1");
 		

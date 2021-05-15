@@ -30,7 +30,7 @@ import com.gp.cache.ICache;
 import com.gp.common.Cabinets;
 import com.gp.common.Caches;
 import com.gp.common.GeneralConfig;
-import com.gp.common.GeneralConstants;
+import com.gp.common.GeneralConsts;
 import com.gp.common.IdKeys;
 import com.gp.common.InfoId;
 import com.gp.common.NodeIdKey;
@@ -244,7 +244,7 @@ public class ResumeHandler extends BaseApiSupport{
 
         //ResumableInfo info = UploadHelper.getInstance().getResumableInfo(identifier);
         
-		String resumableId = CACHE_PREFIX + GeneralConstants.KEYS_SEPARATOR + identifier;
+		String resumableId = CACHE_PREFIX + GeneralConsts.KEYS_SEPARATOR + identifier;
 		ICache fileCache = CacheManager.instance().getCache(Caches.FILE_CACHE);
 		ResumableInfo rinfo = null;
 		

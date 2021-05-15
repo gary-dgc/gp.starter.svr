@@ -157,7 +157,7 @@ public class WebInitializer extends CoreInitializer{
 		
 		AuthenData authen = new AuthenData();
 		authen.setAudience("1101");
-		authen.setGrantType(CoreConstants.GRANT_NODE_CRED);
+		authen.setGrantType(CoreConsts.GRANT_NODE_CRED);
 		
 		String appKey = ConfigUtils.getSystemOption("node.app.key");
 		String appSecret = ConfigUtils.getSystemOption("node.app.secret");
@@ -185,7 +185,7 @@ public class WebInitializer extends CoreInitializer{
     	NodeAccess syncAuth = NodeAccess.newClientAccess(NodeApiAgent.SyncName);
 		
 		AuthenData syncData = new AuthenData();
-		syncData.setGrantType(CoreConstants.GRANT_CLIENT_CRED);
+		syncData.setGrantType(CoreConsts.GRANT_CLIENT_CRED);
 		
 		String princ = GeneralConfig.getStringByKeys("authen", "sync.princ");
 		String cred = GeneralConfig.getStringByKeys("authen", "sync.cred");
@@ -213,7 +213,7 @@ public class WebInitializer extends CoreInitializer{
     	NodeAccess convertAuth = NodeAccess.newClientAccess(NodeApiAgent.ConvertName);
 		
 		AuthenData convertData = new AuthenData();
-		convertData.setGrantType(CoreConstants.GRANT_CLIENT_CRED);
+		convertData.setGrantType(CoreConsts.GRANT_CLIENT_CRED);
 		
 		String cvtprinc = GeneralConfig.getStringByKeys("authen", "convert.princ");
 		String cvtcred = GeneralConfig.getStringByKeys("authen", "convert.cred");

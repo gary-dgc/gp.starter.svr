@@ -21,7 +21,7 @@ import com.gp.bind.BindScanner;
 import com.gp.common.Binaries;
 import com.gp.common.Binaries.BinaryMode;
 import com.gp.common.GeneralConfig;
-import com.gp.common.GeneralConstants;
+import com.gp.common.GeneralConsts;
 import com.gp.common.GroupUsers;
 import com.gp.common.InfoId;
 import com.gp.common.KeyValuePair;
@@ -98,7 +98,7 @@ public class ServiceApiHelper {
 		int pos = base64Img.indexOf(';');
 		
 		String prefix = base64Img.substring(0, pos);
-		pos = prefix.indexOf(GeneralConstants.SLASH_SEPARATOR);
+		pos = prefix.indexOf(GeneralConsts.SLASH_SEPARATOR);
 		String ext = prefix.substring(pos + 1); // get file extension
     	
 		InfoId binaryId = Instance.storageService.newBinary(ServiceContext.getPseudoContext(), storageId, ext);
@@ -195,7 +195,7 @@ public class ServiceApiHelper {
 		}
 		List<String> items = Lists.newArrayList(parts);
 		items.add(0, mode.name());
-		String partsStr = Joiner.on(GeneralConstants.NAMES_SEPARATOR).join(items);
+		String partsStr = Joiner.on(GeneralConsts.NAMES_SEPARATOR).join(items);
 		
 		return SYM_TOKEN.encrypt(partsStr);
 	}
@@ -216,7 +216,7 @@ public class ServiceApiHelper {
 		}
 		String partsStr = SYM_TOKEN.decrypt(token);
 		
-		List<String> parts = Splitter.on(GeneralConstants.NAMES_SEPARATOR).splitToList(partsStr);
+		List<String> parts = Splitter.on(GeneralConsts.NAMES_SEPARATOR).splitToList(partsStr);
 		Map<String, String> rtv = Maps.newHashMap();
 		Optional<BinaryMode> optional = Enums.getIfPresent(BinaryMode.class, Strings.nullToEmpty(parts.get(0)));
 		if(BinaryMode.FILE == optional.get()) {

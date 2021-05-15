@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
-import com.gp.core.CoreConstants;
-import com.gp.core.CoreConstants.TokenState;
+import com.gp.core.CoreConsts;
+import com.gp.core.CoreConsts.TokenState;
 import com.gp.exception.BaseException;
 import com.gp.util.JsonUtils;
 import com.gp.web.ActionResult;
@@ -73,7 +73,7 @@ public class ApiAccessHelper {
     	
     	AuthenData data = new AuthenData();
     	
-    	data.setGrantType(CoreConstants.GRANT_PASSWD);
+    	data.setGrantType(CoreConsts.GRANT_PASSWD);
     	data.setAudience(tracer.client);
     	data.setCredential(tracer.pass);
     	data.setPrincipal(tracer.user);
