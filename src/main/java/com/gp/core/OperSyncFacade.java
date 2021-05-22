@@ -306,7 +306,7 @@ public class OperSyncFacade {
 			}
 						
 			// rebuild a new payload for sync-out message
-			syncData = SyncServiceManager.getInstance().collectSyncPayload(
+			syncData = SyncServiceManager.getInstance().collect(
 													syncload.getOperation(), 
 													syncload.getObjectId(), 
 													syncload.getPredicates()
