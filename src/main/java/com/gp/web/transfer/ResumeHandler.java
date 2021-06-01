@@ -178,8 +178,7 @@ public class ResumeHandler extends BaseApiSupport{
         	InfoId cabid = IdKeys.getInfoId(NodeIdKey.CABINET, cabinetId);
 			CabinetInfo cabinfo = cabinetSvc.getCabinet(cabid);
 			
-			binfo.setInfoId(binaryId);
-			binfo.setSourceId(Sources.LOCAL_INST_ID.getId());		
+			binfo.setInfoId(binaryId);	
 			binfo.setStorageId(cabinfo.getStorageId());	
 			
 			binfo.setFormat(Files.getFileExtension(info.fileName));

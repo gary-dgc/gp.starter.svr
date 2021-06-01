@@ -115,8 +115,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 		
 		File srcFile = new File(filePath);
 		
-		binfo.setInfoId(binaryId);
-		binfo.setSourceId(Sources.LOCAL_INST_ID.getId());		
+		binfo.setInfoId(binaryId);		
 		binfo.setStorageId(cabinfo.getStorageId());		
 		binfo.setFormat(extension);
 		binfo.setSize(Math.toIntExact(srcFile.length()));
@@ -170,8 +169,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 		
 		File srcFile = new File(filePath);
 		
-		binfo.setInfoId(binaryId);
-		binfo.setSourceId(Sources.LOCAL_INST_ID.getId());		
+		binfo.setInfoId(binaryId);	
 		binfo.setStorageId(cabinfo.getStorageId());		
 		binfo.setFormat(Files.getFileExtension(fileName));
 		binfo.setSize(Math.toIntExact(srcFile.length()));
@@ -180,7 +178,6 @@ public abstract class TransferSupport extends BaseApiSupport {
 		binfo.setCreateTime(new Date());
 		
 		fileinfo.setCabinetId(cabinetId);
-		fileinfo.setSourceId(Sources.LOCAL_INST_ID.getId());
 		fileinfo.setBinaryId(binfo.getId()); // Set the binary id
 		fileinfo.setCommentOn(false);
 		fileinfo.setParentId(folderPid);
