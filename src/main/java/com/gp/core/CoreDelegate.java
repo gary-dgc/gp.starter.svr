@@ -177,10 +177,10 @@ public class CoreDelegate implements CoreAdapter{
 	}
 
 	@Override
-	public Principal getPrincipal(String login)  {
+	public Principal getPrincipal(String login, String userGid, String nodeGid)  {
 	
 		// here we only support user principal
-		Principal principal = securityService.getPrincipal(login, AuthenTypes.toArray(new AuthenType[0]));
+		Principal principal = securityService.getPrincipal(login, userGid, nodeGid, AuthenTypes.toArray(new AuthenType[0]));
 		
  		return principal;
 		
