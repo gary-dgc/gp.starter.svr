@@ -33,6 +33,7 @@ import com.gp.dao.info.UserInfo;
 import com.gp.exception.BaseException;
 import com.gp.exception.CoreException;
 import com.gp.info.BaseIdKey;
+import com.gp.svc.CommonService;
 import com.gp.svc.OperationService;
 import com.gp.svc.master.SourceService;
 import com.gp.svc.security.SecurityService;
@@ -55,6 +56,7 @@ public class OperSyncFacade {
 	private SecurityService securityservice;
 	private SourceService sourceservice;
 	private SyncMsgService syncservice;
+	private CommonService commonService;
 	
 	private static OperSyncFacade Instance;
 	
@@ -64,7 +66,7 @@ public class OperSyncFacade {
 		securityservice = BindScanner.instance().getBean(SecurityService.class);
 		sourceservice = BindScanner.instance().getBean(SourceService.class);
 		syncservice = BindScanner.instance().getBean(SyncMsgService.class);
-
+		commonService = BindScanner.instance().getBean(CommonService.class);
 	}
 	
 	public static OperSyncFacade instance() {
@@ -295,7 +297,7 @@ public class OperSyncFacade {
 			nodeCode = srcInfo.getNodeGid();
 			if(IdKeys.isValidId(syncload.getObjectId())) {
 				// first try to find in sync_bind table
-				String objectCode = syncservice.getTraceCode(syncload.getObjectId());
+				String objectCode = commonService.queryTrace(syncload.getObjectId());
 				if(Strings.isNullOrEmpty(objectCode)) {
 					// not found then generate local trace code
 					objectCode = IdKeys.getTraceCode(nodeCode, syncload.getObjectId());
