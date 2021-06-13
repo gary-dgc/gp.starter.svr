@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gp</groupId>
-	<artifactId>node-server</artifactId>
+	<artifactId>ccm-server</artifactId>
 	<version>0.4</version>
 	<name>gp.ccm.svr</name>
 	<url>http://maven.apache.org</url>
