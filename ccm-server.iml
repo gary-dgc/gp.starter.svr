@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="gp-svc-ccm" />
+    <orderEntry type="module" module-name="gp-common" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:30.1-jre" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.checkerframework:checker-qual:3.5.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.3.4" level="project" />
+    <orderEntry type="library" name="Maven: com.google.j2objc:j2objc-annotations:1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.20" level="project" />
+    <orderEntry type="library" name="Maven: net.engio:mbassador:1.3.2" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:8.0.1" level="project" />
+    <orderEntry type="module" module-name="gp-svc-base" />
+    <orderEntry type="library" name="Maven: org.jdbi:jdbi3-core:3.18.0" level="project" />
+    <orderEntry type="library" name="Maven: org.antlr:antlr4-runtime:4.7.2" level="project" />
+    <orderEntry type="library" name="Maven: io.leangen.geantyref:geantyref:1.3.7" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.13" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.6.1" level="project" />
+    <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:3.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.glassfish:javax.el:3.0.1-b08" level="project" />
+    <orderEntry type="library" name="Maven: org.ahocorasick:ahocorasick:0.4.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.ben-manes.caffeine:caffeine:2.6.2" level="project" />
+    <orderEntry type="module" module-name="gp-core" />
+    <orderEntry type="library" name="Maven: com.networknt:utility:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:config:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:decryptor:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.11" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:health:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:handler:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:http-string:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:common:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: io.undertow:undertow-core:2.1.3.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.4.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.xnio:xnio-api:3.8.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.common:wildfly-common:1.5.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.client:wildfly-client-config:1.0.1.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jboss.xnio:xnio-nio:3.8.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.threads:jboss-threads:3.1.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.owasp.encoder:encoder:1.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.bitbucket.b_c:jose4j:0.6.3" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:status:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:service:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:mask:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.jayway.jsonpath:json-path:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:cors:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:sanitizer:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:body:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:server:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:audit:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:info:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:security:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:exception:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:registry:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:switcher:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:consul:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:zookeeper:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:balance:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:cluster:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:client:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:monad-result:1.6.30" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.3" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.3" level="project" />
+    <orderEntry type="library" name="Maven: com.networknt:json-schema-validator:1.0.29" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
+  </component>
+</module>
