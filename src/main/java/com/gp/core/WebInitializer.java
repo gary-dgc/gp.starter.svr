@@ -17,13 +17,10 @@ import com.gp.common.Instructs;
 import com.gp.common.Operations;
 import com.gp.config.NodeStartupHook;
 import com.gp.db.JdbiContext;
-import com.gp.eventbus.EventDispatcher;
 import com.gp.exception.BaseException;
 import com.gp.launcher.CoreInitializer;
 import com.gp.launcher.Lifecycle.LifeState;
 import com.gp.web.client.NodeAccess;
-import com.gp.web.event.CoreOperListener;
-import com.gp.web.event.CoreSyncListener;
 import com.gp.web.model.AuthenData;
 import com.gp.web.util.ConfigUtils;
 import com.networknt.config.Config;
@@ -34,10 +31,7 @@ import com.zaxxer.hikari.HikariDataSource;
 /**
  * The initializer try to set the core event listeners to Disruptor instance.
  * Event evolve routine:<br>
- * <pre> 
- * 1 : CORE -> {@link CoreAuditListener} 
- * 2 : CORE -> {@link CoreOperListener}
- * 2.1 : |--->  SYNC -> {@link CoreSyncListener}
+ * <pre>
  * </pre>
  * 
  * 1 and 2 are executed in parallel. 2 generate the SYNC event and fire the SyncListener.
@@ -57,22 +51,7 @@ public class WebInitializer extends CoreInitializer{
 		
 		LOGGER.debug("Prepare operations definition");
 		Instructs.putInstruct(Operations.values());
-		
-		LOGGER.debug("Register the audit event listener");
-		// Register the core event hooker with customized one
-		CoreAuditListener coreHandler = new CoreAuditListener();
-		EventDispatcher.getInstance().register(coreHandler);
-		
-		LOGGER.debug("Register the operation event listener");
-		// Register the operation hooker to generate operation log
-		CoreOperListener operHooker = new CoreOperListener();
-		EventDispatcher.getInstance().register( operHooker );
-		
-		LOGGER.debug("Register the synchronize event listener");
-		// Register sync hooker to persist and notify sync push 
-		CoreSyncListener syncHooker = new CoreSyncListener();
-		EventDispatcher.getInstance().register( syncHooker );
-		
+
 		this.bindLifeEvent(LifeState.STARTUP, (state) -> {
 			
 			LOGGER.debug("Start: setup caches");
@@ -129,21 +108,24 @@ public class WebInitializer extends CoreInitializer{
 		
         Map<String, Object> dataSourceMap = (Map<String, Object>) Config.getInstance().getJsonMapConfig(DATA_SOURCE);
         
-        JdbiContext context = JdbiContext.singleton();
+        JdbiContext context = JdbiContext.instance();
         dataSourceMap.forEach((k, v) -> {
-        	
-            HikariConfig config = new HikariConfig();
-            
-            config.setJdbcUrl(((Map<String, String>)v).get("jdbcUrl"));
-            config.setUsername(((Map<String, String>)v).get("username"));
-            config.setPassword(((Map<String, String>)v).get("password"));
-           
-            Map<String, String> configParams = (Map<String, String>)((Map<String, Object>)v).get("parameters");
-            configParams.forEach((p, q) -> config.addDataSourceProperty(p, q));
-            
-            HikariDataSource ds = new HikariDataSource(config);
-           
-            context.register(k, ds);
+
+			HikariConfig config = new HikariConfig();
+
+			config.setDriverClassName(((Map<String, String>)v).get("driverClassName"));
+			config.setJdbcUrl(((Map<String, String>)v).get("jdbcUrl"));
+			config.setUsername(((Map<String, String>)v).get("username"));
+			config.setPassword(((Map<String, String>)v).get("password"));
+			config.setMaximumPoolSize(((Map<String, Integer>)v).get("maximumPoolSize"));
+			config.setMinimumIdle(((Map<String, Integer>)v).get("minimumIdle"));
+
+			Map<String, String> configParams = (Map<String, String>)((Map<String, Object>)v).get("parameters");
+			configParams.forEach((p, q) -> config.addDataSourceProperty(p, q));
+
+			HikariDataSource ds = new HikariDataSource(config);
+
+			context.register(k, ds);
         });
         context.setDataSource("primary");
         

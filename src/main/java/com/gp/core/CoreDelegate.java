@@ -1,42 +1,16 @@
 package com.gp.core;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-
-import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.lang.JoseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy.PropertyNamingStrategyBase;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies.NamingBase;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.gp.audit.CoreAuditor;
 import com.gp.bind.BindScanner;
-import com.gp.common.Filters;
-import com.gp.common.GroupUsers;
+import com.gp.common.*;
 import com.gp.common.GroupUsers.AuthenType;
-import com.gp.common.IdKeys;
-import com.gp.common.InfoId;
-import com.gp.common.KeyValuePair;
-import com.gp.common.ServiceContext;
-import com.gp.dao.info.AuditInfo;
-import com.gp.dao.info.ClientInfo;
-import com.gp.dao.info.DictionaryInfo;
-import com.gp.dao.info.SysOptionInfo;
-import com.gp.dao.info.TokenInfo;
-import com.gp.dao.info.UserInfo;
+import com.gp.dao.info.*;
 import com.gp.exception.BaseException;
 import com.gp.exception.ServiceException;
 import com.gp.info.BaseIdKey;
@@ -49,14 +23,20 @@ import com.gp.svc.security.AuthorizeService;
 import com.gp.svc.security.SecurityService;
 import com.gp.util.JsonUtils;
 import com.gp.util.JwtTokenUtils;
+import com.gp.util.Lamadas;
 import com.gp.util.NumberUtils;
 import com.gp.web.ActionResult;
-import com.gp.web.model.Audit;
-import com.gp.web.model.AuthClient;
-import com.gp.web.model.AuthToken;
-import com.gp.web.model.AuthenData;
-import com.gp.web.model.SysOption;
+import com.gp.web.model.*;
 import com.gp.web.util.WebUtils;
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.lang.JoseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * The Core Engine delegate class to access back-end database
@@ -67,19 +47,19 @@ import com.gp.web.util.WebUtils;
  **/
 public class CoreDelegate implements CoreAdapter{
 
-	static Logger LOGGER = LoggerFactory.getLogger(CoreDelegate.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(CoreDelegate.class);
 	
-	static PropertyNamingStrategyBase SNAKE_CASE = (PropertyNamingStrategyBase)PropertyNamingStrategy.SNAKE_CASE;
+	static final NamingBase SNAKE_CASE = (NamingBase)PropertyNamingStrategies.SNAKE_CASE;
 	
-	private AuditService auditService;
+	private final AuditService auditService;
 	
-	private AuthorizeService authorizeService;
+	private final AuthorizeService authorizeService;
 	
-	private DictionaryService dictService;
+	private final DictionaryService dictService;
 	
-	private SystemService systemService;
+	private final SystemService systemService;
 	
-	private SecurityService securityService;
+	private final SecurityService securityService;
 		
 	/**
 	 * Default constructor 
@@ -87,7 +67,7 @@ public class CoreDelegate implements CoreAdapter{
 	public CoreDelegate(){
 		
 		if(LOGGER.isDebugEnabled()) {
-			LOGGER.debug("The core deleage autowired and ready ...");
+			LOGGER.debug("The core delegate autowired and ready ...");
 		}
 		auditService = BindScanner.instance().getBean(AuditService.class);
 		authorizeService = BindScanner.instance().getBean(AuthorizeService.class);
@@ -97,9 +77,15 @@ public class CoreDelegate implements CoreAdapter{
 		
 		initial();
 		AuthenTypes.add(AuthenType.INTERIM);
-		CoreAuditor.initial(this::persistAudit);
+
+		Consumer<Audit> auditor = this::persistAudit;
+		CoreEngine.enableFeature(CoreConsts.FEATURE_AUDIT, auditor);
+
+		Function<Operation, InfoId> oper = Lamadas.rethrow(OperSyncFacade.instance()::persistOperation);
+		CoreEngine.enableFeature(CoreConsts.FEATURE_TRACE, oper, null);
+
 	}
-	
+
 	public void persistAudit(Audit audit)  {
 		
 		if(Objects.isNull(audit))
@@ -155,10 +141,9 @@ public class CoreDelegate implements CoreAdapter{
 
 	@Override
 	public SysOption getSystemOption(String optionKey) {
-		SysOptionInfo result = null;		
-		
+
 		// query accounts information
-		result = systemService.getOption( optionKey);
+		SysOptionInfo result = systemService.getOption( optionKey);
 		SysOption opt = new SysOption();
 		InfoCopier.copy(result, opt);
 		
@@ -177,10 +162,10 @@ public class CoreDelegate implements CoreAdapter{
 	}
 
 	@Override
-	public Principal getPrincipal(String login, String userGid, String nodeGid)  {
+	public Principal getPrincipal(String subject, String userGid, String nodeGid)  {
 	
 		// here we only support user principal
-		Principal principal = securityService.getPrincipal(login, userGid, nodeGid, AuthenTypes.toArray(new AuthenType[0]));
+		Principal principal = securityService.getPrincipal(subject, userGid, nodeGid, AuthenTypes.toArray(new AuthenType[0]));
 		
  		return principal;
 		
@@ -226,11 +211,7 @@ public class CoreDelegate implements CoreAdapter{
 
 	@Override
 	public Boolean authenticate(ServiceContext svcctx, AuthenData authenData) throws BaseException{
-		
-		String nodeGid = systemService.getLocalNodeGid();
-		
-		svcctx.putContextData(JwtTokenUtils.NODE_GLOBAL_ID, nodeGid);
-		
+	
 		// save device and  transfer it across methods 
 		String device = (String) authenData.getExtraValue("device");
 		svcctx.putContextData(JwtTokenUtils.DEVICE_ID, device);
@@ -285,12 +266,14 @@ public class CoreDelegate implements CoreAdapter{
 	}
 
 	@Override
-	public KeyValuePair<JwtClaims, String> swapAuthToken(ServiceContext svcctx, String token, String scope, String subject) throws ServiceException {
+	public KVPair<JwtClaims, String> swapAuthToken(ServiceContext svcctx, String token, String scope, String subject) throws ServiceException {
 		
 		JwtClaims _payload = JwtTokenUtils.parseJwt(token);
-		KeyValuePair<JwtClaims, String> rtv = KeyValuePair.newPair();
+		KVPair<JwtClaims, String> rtv = KVPair.newPair();
 		try {
-				
+			if (null == _payload) {
+				throw new ServiceException("excp.not.valid");
+			}
 			String userGid = _payload.getStringClaimValue(JwtTokenUtils.USER_GLOBAL_ID);
 			if(Strings.isNullOrEmpty(userGid)) {
 				throw new ServiceException("excp.miss.user_gid");

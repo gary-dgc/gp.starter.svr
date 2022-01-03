@@ -8,11 +8,6 @@
  ******************************************************************************/
 package com.gp.web.api;
 
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.gp.bind.BindScanner;
@@ -23,9 +18,12 @@ import com.gp.util.AesCryptor;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.util.WebUtils;
-
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Methods;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * SupportHandler provides the apis for supporting.

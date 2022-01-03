@@ -8,11 +8,6 @@
  ******************************************************************************/
 package com.gp.web.api;
 
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
@@ -30,8 +25,11 @@ import com.gp.svc.CommonService;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.anno.WebApi;
-
 import io.undertow.server.HttpServerExchange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 public class ServiceApiHandler extends BaseApiSupport{
 
@@ -86,7 +84,7 @@ public class ServiceApiHandler extends BaseApiSupport{
 			case AVATAR:
 			case IMAGE:
 				// {cabinet id}.{user id}.{user name}
-				Long cabId = commonService.queryColumn(principal.getUserId(), "cabinet_id", Long.class);
+				Long cabId = commonService.column(principal.getUserId(), "cabinet_id", Long.class);
 				token = ServiceApiHelper.instance().getInterimToken(optional.get(), cabId.toString(), uid.getId().toString(), principal.getUsername());
 				break;
 			

@@ -8,11 +8,6 @@
  ******************************************************************************/
 package com.gp.web.api;
 
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import com.gp.bind.BindScanner;
@@ -25,9 +20,12 @@ import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.anno.WebApi;
 import com.gp.web.util.WebUtils;
-
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Methods;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 public class SystemHandler extends BaseApiSupport{
 

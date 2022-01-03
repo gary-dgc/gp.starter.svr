@@ -1,31 +1,11 @@
 package com.gp.web.api;
 
-import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.nio.file.Paths;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.base.Enums;
-import com.google.common.base.Joiner;
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
+import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.gp.bind.BindScanner;
-import com.gp.common.Binaries;
+import com.gp.common.*;
 import com.gp.common.Binaries.BinaryMode;
-import com.gp.common.GeneralConfig;
-import com.gp.common.GeneralConsts;
-import com.gp.common.GroupUsers;
-import com.gp.common.InfoId;
-import com.gp.common.KeyValuePair;
-import com.gp.common.ServiceContext;
 import com.gp.dao.info.StorageInfo;
 import com.gp.dao.info.SysOptionInfo;
 import com.gp.exception.BaseException;
@@ -34,6 +14,15 @@ import com.gp.svc.SystemService;
 import com.gp.svc.master.StorageService;
 import com.gp.util.ImageUtils;
 import com.gp.web.InterimToken;
+
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 public class ServiceApiHelper {
 	
@@ -163,7 +152,7 @@ public class ServiceApiHelper {
 		
 		EnumSet<BinaryMode> set = EnumSet.allOf(BinaryMode.class);
 		
-		KeyValuePair<String, String> urlHolder = KeyValuePair.newPair("url");
+		KVPair<String, String> urlHolder = KVPair.newPair("url");
 		set.forEach(mode -> {
 			if(!Strings.isNullOrEmpty(urlHolder.getValue())) {
 				return;
