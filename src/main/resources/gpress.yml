@@ -1,7 +1,7 @@
 # System information
 system:
   version: "0.1"
-  app: gpress.node
+  app: gpress.ccm
   instance: 1
   audit.enable: true             # audit enable
   jgrp.prefix: api               # jgroup prefix
