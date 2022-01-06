@@ -9,7 +9,7 @@ import com.gp.common.Binaries.BinaryMode;
 import com.gp.dao.info.StorageInfo;
 import com.gp.dao.info.SysOptionInfo;
 import com.gp.exception.BaseException;
-import com.gp.storage.BinaryManager;
+import com.gp.cab.CabBinManager;
 import com.gp.svc.SystemService;
 import com.gp.svc.master.StorageService;
 import com.gp.util.ImageUtils;
@@ -100,7 +100,7 @@ public class ServiceApiHelper {
     	InputStream source;
 		try {
 			source = new FileInputStream(cacheFile);
-			BinaryManager.instance().fillBinary(binaryId, source);
+			CabBinManager.instance().fillBinary(binaryId, source);
 			
 		} catch (FileNotFoundException e) {
 			throw new BaseException("excp.cache.avatar");
