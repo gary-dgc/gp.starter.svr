@@ -70,17 +70,12 @@ public class ServiceApiHandler extends BaseApiSupport{
 				break;
 				
 			case BINARY:
+			case ATTACH:
 				// {cabinet id}.{user id}.{user name}
 				String cab1 = Filters.filterString(paraMap, "cabinet_id");
 				token = ServiceApiHelper.instance().getInterimToken(optional.get(), cab1, uid.getId().toString(), principal.getUsername());
 				break;
-				
-			case ATTACH:
-				// {cabinet id}.{user id}.{user name}
-				String cab2 = Filters.filterString(paraMap, "cabinet_id");
-				token = ServiceApiHelper.instance().getInterimToken(optional.get(), cab2, uid.getId().toString(), principal.getUsername());
-				break;
-				
+
 			case AVATAR:
 			case IMAGE:
 				// {cabinet id}.{user id}.{user name}
