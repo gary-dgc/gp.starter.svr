@@ -22,6 +22,7 @@ import com.gp.common.InfoId;
 import com.gp.exception.BaseException;
 import com.gp.info.Principal;
 import com.gp.svc.CommonService;
+import com.gp.validate.ArgsValidator;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.anno.WebApi;
@@ -54,6 +55,7 @@ public class ServiceApiHandler extends BaseApiSupport{
 		ActionResult result = null;
 		
 		Map<String, Object> paraMap = this.getRequestBody(exchange);
+		ArgsValidator argsValid = ArgsValidator.newValidator(paraMap);
 		String pattern = Filters.filterString(paraMap, "mode");
 		Principal principal = this.getPrincipal(exchange);
 		
@@ -63,6 +65,8 @@ public class ServiceApiHandler extends BaseApiSupport{
 		switch (optional.get()) {
 		
 			case FILE:
+				argsValid.require("cabinet_id", "folder_pid")
+						.validate(true);
 				// {cabinet id}.{folder id}.{user id}.{user name}
 				String cab = Filters.filterString(paraMap, "cabinet_id");
 				String fid = Filters.filterString(paraMap, "folder_pid");
