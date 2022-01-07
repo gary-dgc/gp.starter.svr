@@ -20,6 +20,7 @@ import com.gp.common.VersionEvolver.Part;
 import com.gp.dao.info.BinaryInfo;
 import com.gp.dao.info.CabFileInfo;
 import com.gp.dao.info.CabinetInfo;
+import com.gp.dao.info.StorageInfo;
 import com.gp.exception.BaseException;
 import com.gp.exception.CoreException;
 import com.gp.info.BaseIdKey;
@@ -86,11 +87,20 @@ public abstract class TransferSupport extends BaseApiSupport {
 		
 		InfoId cabid = IdKeys.getInfoId(NodeIdKey.CABINET, cabinetId);
 		CabinetInfo cabinfo = getCabinetService().getCabinet(cabid);
-		
+
+		/**
+		 * If cabinet not exist, then just use default storage
+		 **/
+		if(null != cabinfo){
+			binfo.setStorageId(cabinfo.getStorageId());
+		}else {
+			StorageInfo storage = getStorageService().getDefaultStorage();
+			binfo.setStorageId(storage.getId());
+		}
 		File srcFile = new File(filePath);
 		
 		binfo.setInfoId(binaryId);	
-		binfo.setStorageId(cabinfo.getStorageId());		
+
 		binfo.setFormat(extension);
 		binfo.setSize(Math.toIntExact(srcFile.length()));
 		binfo.setState(Cabinets.FileState.READY.name());
@@ -118,7 +128,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 	 * to storage folder.
 	 * 
 	 * @param symToken the symmetric token
-	 * @param filename the filename of binary
+	 * @param fileName the filename of binary
 	 * @param filePath the file cache path of binary data
 	 * 
 	 **/
@@ -147,7 +157,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 		binfo.setStorageId(cabinfo.getStorageId());		
 		binfo.setFormat(Files.getFileExtension(fileName));
 		binfo.setSize(Math.toIntExact(srcFile.length()));
-		binfo.setState(Cabinets.FileState.READY.name());
+		binfo.setState(Binaries.BinaryState.READY.name());
 		binfo.setCreatorUid(GroupUsers.ANONY_UID.getId());
 		binfo.setCreateTime(new Date());
 		
@@ -186,14 +196,14 @@ public abstract class TransferSupport extends BaseApiSupport {
 	/**
 	 * Process the actual request.
 	 * 
-	 * @param request
+	 * @param exchange
 	 *            The request to be processed.
-	 * @param response
+	 * @param fileName
 	 *            The response to be created.
-	 * @param content
+	 * @param binaryId
 	 *            Whether the request body should be written (GET) or not
 	 *            (HEAD).
-	 * @throws IOException
+	 * @throws Exception
 	 *             If something fails at I/O level.
 	 */
 	public void processBinary(HttpServerExchange exchange, String fileName, InfoId binaryId) throws Exception{
@@ -484,7 +494,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 	/**
 	  * Get the browser name 
 	  *
-	  * @param agent
+	  * @param exchange
 	  * @return
 	  */
 	private String getBrowserName(HttpServerExchange exchange) {
