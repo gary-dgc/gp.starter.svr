@@ -111,7 +111,7 @@ public class TransferHandler extends TransferSupport{
 		if(reqUri.startsWith(BinaryMode.FILE.uri())) {
 			String fileIdStr = reqUri.substring(reqUri.lastIndexOf('/') + 1, reqUri.lastIndexOf('.'));
 			Long fileId = NumberUtils.toLong(fileIdStr);
-			InfoId fileid = IdKeys.getInfoId( NodeIdKey.CAB_FILE, fileId);
+			InfoId fileid = IdKeys.getInfoId( MasterIdKey.CAB_FILE, fileId);
 			
 			//GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);
 			CabFileInfo cabfile = fileSvc.getFile( fileid);
