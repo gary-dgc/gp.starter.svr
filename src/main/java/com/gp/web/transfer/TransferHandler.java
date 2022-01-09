@@ -84,8 +84,7 @@ public class TransferHandler extends TransferSupport{
 			String fileIdStr = getIdInPath(reqUri);
 			Long fileId = NumberUtils.toLong(fileIdStr);
 			InfoId fileid = IdKeys.getBlindInfoId(fileId);
-			
-			//GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);
+
 			CabBinMeta fileMeta = CabBinManager.instance().getFileMeta( fileid);
 			// Check if file is actually supplied to the request URL.
 			if (fileMeta == null) {

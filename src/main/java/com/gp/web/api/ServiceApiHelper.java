@@ -113,7 +113,7 @@ public class ServiceApiHelper {
 	/**
 	 * Convert the relative URL into absolute one. 
 	 * 
-	 * @param the relative url
+	 * @param relativeUrl the relative url
 	 **/
 	public static String absoluteBinaryUrl(String relativeUrl) {
 		
@@ -127,7 +127,7 @@ public class ServiceApiHelper {
 	/**
 	 * Convert the relative URL into absolute one. 
 	 * 
-	 * @param BinaryMode the mode of url : /binary; /avatar ; /file
+	 * @param mode the mode of url : /binary; /avatar ; /file
 	 * @param binaryId the binary id
 	 * @param extension the file extension
 	 * 
@@ -170,8 +170,8 @@ public class ServiceApiHelper {
 	/**
 	 * Encrypt the string contents with symmetric algorithm
 	 * 
-	 * @param BinaryMode  the token mode
-	 * @param String the token parts to be encrypted
+	 * @param mode  the token mode
+	 * @param parts the token parts to be encrypted
 	 * 
 	 * @return String the interim token
 	 * 
@@ -192,7 +192,7 @@ public class ServiceApiHelper {
 	/**
 	 * Get the original value of symmetric token string
 	 * 
-	 * @param symToken the symmetric token string
+	 * @param token the symmetric token string
 	 * 
 	 * @return String the original value, with keys: mode, cabinet_id, folder_pid, user_id, username
 	 * 
