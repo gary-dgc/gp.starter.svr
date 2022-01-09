@@ -13,21 +13,16 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.protobuf.ServiceException;
-import com.gp.acl.Acl;
 import com.gp.cab.CabBinManager;
-import com.gp.common.*;
-import com.gp.common.VersionEvolver.Part;
-import com.gp.dao.info.BinaryInfo;
-import com.gp.dao.info.CabFileInfo;
-import com.gp.dao.info.CabinetInfo;
-import com.gp.dao.info.StorageInfo;
+import com.gp.cab.CabBinMeta;
+import com.gp.common.IdKeys;
+import com.gp.common.InfoId;
+import com.gp.common.KVPair;
+import com.gp.common.MimeTypes;
 import com.gp.exception.BaseException;
 import com.gp.exception.CoreException;
 import com.gp.info.BaseIdKey;
 import com.gp.oss.ContentRange;
-import com.gp.svc.cab.CabFileService;
-import com.gp.svc.cab.CabinetService;
-import com.gp.svc.master.StorageService;
 import com.gp.util.NumberUtils;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.api.ServiceApiHelper;
@@ -62,11 +57,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 			"EEE, dd-MMM-yy HH:mm:ss zzz",
 			"EEE MMM dd HH:mm:ss yyyy"
 	};
-	
-	abstract CabFileService getCabFileService();
-	abstract StorageService getStorageService();
-	abstract CabinetService getCabinetService();
-	
+
 	/**
 	 * Create binary record under cabinet without file entry record
 	 * 
@@ -82,38 +73,26 @@ public abstract class TransferSupport extends BaseApiSupport {
 		String extension = Files.getFileExtension(filename);
 		
 		long cabinetId = NumberUtils.toLong(parts.get("cabinet_id"));
+
 		InfoId binaryId = IdKeys.newInfoId(BaseIdKey.BINARY);
-		BinaryInfo binfo = new BinaryInfo();
-		
-		InfoId cabid = IdKeys.getInfoId(NodeIdKey.CABINET, cabinetId);
-		CabinetInfo cabinfo = getCabinetService().getCabinet(cabid);
+		CabBinMeta binMeta = new CabBinMeta(binaryId);
+		// reserve the cabinet id
+		binMeta.setCabinetId(cabinetId);
+		binMeta.setFormat(extension);
+		binMeta.setFileName(filename);
 
-		/**
-		 * If cabinet not exist, then just use default storage
-		 **/
-		if(null != cabinfo){
-			binfo.setStorageId(cabinfo.getStorageId());
-		}else {
-			StorageInfo storage = getStorageService().getDefaultStorage();
-			binfo.setStorageId(storage.getId());
-		}
 		File srcFile = new File(filePath);
-		
-		binfo.setInfoId(binaryId);	
+		binMeta.setSize(srcFile.length());
 
-		binfo.setFormat(extension);
-		binfo.setSize(Math.toIntExact(srcFile.length()));
-		binfo.setState(Cabinets.FileState.READY.name());
-		binfo.setCreatorUid(GroupUsers.ANONY_UID.getId());
-		binfo.setCreateTime(new Date());
-		
-		ServiceContext svcctx  = ServiceContext.getPseudoContext();
-		
-		getStorageService().newBinary(svcctx, binfo);
-		
+		// persist binary record in database
+		CabBinManager.instance().getStorageService().newRawBinary(binMeta);
+
+
+
 		try (InputStream source = new FileInputStream(srcFile)){
 			
-			CabBinManager.instance().fillBinary(binfo.getInfoId(), source);
+			CabBinManager.instance().fillBinary(binMeta.getBinaryId(), source);
+
 		} catch (IOException e) {
 			LOGGER.error("Fail to write binary file", e);
 			throw new ServiceException("excp.file.bin");
@@ -141,55 +120,31 @@ public abstract class TransferSupport extends BaseApiSupport {
 	
 		long cabinetId = NumberUtils.toLong(parts.get("cabinet_id"));
 		long folderPid = NumberUtils.toLong(parts.get("folder_pid"));
-		
+
 		InfoId binaryId = IdKeys.newInfoId(BaseIdKey.BINARY);
-		rtv.setValue(binaryId);
-		BinaryInfo binfo = new BinaryInfo();
-		
-		CabFileInfo fileinfo = new CabFileInfo();
-	
-		InfoId cabid = IdKeys.getInfoId(NodeIdKey.CABINET,cabinetId);
-		CabinetInfo cabinfo = getCabinetService().getCabinet(cabid);
-		
+		CabBinMeta binMeta = new CabBinMeta(binaryId);
+		// reserve the cabinet id
+		binMeta.setCabinetId(cabinetId);
+		binMeta.setFormat(Files.getFileExtension(fileName));
+		binMeta.setFileName(fileName);
+
 		File srcFile = new File(filePath);
-		
-		binfo.setInfoId(binaryId);	
-		binfo.setStorageId(cabinfo.getStorageId());		
-		binfo.setFormat(Files.getFileExtension(fileName));
-		binfo.setSize(Math.toIntExact(srcFile.length()));
-		binfo.setState(Binaries.BinaryState.READY.name());
-		binfo.setCreatorUid(GroupUsers.ANONY_UID.getId());
-		binfo.setCreateTime(new Date());
-		
-		fileinfo.setCabinetId(cabinetId);
-		fileinfo.setBinaryId(binfo.getId()); // Set the binary id
-		fileinfo.setCommentOn(false);
-		fileinfo.setParentId(folderPid);
-		fileinfo.setFormat(binfo.getFormat());
-		fileinfo.setOwnerUid(GroupUsers.ANONY_UID.getId());
-		fileinfo.setState(Cabinets.FileState.READY.name());
-		fileinfo.setSize(Math.toIntExact(srcFile.length()));
-		fileinfo.setEntryName(fileName);
-		
-		fileinfo.setVersion("1.0");
-		fileinfo.setCreateTime(new Date());
-		ServiceContext svcctx  = ServiceContext.getPseudoContext();
-		getStorageService().newBinary(svcctx, binfo);
-		
+		binMeta.setSize(srcFile.length());
+
+		rtv.setValue(binaryId);
+		InfoId fid = CabBinManager.instance().getCabinetService().newFileBinary(binMeta, folderPid);
+		rtv.setKey(fid);
+
+
 		try (InputStream source = new FileInputStream(srcFile)){
 			
-			CabBinManager.instance().fillBinary(binfo.getInfoId(), source);
+			CabBinManager.instance().fillBinary(binMeta.getBinaryId(), source);
+
 		} catch (IOException e) {
 			LOGGER.error("Fail to write binary file", e);
 			throw new ServiceException("excp.file.bin");
 		}
-		
-		Acl acl =  Cabinets.getDefaultAcl();
-		acl.setAclId(IdKeys.newInfoId(NodeIdKey.CAB_ACL));
-		
-		getCabFileService().newFile(svcctx, fileinfo, acl, Part.MAJOR);
-		rtv.setKey(fileinfo.getInfoId());
-	
+
 		return rtv;
 	}
 	
@@ -208,12 +163,12 @@ public abstract class TransferSupport extends BaseApiSupport {
 	 */
 	public void processBinary(HttpServerExchange exchange, String fileName, InfoId binaryId) throws Exception{
 
-		BinaryInfo binfo = getStorageService().getBinary(binaryId);
+		CabBinMeta binMeta = CabBinManager.instance().getBinMeta(binaryId);
 		// Prepare some variables. The ETag is an unique identifier of the file.
 		fileName = encodeFileName(exchange, fileName);
-		long length = binfo.getSize();
+		long length = binMeta.getSize();
 		/*****last modified time should be retrieved from binary record***/
-		long lastModified = binfo.getModifyTime().getTime();
+		long lastModified = binMeta.getModifyTime().getTime();
 		ETag etag = new ETag(false, fileName + "_" + length + "_" + lastModified);
 		
 		// Validate request headers for caching
@@ -230,7 +185,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 		// If-Modified-Since header should be greater than LastModified. If so,
 		// then return 304.
 		// This header is ignored if any If-None-Match header is specified.
-		if (!DateUtils.handleIfModifiedSince(exchange, binfo.getModifyTime())) {
+		if (!DateUtils.handleIfModifiedSince(exchange, binMeta.getModifyTime())) {
 			exchange.getResponseHeaders().add(Headers.ETAG, etag.toString()); // Required in 304.
 			this.send(exchange, StatusCodes.NOT_MODIFIED, null);
 			return;
@@ -246,7 +201,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 
 		// If-Unmodified-Since header should be greater than LastModified. If
 		// not, then return 412.
-		if (!DateUtils.handleIfUnmodifiedSince(exchange, binfo.getModifyTime())) {
+		if (!DateUtils.handleIfUnmodifiedSince(exchange, binMeta.getModifyTime())) {
 			this.send(exchange, StatusCodes.PRECONDITION_FAILED, null);
 			return;
 		}

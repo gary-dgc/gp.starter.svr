@@ -130,6 +130,7 @@
 			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
+
     </dependencies>
 	<build>
 		<directory>target</directory>

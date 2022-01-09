@@ -12,20 +12,16 @@ import com.google.common.collect.Maps;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import com.gp.bind.BindScanner;
 import com.gp.cab.CabBinManager;
+import com.gp.cab.CabBinMeta;
 import com.gp.cache.CacheManager;
 import com.gp.cache.ICache;
 import com.gp.common.*;
-import com.gp.dao.info.BinaryInfo;
-import com.gp.dao.info.CabinetInfo;
 import com.gp.exception.BaseException;
 import com.gp.exception.ServiceException;
 import com.gp.info.AccessPoint;
 import com.gp.info.BaseIdKey;
 import com.gp.info.Principal;
-import com.gp.svc.cab.CabinetService;
-import com.gp.svc.master.StorageService;
 import com.gp.util.NumberUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
@@ -43,7 +39,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.Date;
 import java.util.Deque;
 import java.util.Map;
 
@@ -52,15 +47,9 @@ public class ResumeHandler extends BaseApiSupport{
 	static Logger LOGGER = LoggerFactory.getLogger(ResumeHandler.class);
 	public static final String UPLOAD_DIR = GeneralConfig.getStringByKeys("file", "resume.path");
 	private static final String CACHE_PREFIX = "TSF";
-	
-	private CabinetService cabinetSvc ;
-	private StorageService storageSvc;
-	
+
 	public ResumeHandler() {
-		
-		cabinetSvc = BindScanner.instance().getBean(CabinetService.class);
-		storageSvc = BindScanner.instance().getBean(StorageService.class);
-		
+
 		this.setPathMapping(WebUtils.getOpenApiUri("resume"), Methods.GET, this::handleGet);
 		this.setPathMapping(WebUtils.getOpenApiUri("resume"), Methods.POST, this::handlePost);
 	}
@@ -158,28 +147,28 @@ public class ResumeHandler extends BaseApiSupport{
         	Principal principal = this.getPrincipal(exchange);
         	Map<String, String> parts  = ServiceApiHelper.instance().getTokenOrigin(symToken);
         	long cabinetId = NumberUtils.toLong(parts.get("cabinet_id"));
-    		InfoId binaryId = IdKeys.newInfoId(BaseIdKey.BINARY);
-    		BinaryInfo binfo = new BinaryInfo();
-    		
-        	InfoId cabid = IdKeys.getInfoId(NodeIdKey.CABINET, cabinetId);
-			CabinetInfo cabinfo = cabinetSvc.getCabinet(cabid);
-			
-			binfo.setInfoId(binaryId);
-			binfo.setStorageId(cabinfo.getStorageId());	
-			
-			binfo.setFormat(Files.getFileExtension(info.fileName));
-			binfo.setSize(Math.toIntExact(info.totalSize));
-			binfo.setState(Cabinets.FileState.BLANK.name());
-			binfo.setCreatorUid(principal.getUserId().getId());
-			binfo.setCreateTime(new Date());
-			
-			storageSvc.newBinary(svcctx, binfo);
-			
+			long folderPid = NumberUtils.toLong(parts.get("folder_pid"));
+
+			InfoId binaryId = IdKeys.newInfoId(BaseIdKey.BINARY);
+
+			CabBinMeta binMeta = new CabBinMeta(binaryId);
+			// reserve the cabinet id
+			binMeta.setCabinetId(cabinetId);
+			binMeta.setFormat(Files.getFileExtension(info.fileName));
+			binMeta.setFileName(info.fileName);
+
 			File srcFile = new File(info.filePath);
-			
+			binMeta.setSize(srcFile.length());
+
+			if(IdKeys.isValidId(folderPid)){
+				CabBinManager.instance().getCabinetService().newFileBinary(binMeta, folderPid);
+			}else{
+				CabBinManager.instance().getStorageService().newRawBinary(binMeta);
+			}
+
 			try (InputStream source = new FileInputStream(srcFile)){
 				
-				CabBinManager.instance().fillBinary(binfo.getInfoId(), source);
+				CabBinManager.instance().fillBinary(binaryId, source);
 				
 				result = ActionResult.success("All finished");
 				Map<String, String> data = Maps.newHashMap();

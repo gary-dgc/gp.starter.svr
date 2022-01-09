@@ -13,16 +13,12 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
-import com.gp.bind.BindScanner;
 import com.gp.cab.CabBinManager;
+import com.gp.cab.CabBinMeta;
 import com.gp.common.*;
 import com.gp.common.Binaries.BinaryMode;
-import com.gp.dao.info.CabFileInfo;
 import com.gp.exception.BaseException;
 import com.gp.info.BaseIdKey;
-import com.gp.svc.cab.CabFileService;
-import com.gp.svc.cab.CabinetService;
-import com.gp.svc.master.StorageService;
 import com.gp.util.ImageUtils;
 import com.gp.util.NumberUtils;
 import com.gp.web.ActionResult;
@@ -53,32 +49,9 @@ public class TransferHandler extends TransferSupport{
 	public static final String FILE_UPLOAD_DIR = GeneralConfig.getStringByKeys("file", "upload.path");
 	
 	InputStream DefaultImg = null;
-	
-	private CabFileService fileSvc;
-	private StorageService storageSvc;
-	private CabinetService cabinetSvc;
-	
-	@Override
-	public CabFileService getCabFileService() {
-		return fileSvc;
-	}
-	
-	@Override
-	public StorageService getStorageService(){
-		return this.storageSvc;
-	}
-	
-	@Override
-	public CabinetService getCabinetService(){
-		return this.cabinetSvc;
-	}
-	
+
 	public TransferHandler() {
-		
-		fileSvc = BindScanner.instance().getBean(CabFileService.class);
-		storageSvc = BindScanner.instance().getBean(StorageService.class);
-		cabinetSvc = BindScanner.instance().getBean(CabinetService.class);
-		
+
 		this.setPathMapping(BinaryMode.FILE.uri() + "/*", Methods.GET, this::handleGet);
 		this.setPathMapping(BinaryMode.BINARY.uri() + "/*", Methods.GET, this::handleGet);
 		this.setPathMapping(BinaryMode.IMAGE.uri() + "/*", Methods.GET, this::handleGet);
@@ -101,7 +74,6 @@ public class TransferHandler extends TransferSupport{
 	 * 	<li>http://xxx.com/avatar/928282727272766225.jpg</li>
 	 * 	<li>http://xxx.com/attach/928282727272766225.doc?category=topic</li>
 	 * </ul>
-	 * @see HttpServlet#doGet(HttpServletRequest, HttpServletResponse).
 	 */
 	public void handleGet(HttpServerExchange exchange)throws Exception{
 
@@ -109,14 +81,14 @@ public class TransferHandler extends TransferSupport{
 		String extension = Files.getFileExtension(reqUri);
 		
 		if(reqUri.startsWith(BinaryMode.FILE.uri())) {
-			String fileIdStr = reqUri.substring(reqUri.lastIndexOf('/') + 1, reqUri.lastIndexOf('.'));
+			String fileIdStr = getIdInPath(reqUri);
 			Long fileId = NumberUtils.toLong(fileIdStr);
-			InfoId fileid = IdKeys.getInfoId( MasterIdKey.CAB_FILE, fileId);
+			InfoId fileid = IdKeys.getBlindInfoId(fileId);
 			
 			//GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);
-			CabFileInfo cabfile = fileSvc.getFile( fileid);
+			CabBinMeta fileMeta = CabBinManager.instance().getFileMeta( fileid);
 			// Check if file is actually supplied to the request URL.
-			if (cabfile == null) {
+			if (fileMeta == null) {
 				// Do your thing if the file is not supplied to the request URL.
 				// Throw an exception, or send 404, or show default/warning page, or
 				// just ignore it.
@@ -124,25 +96,21 @@ public class TransferHandler extends TransferSupport{
 				exchange.endExchange();
 				return;
 			}
-			
-			InfoId binaryId = IdKeys.getInfoId(BaseIdKey.BINARY, cabfile.getBinaryId());
-			
-			processBinary(exchange, cabfile.getEntryName(), binaryId);
+
+			processBinary(exchange, fileMeta.getFileName(), fileMeta.getBinaryId());
 		
-		} else if(reqUri.startsWith(BinaryMode.BINARY.uri()) || reqUri.startsWith(BinaryMode.ATTACH.uri())) {
+		} else if(reqUri.startsWith(BinaryMode.BINARY.uri())) {
 			
-			String binIdStr = reqUri.substring(reqUri.lastIndexOf('/') + 1, reqUri.lastIndexOf('.'));
+			String binIdStr = getIdInPath(reqUri);
 			Long binaryId = NumberUtils.toLong(binIdStr);
 			InfoId binId = IdKeys.getInfoId(BaseIdKey.BINARY, binaryId);
 			
-			processBinary(exchange, 
-					reqUri.substring( reqUri.lastIndexOf('/')+1, reqUri.length() ), 
-					binId);
+			processBinary(exchange, reqUri.substring( reqUri.lastIndexOf('/') + 1, reqUri.length() ),  binId);
 			
 		
 		} else if(reqUri.startsWith(BinaryMode.IMAGE.uri()) || reqUri.startsWith(BinaryMode.AVATAR.uri())) {
 			
-			String binIdStr = reqUri.substring(reqUri.lastIndexOf('/') + 1, reqUri.lastIndexOf('.'));
+			String binIdStr = getIdInPath(reqUri);
 			InfoId binaryId = IdKeys.getInfoId(BaseIdKey.BINARY, NumberUtils.toLong(binIdStr));
 			String cacheFileName = Binaries.getBinaryHashPath(binaryId, extension);
 			
@@ -174,9 +142,7 @@ public class TransferHandler extends TransferSupport{
 	/**
 	 * Handle the post request with form data which include the file.
 	 * This method handle one file per time.
-	 * 
-	 * @param sym_token the symmetric token
-	 * @param mode the mode the data: avatar / binary
+	 *
 	 * 
 	 **/
 	public void handlePost(HttpServerExchange exchange)throws Exception{
@@ -288,5 +254,12 @@ public class TransferHandler extends TransferSupport{
 			
 		}
 	}
-	
+
+	/**
+	 * Get id in the request uri path
+	 **/
+	private String getIdInPath(String reqUri){
+		String binIdStr = reqUri.substring(reqUri.lastIndexOf('/') + 1, reqUri.lastIndexOf('.'));
+		return binIdStr;
+	}
 }
