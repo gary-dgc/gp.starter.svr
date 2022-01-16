@@ -3,6 +3,7 @@ package com.gp.core;
 import java.net.URL;
 import java.util.Map;
 
+import com.gp.mq.MQManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,9 +99,8 @@ public class WebInitializer extends CoreInitializer{
 		
 		// scan dao and service
 		BindScanner.instance().scanPackages("com.gp.dao", "com.gp.svc");
-		
-		// scan sync service
-		// BindScanner.instance().scanPackages("com.gp.sync");
+
+		MQManager.instance();
 	}
 	
 	@SuppressWarnings("unchecked")
