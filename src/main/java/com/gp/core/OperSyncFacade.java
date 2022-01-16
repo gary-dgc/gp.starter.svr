@@ -2,20 +2,25 @@ package com.gp.core;
 
 import com.gp.audit.SyncEventload;
 import com.gp.bind.BindScanner;
-import com.gp.common.IdKeys;
-import com.gp.common.InfoId;
-import com.gp.common.KVPair;
-import com.gp.common.ServiceContext;
+import com.gp.common.*;
 import com.gp.dao.info.OperationInfo;
+import com.gp.dao.info.SyncMqOutInfo;
+import com.gp.dao.info.UserInfo;
+import com.gp.exception.BaseException;
 import com.gp.info.BaseIdKey;
 import com.gp.svc.CommonService;
 import com.gp.svc.OperationService;
 import com.gp.svc.SystemService;
 import com.gp.svc.security.SecurityService;
+import com.gp.svc.sync.SyncInternService;
+import com.gp.sync.SyncProcesses;
+import com.gp.sync.SyncRoute;
 import com.gp.util.JsonUtils;
 import com.gp.web.model.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 /**
  * This class handle the operation events
@@ -29,6 +34,7 @@ public class OperSyncFacade {
 	private SecurityService securityservice;
 	private SystemService systemService;
 	private CommonService commonService;
+	private SyncInternService syncService;
 
 	private static OperSyncFacade Instance;
 
@@ -38,6 +44,8 @@ public class OperSyncFacade {
 		securityservice = BindScanner.instance().getBean(SecurityService.class);
 		systemService = BindScanner.instance().getBean(SystemService.class);
 		commonService = BindScanner.instance().getBean(CommonService.class);
+
+		syncService =  BindScanner.instance().getBean(SyncInternService.class);
 	}
 
 	public static OperSyncFacade instance() {
@@ -101,4 +109,45 @@ public class OperSyncFacade {
 
 	}
 
+	/**
+	 * Build the synchronize message out
+	 *
+	 * @param operation the SyncEventLoad
+	 **/
+	public void persistSync(Operation operation) throws BaseException {
+
+		Instruct instruct = operation.getInstruct();
+		if(!Instructs.SYN_INTN.equals(instruct)){
+			LOGGER.debug("ignore operation as not {}", instruct);
+			return;
+		}
+		try(ServiceContext svcctx = new ServiceContext(GroupUsers.pseudo())){
+
+
+			SyncMqOutInfo msgOut = new SyncMqOutInfo();
+
+			msgOut.setOperTime(new Date(IdKeys.parseTime(operation.getOperId().getId())));
+			msgOut.setTraceId(operation.getObjectId() == null ? null : operation.getObjectId().getId());
+			msgOut.setOperCmd(instruct.toString());
+
+			if(null != operation.getOperator()) {
+				UserInfo userInfo = securityservice.getUserInfo(null, operation.getOperator(), null, null);
+				msgOut.setOperatorId(userInfo.getId());
+			}
+
+			// rebuild a new payload for sync-out message
+			SyncRoute syncRoute = SyncProcesses.instance().assembly(operation.getInstruct(), operation.getObjectId(), operation.getPredicates());
+
+			if(syncRoute == null) {
+				return ;
+			}
+
+			String json = JsonUtils.toJson(syncRoute.getSyncData());
+			msgOut.setPayload(json);
+
+			msgOut.setState(Syncs.MessageState.PENDING.name());
+
+			syncService.saveMesgOut(svcctx, msgOut);
+		}
+	}
 }

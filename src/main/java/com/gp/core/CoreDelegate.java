@@ -84,6 +84,8 @@ public class CoreDelegate implements CoreAdapter{
 		Function<Operation, InfoId> oper = Lamadas.rethrow(OperSyncFacade.instance()::persistOperation);
 		CoreEngine.enableFeature(CoreConsts.FEATURE_TRACE, oper, null);
 
+		Consumer<Operation> sync = Lamadas.rethrow(OperSyncFacade.instance()::persistSync);
+		CoreEngine.enableFeature(CoreConsts.FEATURE_SYNC, sync);
 	}
 
 	public void persistAudit(Audit audit)  {
