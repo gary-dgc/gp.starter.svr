@@ -1,14 +1,6 @@
 package com.gp.core;
 
-import java.net.URL;
-import java.util.Map;
-
-import com.gp.mq.MQManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Maps;
-import com.gp.audit.CoreAuditListener;
 import com.gp.bind.BindScanner;
 import com.gp.cache.CacheManager;
 import com.gp.cache.ICache;
@@ -28,6 +20,11 @@ import com.networknt.config.Config;
 import com.networknt.service.SingletonServiceFactory;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URL;
+import java.util.Map;
 
 /**
  * The initializer try to set the core event listeners to Disruptor instance.

@@ -8,6 +8,9 @@ import com.gp.dao.info.SyncMqOutInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.exception.BaseException;
 import com.gp.info.BaseIdKey;
+import com.gp.mq.IProducer;
+import com.gp.mq.MQManager;
+import com.gp.mq.MQMesg;
 import com.gp.svc.CommonService;
 import com.gp.svc.OperationService;
 import com.gp.svc.SystemService;
@@ -21,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * This class handle the operation events
@@ -36,6 +40,8 @@ public class OperSyncFacade {
 	private CommonService commonService;
 	private SyncInternService syncService;
 
+	private IProducer<?> producer ;
+
 	private static OperSyncFacade Instance;
 
 	private OperSyncFacade(){
@@ -46,6 +52,8 @@ public class OperSyncFacade {
 		commonService = BindScanner.instance().getBean(CommonService.class);
 
 		syncService =  BindScanner.instance().getBean(SyncInternService.class);
+
+		//producer = MQManager.instance().getProducer(MQManager.TYPE_ROCKET);
 	}
 
 	public static OperSyncFacade instance() {
@@ -146,8 +154,40 @@ public class OperSyncFacade {
 			msgOut.setPayload(json);
 
 			msgOut.setState(Syncs.MessageState.PENDING.name());
+			if(syncRoute.isTargetDest(Syncs.SyncOrigin.INTERN)) {
 
-			syncService.saveMesgOut(svcctx, msgOut);
+				InfoId outId = IdKeys.newInfoId(MasterIdKey.SYNC_MQ_OUT);
+				msgOut.setInfoId(outId);
+
+				Set<String> destKey = syncRoute.getDestKey(Syncs.SyncOrigin.INTERN);
+				destKey.forEach(k -> {
+					String topic = k;
+					String tag = "*";
+					if(k.indexOf(GeneralConsts.KEYS_SEPARATOR) > 0){
+						topic = k.substring(0, k.indexOf(GeneralConsts.KEYS_SEPARATOR));
+						tag = k.substring(k.indexOf(GeneralConsts.KEYS_SEPARATOR) + 1);
+					}
+					msgOut.setDestTopic(k);
+
+					msgOut.setDestSys(tag);
+
+					if(LOGGER.isDebugEnabled()){
+						LOGGER.debug("Save mq message out");
+					}
+					syncService.saveMesgOut(svcctx, msgOut);
+
+					MQMesg mesg = syncService.convert(msgOut);
+					if(LOGGER.isDebugEnabled()){
+						LOGGER.debug("publish mq message out: {} - {}", topic, tag);
+					}
+
+					if(null == producer) {
+						producer.publish(topic, tag, mesg);
+					}
+				});
+
+			}
+
 		}
 	}
 }
