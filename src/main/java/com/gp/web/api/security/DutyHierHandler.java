@@ -161,7 +161,7 @@ public class DutyHierHandler extends BaseApiSupport {
     }
 
     @WebApi(path="duty-hier-info", operation="org:fnd")
-    public void handleGetOrgHierNode(HttpServerExchange exchange)throws BaseException {
+    public void handleGetDutyHierNode(HttpServerExchange exchange)throws BaseException {
 
         ActionResult result = null;
 
