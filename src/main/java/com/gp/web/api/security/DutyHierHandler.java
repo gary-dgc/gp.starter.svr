@@ -88,17 +88,20 @@ public class DutyHierHandler extends BaseApiSupport {
 
         svcctx.setOperationObject(nodeId);
         DutyHierInfo dutyhier =  new DutyHierInfo();
+
+        dutyhier.setInfoId(nodeId);
         dutyhier.setDutyEcd(Filters.filterString(params, "duty_ecd"));
         dutyhier.setDutyName(Filters.filterString(params, "duty_name"));
         dutyhier.setHeadcount(Filters.filterInt(params, "headcount"));
         dutyhier.setDutyLvl(Filters.filterString(params, "duty_lvl"));
         dutyhier.setDutyCate(Filters.filterString(params, "duty_cate"));
         dutyhier.setState(Filters.filterString(params, "state"));
-        dutyhier.setOrgId(Filters.filterLong(params, "org_id"));
         dutyhier.setDescription(Filters.filterString(params, "description"));
 
         Set<String> keys = params.keySet();
         keys.remove("duty_id");
+        keys.remove("duty_pid");
+        keys.remove("org_id");
         dutyhier.setFilter(FilterMode.include(keys));
         dutyService.saveDutyHierNode(svcctx, dutyhier);
 
@@ -131,7 +134,7 @@ public class DutyHierHandler extends BaseApiSupport {
 
         Map<String, Object > paramap = this.getRequestBody(exchange);
         ArgsValidator.newValidator(paramap)
-                .requireOne("duty_pid", "org_id")
+                .require("duty_pid", "org_id")
                 .validate(true);
 
         InfoId oid = Filters.filterInfoId(paramap, "duty_pid", MasterIdKey.DUTY_HIER);
@@ -161,7 +164,7 @@ public class DutyHierHandler extends BaseApiSupport {
         this.sendResult(exchange, result);
     }
 
-    @WebApi(path="duty-hier-info", operation="org:fnd")
+    @WebApi(path="duty-node-info", operation="org:fnd")
     public void handleGetDutyHierNode(HttpServerExchange exchange)throws BaseException {
 
         ActionResult result = null;
@@ -182,10 +185,7 @@ public class DutyHierHandler extends BaseApiSupport {
         } else {
             builder.set("duty_pid", GeneralConsts.HIER_ROOT.toString());
         }
-        builder.set(info, "duty_name", "description", "duty_lvl", "duty_cate", "duty_ecd");
-
-        int childCnt = info.getProperty("child_count", Integer.class);
-        builder.set("has_child", childCnt > 0);
+        builder.set(info, "duty_name", "description", "duty_lvl", "duty_cate", "duty_ecd", "state", "headcount");
 
         result = ActionResult.success(getMessage(exchange, "mesg.find.orgs"));
         result.setData(builder);
