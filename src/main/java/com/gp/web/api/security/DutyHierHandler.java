@@ -131,13 +131,14 @@ public class DutyHierHandler extends BaseApiSupport {
 
         Map<String, Object > paramap = this.getRequestBody(exchange);
         ArgsValidator.newValidator(paramap)
-                .requireOne("duty_pid")
+                .requireOne("duty_pid", "org_id")
                 .validate(true);
 
         InfoId oid = Filters.filterInfoId(paramap, "duty_pid", MasterIdKey.DUTY_HIER);
+        Long orgid = Filters.filterLong(paramap, "org_id");
         String keyword = Filters.filterString(paramap, "keyword");
 
-        List<DutyHierInfo> infos =  dutyService.getDutyHierNodes(keyword, oid);
+        List<DutyHierInfo> infos =  dutyService.getDutyHierNodes(keyword, oid, orgid);
         List<Map<String, Object>> list =  infos.stream().map((info)->{
             DataBuilder builder = new DataBuilder();
             builder.set("duty_id", info.getId().toString());
