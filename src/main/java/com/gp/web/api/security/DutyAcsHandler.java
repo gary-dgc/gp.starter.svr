@@ -151,13 +151,13 @@ public class DutyAcsHandler extends BaseApiSupport {
                 .require("duty_id")
                 .validate(true);
 
-        InfoId dutyKey = Filters.filterInfoId(params, "duty_id", MasterIdKey.DUTY_ACS);
+        InfoId dutyKey = Filters.filterInfoId(params, "duty_id", MasterIdKey.DUTY_HIER);
         InfoId sysKey = Filters.filterInfoId(params, "sys_id", MasterIdKey.SYS_SUB);
         InfoId dataKey = Filters.filterInfoId(params, "data_id", MasterIdKey.DATA_MODEL);
 
         svcctx.addOperationPredicates(params);
 
-        List<DutyAcsInfo> infos = dutyAcsService.getDutyAces(dutyKey, sysKey, dataKey);
+        List<DutyAcsInfo> infos = dutyAcsService.getDutyAcses(dutyKey, sysKey, dataKey);
         List<Object> data = infos.stream().map( info -> {
 
             DataBuilder builder = new DataBuilder();
@@ -176,6 +176,40 @@ public class DutyAcsHandler extends BaseApiSupport {
         }).collect(Collectors.toList());
 
         result.setData(data);
+
+        this.sendResult(exchange, result);
+    }
+
+    @WebApi(path="duty-acs-info")
+    public void handleDutyAcsInfo(HttpServerExchange exchange)throws BaseException {
+        ActionResult result = ActionResult.success(getMessage(exchange, "mesg.remove.orghier"));
+        ServiceContext svcctx = this.getServiceContext(exchange, Operations.ORG_RMV);
+
+        Map<String, Object> params = this.getRequestBody(exchange);
+
+        ArgsValidator.newValidator(params)
+                .require("access_id")
+                .validate(true);
+
+        InfoId acsKey = Filters.filterInfoId(params, "access_id", MasterIdKey.DUTY_ACS);
+
+        svcctx.addOperationPredicates(params);
+
+        DutyAcsInfo info = dutyAcsService.getDutyAcs(acsKey);
+
+
+        DataBuilder builder = new DataBuilder();
+        builder.set("access_id", info.getId().toString());
+
+        builder.set("data_id", info.getDataId().toString());
+        builder.set("sys_id", info.getSysId().toString());
+
+        String rids = info.getRoleIds();
+        List<String> _rids = Splitter.on(',').splitToList(rids);
+        builder.set("role_ids", _rids);
+        builder.set(info, "reside_dept", "direct_dept", "any_sub_dept", "direct_subord", "any_subord");
+
+        result.setData(builder);
 
         this.sendResult(exchange, result);
     }
