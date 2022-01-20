@@ -12,16 +12,14 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.gp.bind.BindScanner;
 import com.gp.common.*;
-import com.gp.dao.info.OrgHierInfo;
-import com.gp.dao.info.RoleInfo;
-import com.gp.dao.info.SourceInfo;
-import com.gp.dao.info.UserInfo;
+import com.gp.dao.info.*;
 import com.gp.exception.BaseException;
 import com.gp.exception.WebException;
 import com.gp.info.DataBuilder;
 import com.gp.svc.CommonService;
 import com.gp.svc.master.OrgHierService;
 import com.gp.svc.master.SourceService;
+import com.gp.svc.master.SysSubService;
 import com.gp.svc.security.RolePermService;
 import com.gp.svc.user.UserService;
 import com.gp.util.NumberUtils;
@@ -50,6 +48,8 @@ public class CommonHandler extends BaseApiSupport {
 
 	private CommonService commonService;
 
+	private SysSubService sysSubService;
+
 	public CommonHandler() {
 		
 		sourceService = BindScanner.instance().getBean(SourceService.class);
@@ -57,7 +57,7 @@ public class CommonHandler extends BaseApiSupport {
 		rolePermService = BindScanner.instance().getBean(RolePermService.class);
 		orghierService = BindScanner.instance().getBean(OrgHierService.class);
 		commonService = BindScanner.instance().getBean(CommonService.class);
-
+		sysSubService = BindScanner.instance().getBean(SysSubService.class);
 	}
 
 	@WebApi(path="common-source-query")
@@ -241,16 +241,36 @@ public class CommonHandler extends BaseApiSupport {
 	/**
 	 * This is used in dropdown widget to list available users could be assigned to a given workgroup
 	 **/
+	@WebApi(path="common-systems")
+	public void handleGetSystems(HttpServerExchange exchange) throws WebException {
+
+		ActionResult result = new ActionResult();
+		Map<String, Object> paramMap = this.getRequestBody(exchange);
+
+		String keyword = Filters.filterString( paramMap, "keyword");
+		List<SysSubInfo> infos = sysSubService.getSystems(keyword, null);
+
+		List<Object> data = infos.stream().map(info -> {
+			return info.toMap("sys_id", "sys_ecd", "sys_name");
+		}).collect(Collectors.toList());
+		result = ActionResult.success(getMessage(exchange, "mesg.generate.id"));
+
+		result.setData(data);
+		this.sendResult(exchange, result);
+	}
+
+	/**
+	 * This is used in dropdown widget to list available users could be assigned to a given workgroup
+	 **/
 	@WebApi(path="common-generate-id")
 	public void handleGenerateId(HttpServerExchange exchange) throws WebException {
-		
+
 		InfoId newId = IdKeys.newInfoId("gp_blind");
 		ActionResult result = new ActionResult();
 
 		result = ActionResult.success(getMessage(exchange, "mesg.generate.id"));
 		result.setData(newId.getId().toString());
-		
+
 		this.sendResult(exchange, result);
 	}
-
 }
