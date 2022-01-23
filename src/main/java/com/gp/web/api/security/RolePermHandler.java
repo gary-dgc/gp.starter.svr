@@ -21,6 +21,7 @@ import com.gp.info.Principal;
 import com.gp.paging.PageQuery;
 import com.gp.svc.security.RolePermService;
 import com.gp.util.NumberUtils;
+import com.gp.validate.ArgsValidator;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.anno.WebApi;
@@ -49,8 +50,8 @@ public class RolePermHandler extends BaseApiSupport{
 		PageQuery pquery = Filters.filterPageQuery(params);
 		String name = Filters.filterString(params, "keyword");
 		String category = Filters.filterString(params, "category");
-		
-		List<RoleInfo> roles = rolePermSvc.getRoles(name, category, pquery);
+		Long sysId = Filters.filterLong( params, "sys_id");
+		List<RoleInfo> roles = rolePermSvc.getRoles(name, category, sysId, pquery);
 		
 		List<Map<String, Object>> rps = roles.stream().map((RoleInfo r) -> {
 			DataBuilder builder = new DataBuilder();
@@ -79,6 +80,7 @@ public class RolePermHandler extends BaseApiSupport{
 		
 		RoleInfo role = new RoleInfo();
 		role.setInfoId(IdKeys.getInfoId(MasterIdKey.ROLE, Filters.filterLong(params, "role_id")));
+		role.setSysId(Filters.filterLong(params, "sys_id"));
 		role.setRoleName(Filters.filterString(params, "role_name"));
 		role.setRoleAbbr(Filters.filterString(params, "role_abbr"));
 		role.setDefaultCase(Filters.filterString(params, "default_case"));
@@ -103,6 +105,7 @@ public class RolePermHandler extends BaseApiSupport{
 				
 		RoleInfo role = new RoleInfo();
 		role.setInfoId(IdKeys.getInfoId(MasterIdKey.ROLE, Filters.filterLong(params, "role_id")));
+
 		role.setRoleName(Filters.filterString(params, "role_name"));
 		role.setRoleAbbr(Filters.filterString(params, "role_abbr"));
 		role.setDefaultCase(Filters.filterString(params, "default_case"));
@@ -116,7 +119,28 @@ public class RolePermHandler extends BaseApiSupport{
 
 		this.sendResult(exchange, result);
 	}
-	
+
+	@WebApi(path="role-remove")
+	public void handleRoleRemove(HttpServerExchange exchange)throws BaseException{
+
+		Map<String, Object> params = this.getRequestBody(exchange);
+		ArgsValidator.newValidator(params)
+				.require("role_id")
+				.validate(true);
+
+		ActionResult result = new ActionResult();
+		ServiceContext svcctx = this.getServiceContext(exchange, Operations.ROL_UPD);
+		svcctx.addOperationPredicates(params);
+
+		InfoId roleKey = Filters.filterInfoId(params, "role_id", MasterIdKey.ROLE);
+		boolean success = rolePermSvc.removeRole(roleKey);
+
+		result = success ? ActionResult.success(getMessage(exchange, "mesg.remove.role")) :
+				ActionResult.failure(getMessage(exchange, "excp.remove.role")) ;
+
+		this.sendResult(exchange, result);
+	}
+
 	@WebApi(path="role-endpoints-query")
 	public void handleRoleEndpointsQuery(HttpServerExchange exchange)throws BaseException{
 		

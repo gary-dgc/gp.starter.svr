@@ -20,6 +20,7 @@ import com.gp.svc.CommonService;
 import com.gp.svc.master.OrgHierService;
 import com.gp.svc.master.SourceService;
 import com.gp.svc.master.SysSubService;
+import com.gp.svc.security.DataModelService;
 import com.gp.svc.security.RolePermService;
 import com.gp.svc.user.UserService;
 import com.gp.util.NumberUtils;
@@ -50,6 +51,8 @@ public class CommonHandler extends BaseApiSupport {
 
 	private SysSubService sysSubService;
 
+	private DataModelService dataModelService;
+
 	public CommonHandler() {
 		
 		sourceService = BindScanner.instance().getBean(SourceService.class);
@@ -58,6 +61,7 @@ public class CommonHandler extends BaseApiSupport {
 		orghierService = BindScanner.instance().getBean(OrgHierService.class);
 		commonService = BindScanner.instance().getBean(CommonService.class);
 		sysSubService = BindScanner.instance().getBean(SysSubService.class);
+		dataModelService = BindScanner.instance().getBean(DataModelService.class);
 	}
 
 	@WebApi(path="common-source-query")
@@ -95,11 +99,12 @@ public class CommonHandler extends BaseApiSupport {
 		
 		String namecond = Filters.filterString( paramMap, "keyword");
 		String defaultCase = Filters.filterString( paramMap, "default_case");
-				
+		Long sysId = Filters.filterLong( paramMap, "sys_id");
+
 		List<KVPair<String,String>> rolelist = Lists.newArrayList();
 		ActionResult result = null;
 		
-		List<RoleInfo> gresult = rolePermService.getRoles(namecond, defaultCase, null);	
+		List<RoleInfo> gresult = rolePermService.getRoles(namecond, defaultCase, sysId, null);
 		for(RoleInfo rinfo : gresult){
 			Long id = rinfo.getInfoId().getId();
 			KVPair<String, String> kv = KVPair.newPair(String.valueOf(id), rinfo.getRoleName());
@@ -252,6 +257,28 @@ public class CommonHandler extends BaseApiSupport {
 
 		List<Object> data = infos.stream().map(info -> {
 			return info.toMap("sys_id", "sys_ecd", "sys_name");
+		}).collect(Collectors.toList());
+		result = ActionResult.success(getMessage(exchange, "mesg.generate.id"));
+
+		result.setData(data);
+		this.sendResult(exchange, result);
+	}
+
+	/**
+	 * This is used in dropdown widget to list available users could be assigned to a given workgroup
+	 **/
+	@WebApi(path="common-models")
+	public void handleGetModels(HttpServerExchange exchange) throws WebException {
+
+		ActionResult result = new ActionResult();
+		Map<String, Object> paramMap = this.getRequestBody(exchange);
+
+		String keyword = Filters.filterString( paramMap, "keyword");
+		Long sysId = Filters.filterLong(paramMap, "sys_id");
+		List<DataModelInfo> infos = dataModelService.getDataModels(keyword, sysId, null);
+
+		List<Object> data = infos.stream().map(info -> {
+			return info.toMap("data_id", "data_name");
 		}).collect(Collectors.toList());
 		result = ActionResult.success(getMessage(exchange, "mesg.generate.id"));
 
