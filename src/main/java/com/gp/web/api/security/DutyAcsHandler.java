@@ -170,8 +170,8 @@ public class DutyAcsHandler extends BaseApiSupport {
             List<String> _rids = Splitter.on(',').splitToList(rids);
             builder.set("role_ids", _rids);
             builder.set(info, "reside_dept", "direct_dept", "any_sub_dept", "direct_subord", "any_subord");
-
-            return builder;
+            builder.set(info, "sys_name", "data_name");
+            return builder.build();
 
         }).collect(Collectors.toList());
 
