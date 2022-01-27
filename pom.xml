@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gp</groupId>
-	<artifactId>fm-server</artifactId>
+	<artifactId>start-server</artifactId>
 	<version>0.4</version>
-	<name>gp.fm.svr</name>
+	<name>gp.start.svr</name>
 	<url>http://maven.apache.org</url>
 	<packaging>jar</packaging>
 	<properties>
