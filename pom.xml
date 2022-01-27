@@ -30,7 +30,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.gp</groupId>
-			<artifactId>gp-svc-ccm</artifactId>
+			<artifactId>gp-svc-starter</artifactId>
 			<version>0.4</version>
 		</dependency>
 		<dependency>

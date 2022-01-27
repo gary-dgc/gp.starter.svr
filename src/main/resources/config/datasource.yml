@@ -1,6 +1,6 @@
 primary:
   driverClassName: com.mysql.cj.jdbc.Driver
-  jdbcUrl: jdbc:mysql://localhost/gpress_master?characterEncoding=UTF-8&useEncoding=true&autoReconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false
+  jdbcUrl: jdbc:mysql://localhost/gpress_starter?characterEncoding=UTF-8&useEncoding=true&autoReconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false
   username: gpadmin
   password: CRYPT:jhWy/rTtMEt7oGQc7GlWTAZy6mhrXK+FVLh2Hg8v4yY=
   maximumPoolSize: 10
@@ -9,7 +9,7 @@ primary:
     cachePrepStmts: 'true'
 secondary:
   driverClassName: com.mysql.cj.jdbc.Driver
-  jdbcUrl: jdbc:mysql://localhost/gpress_master?characterEncoding=UTF-8&useEncoding=true&autoReconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false
+  jdbcUrl: jdbc:mysql://localhost/gpress_starter?characterEncoding=UTF-8&useEncoding=true&autoReconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false
   username: gpadmin
   password: CRYPT:jhWy/rTtMEt7oGQc7GlWTAZy6mhrXK+FVLh2Hg8v4yY=
   maximumPoolSize: 10
