@@ -23,7 +23,7 @@ import com.gp.svc.security.AuthorizeService;
 import com.gp.svc.security.SecurityService;
 import com.gp.util.JsonUtils;
 import com.gp.util.JwtTokenUtils;
-import com.gp.util.Lamadas;
+import com.gp.util.Lambdas;
 import com.gp.util.NumberUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.model.*;
@@ -81,10 +81,10 @@ public class CoreDelegate implements CoreAdapter{
 		Consumer<Audit> auditor = this::persistAudit;
 		CoreEngine.enableFeature(CoreConsts.FEATURE_AUDIT, auditor);
 
-		Function<Operation, InfoId> oper = Lamadas.rethrow(OperSyncFacade.instance()::persistOperation);
+		Function<Operation, InfoId> oper = Lambdas.rethrow(OperSyncFacade.instance()::persistOperation);
 		CoreEngine.enableFeature(CoreConsts.FEATURE_TRACE, oper, null);
 
-		Consumer<Operation> sync = Lamadas.rethrow(OperSyncFacade.instance()::persistSync);
+		Consumer<Operation> sync = Lambdas.rethrow(OperSyncFacade.instance()::persistSync);
 		CoreEngine.enableFeature(CoreConsts.FEATURE_SYNC, sync);
 	}
 
