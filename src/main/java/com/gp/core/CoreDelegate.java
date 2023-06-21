@@ -13,6 +13,7 @@ import com.gp.common.GroupUsers.AuthenType;
 import com.gp.dao.info.*;
 import com.gp.exception.BaseException;
 import com.gp.exception.ServiceException;
+import com.gp.exec.OptionArg;
 import com.gp.info.BaseIdKey;
 import com.gp.info.InfoCopier;
 import com.gp.info.Principal;
@@ -79,13 +80,13 @@ public class CoreDelegate implements CoreAdapter{
 		AuthenTypes.add(AuthenType.INTERIM);
 
 		Consumer<Audit> auditor = this::persistAudit;
-		CoreEngine.enableFeature(CoreConsts.FEATURE_AUDIT, auditor);
+		CoreEngine.enableFeature(CoreConsts.FEATURE_AUDIT, OptionArg.newArg("auditor", auditor));
 
 		Function<Operation, InfoId> oper = Lambdas.rethrow(OperSyncFacade.instance()::persistOperation);
-		CoreEngine.enableFeature(CoreConsts.FEATURE_TRACE, oper, null);
+		CoreEngine.enableFeature(CoreConsts.FEATURE_TRACE, OptionArg.newArg("persist", oper));
 
 		Consumer<Operation> sync = Lambdas.rethrow(OperSyncFacade.instance()::persistSync);
-		CoreEngine.enableFeature(CoreConsts.FEATURE_SYNC, sync);
+		CoreEngine.enableFeature(CoreConsts.FEATURE_SYNC, OptionArg.newArg("sync", sync));
 	}
 
 	public void persistAudit(Audit audit)  {
