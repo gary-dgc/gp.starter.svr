@@ -8,6 +8,7 @@
  ******************************************************************************/
 package com.gp.web.api.debug;
 
+import com.gp.svc.dev.DebugService;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.anno.WebApi;
@@ -19,8 +20,10 @@ public class DevDebugHandler extends BaseApiSupport{
 
 	static Logger LOGGER = LoggerFactory.getLogger(DevDebugHandler.class);
 
-	public DevDebugHandler() {
+	DebugService debugService;
 
+	public DevDebugHandler() {
+		debugService = getBean(DebugService.class);
 	}
 
 	@WebApi(path="debug-test", open=true)
