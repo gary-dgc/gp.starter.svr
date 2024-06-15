@@ -18,8 +18,6 @@ import com.gp.exception.WebException;
 import com.gp.info.DataBuilder;
 import com.gp.svc.CommonService;
 import com.gp.svc.master.OrgHierService;
-import com.gp.svc.master.SourceService;
-import com.gp.svc.master.SysSubService;
 import com.gp.svc.security.DataModelService;
 import com.gp.svc.security.RolePermService;
 import com.gp.svc.user.UserService;
@@ -38,8 +36,6 @@ import java.util.stream.Collectors;
 public class CommonHandler extends BaseApiSupport {
 
 	static Logger LOGGER = LoggerFactory.getLogger(CommonHandler.class);
-	
-	private SourceService sourceService;
 
 	private UserService userService;
 	
@@ -49,45 +45,17 @@ public class CommonHandler extends BaseApiSupport {
 
 	private CommonService commonService;
 
-	private SysSubService sysSubService;
-
 	private DataModelService dataModelService;
 
 	public CommonHandler() {
-		
-		sourceService = BindScanner.instance().getBean(SourceService.class);
+
 		userService = BindScanner.instance().getBean(UserService.class);
 		rolePermService = BindScanner.instance().getBean(RolePermService.class);
 		orghierService = BindScanner.instance().getBean(OrgHierService.class);
 		commonService = BindScanner.instance().getBean(CommonService.class);
-		sysSubService = BindScanner.instance().getBean(SysSubService.class);
 		dataModelService = BindScanner.instance().getBean(DataModelService.class);
 	}
 
-	@WebApi(path="common-source-query")
-	public void handleNodeList(HttpServerExchange exchange) throws BaseException {
-
-		Map<String, Object> paramMap = this.getRequestBody(exchange) ;
-		
-		String namecond = Filters.filterString( paramMap, "instance_name");
-				
-		List<KVPair<String,String>> enlist = Lists.newArrayList();
-		ActionResult result = null;
-	
-		// query accounts information
-		List<SourceInfo> gresult =  sourceService.getSources(null, namecond, null);
-		
-		for(SourceInfo einfo : gresult){
-			Long id = einfo.getInfoId().getId();
-			KVPair<String, String> kv = KVPair.newPair(String.valueOf(id), einfo.getSourceName());
-			enlist.add(kv);
-		}
-		
-		result = ActionResult.failure(getMessage(exchange, "mesg.find.sources"));
-		result.setData(enlist);
-
-		this.sendResult(exchange, result);
-	}
 
 	/**
 	 * Get the storage list,  
@@ -243,26 +211,7 @@ public class CommonHandler extends BaseApiSupport {
 		this.sendResult(exchange, result);
 	}
 
-	/**
-	 * This is used in dropdown widget to list available users could be assigned to a given workgroup
-	 **/
-	@WebApi(path="common-systems")
-	public void handleGetSystems(HttpServerExchange exchange) throws WebException {
 
-		ActionResult result = new ActionResult();
-		Map<String, Object> paramMap = this.getRequestBody(exchange);
-
-		String keyword = Filters.filterString( paramMap, "keyword");
-		List<SysSubInfo> infos = sysSubService.getSystems(keyword, null);
-
-		List<Object> data = infos.stream().map(info -> {
-			return info.toMap("sys_id", "sys_ecd", "sys_name");
-		}).collect(Collectors.toList());
-		result = ActionResult.success(getMessage(exchange, "mesg.generate.id"));
-
-		result.setData(data);
-		this.sendResult(exchange, result);
-	}
 
 	/**
 	 * This is used in dropdown widget to list available users could be assigned to a given workgroup

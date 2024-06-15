@@ -9,18 +9,12 @@
 package com.gp.web.api.user;
 
 import com.google.common.base.Enums;
-import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.primitives.Longs;
 import com.gp.bind.BindScanner;
-import com.gp.cache.CacheManager;
-import com.gp.cache.ICache;
 import com.gp.common.*;
 import com.gp.common.GroupUsers.UserCategory;
 import com.gp.common.GroupUsers.UserState;
-import com.gp.core.CoreEngine;
 import com.gp.dao.info.RoleInfo;
-import com.gp.dao.info.SourceInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.exception.BaseException;
 import com.gp.exception.CoreException;
@@ -30,23 +24,18 @@ import com.gp.info.DataBuilder;
 import com.gp.info.Principal;
 import com.gp.paging.PageQuery;
 import com.gp.svc.CommonService;
-import com.gp.svc.master.SourceService;
 import com.gp.svc.security.AuthorizeService;
 import com.gp.svc.security.SecurityService;
 import com.gp.svc.user.UserService;
-import com.gp.validate.ArgsValidator;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
-import com.gp.web.InterimToken;
 import com.gp.web.anno.WebApi;
 import com.gp.web.api.ServiceApiHelper;
-import com.gp.web.model.AuthenData;
 import io.undertow.server.HttpServerExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -59,7 +48,7 @@ public class UserHandler extends BaseApiSupport{
 	private UserService userService;
 	private SecurityService securityService;
 	private CommonService commonService;
-	private SourceService sourceService;
+
 	private AuthorizeService authService;
 	
 	public UserHandler() {
@@ -67,7 +56,6 @@ public class UserHandler extends BaseApiSupport{
 		userService = BindScanner.instance().getBean(UserService.class);
 		securityService = BindScanner.instance().getBean(SecurityService.class);
 		commonService = BindScanner.instance().getBean(CommonService.class);
-		sourceService = BindScanner.instance().getBean(SourceService.class);
 		authService = BindScanner.instance().getBean(AuthorizeService.class);
 		
 	}
@@ -163,7 +151,7 @@ public class UserHandler extends BaseApiSupport{
 		if(!Strings.isNullOrEmpty(avatarUrl) && avatarUrl.startsWith("data:image/")){
 			// process the avatar base64 image
 			InfoId storageId = IdKeys.getInfoId(MasterIdKey.STORAGE, Filters.filterLong(params, "storage_id"));
-			avatarUrl = ServiceApiHelper.instance().cacheAvatar(storageId, avatarUrl);
+			//avatarUrl = ServiceApiHelper.instance().cacheAvatar(storageId, avatarUrl);
 			
 			uinfo.setAvatarUrl(avatarUrl);
 			
@@ -225,7 +213,7 @@ public class UserHandler extends BaseApiSupport{
 		if(!Strings.isNullOrEmpty(avatarUrl) && avatarUrl.startsWith("data:image/")){
 			// process the avatar base64 image
 			InfoId storageId = IdKeys.getInfoId(MasterIdKey.STORAGE, Filters.filterLong(params, "storage_id"));
-			avatarUrl = ServiceApiHelper.instance().cacheAvatar(storageId, avatarUrl);
+			//avatarUrl = ServiceApiHelper.instance().cacheAvatar(storageId, avatarUrl);
 			
 			uinfo.setAvatarUrl(avatarUrl);
 		}else {
@@ -398,12 +386,6 @@ public class UserHandler extends BaseApiSupport{
 		
 		builder.set("roles", rlist);
 
-		SourceInfo source = sourceService.getLocalSource();
-		
-		builder.set("source", sbuilder -> {
-			sbuilder.set(source, "entity_gid", "entity_name", "node_gid", "source_name");
-		});
-			
 		result = ActionResult.success(getMessage(exchange, "mesg.find.account"));
 		result.setData(builder.build());
 		

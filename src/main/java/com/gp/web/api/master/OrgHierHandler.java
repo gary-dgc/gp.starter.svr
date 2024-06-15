@@ -81,7 +81,7 @@ public class OrgHierHandler extends BaseApiSupport {
 		String avatarUrl = Filters.filterString(params, "avatar_url");
 		if(!Strings.isNullOrEmpty(avatarUrl) && avatarUrl.startsWith("data:image/")){
 			// process the avatar base64 image
-			avatarUrl = ServiceApiHelper.instance().cacheAvatar(avatarUrl);
+			//avatarUrl = ServiceApiHelper.instance().cacheAvatar(avatarUrl);
 			orghier.setAvatarUrl(avatarUrl);
 		}else {
 			String relativeUrl = ServiceApiHelper.instance().relativeBinaryUrl(avatarUrl);
@@ -127,7 +127,7 @@ public class OrgHierHandler extends BaseApiSupport {
 		String avatarUrl = Filters.filterString(params, "avatar_url");
 		if(!Strings.isNullOrEmpty(avatarUrl) && avatarUrl.startsWith("data:image/")){
 			// process the avatar base64 image
-			avatarUrl = ServiceApiHelper.instance().cacheAvatar(avatarUrl);
+			//avatarUrl = ServiceApiHelper.instance().cacheAvatar(avatarUrl);
 			orghier.setAvatarUrl(avatarUrl);
 		}else {
 			String relativeUrl = ServiceApiHelper.instance().relativeBinaryUrl(avatarUrl);

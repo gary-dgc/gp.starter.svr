@@ -14,8 +14,6 @@ import com.gp.bind.BindScanner;
 import com.gp.common.Filters;
 import com.gp.common.GeneralConfig;
 import com.gp.core.NodeApiAgent;
-import com.gp.dao.info.SourceInfo;
-import com.gp.svc.master.SourceService;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.anno.WebApi;
@@ -30,12 +28,10 @@ import java.util.Map;
 public class SystemHandler extends BaseApiSupport{
 
 	static Logger LOGGER = LoggerFactory.getLogger(SystemHandler.class);
-	
-	private SourceService sourceService;
+
 		
 	public SystemHandler() {
-		
-		sourceService = BindScanner.instance().getBean(SourceService.class);
+
 		
 		this.setPathMapping(WebUtils.getOpenApiUri("system-info"), Methods.POST, this::handelSystemInfo);
 		this.setPathMapping(WebUtils.getAuthApiUri("system-ping"), Methods.POST, this::handleSystemPing);
@@ -49,15 +45,12 @@ public class SystemHandler extends BaseApiSupport{
 	 **/
 	@WebApi(path="system-info", open=true)
 	public void handelSystemInfo (HttpServerExchange exchange) throws Exception {
-		
-		SourceInfo local = sourceService.getLocalSource();
-				
+
 		Map<String, Object> data = Maps.newHashMap();
 		data.put("system", GeneralConfig.getStringByKeys("system", "app"));
 		data.put("instance", GeneralConfig.getStringByKeys("system", "instance"));
 		data.put("version", GeneralConfig.getStringByKeys("system", "version"));
-		data.put("state", local.getState());
-		
+
 		ActionResult result = ActionResult.success("Success get the system information");
 		result.setData(data);
 		

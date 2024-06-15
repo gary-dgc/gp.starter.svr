@@ -6,12 +6,10 @@ import com.google.common.collect.Maps;
 import com.gp.bind.BindScanner;
 import com.gp.common.*;
 import com.gp.common.Binaries.BinaryMode;
-import com.gp.dao.info.StorageInfo;
 import com.gp.dao.info.SysOptionInfo;
 import com.gp.exception.BaseException;
 import com.gp.cab.CabBinManager;
 import com.gp.svc.SystemService;
-import com.gp.svc.master.StorageService;
 import com.gp.util.ImageUtils;
 import com.gp.web.InterimToken;
 
@@ -35,8 +33,7 @@ public class ServiceApiHelper {
 	private static InterimToken SYM_TOKEN;
 
 	private SystemService systemService;
-	private StorageService storageService;
-	
+
 	private ServiceApiHelper(){
 		this.initial();
 		Instance = this;
@@ -45,8 +42,7 @@ public class ServiceApiHelper {
 	private void initial() {
 	
 		systemService = BindScanner.instance().getBean(SystemService.class);
-		storageService = BindScanner.instance().getBean(StorageService.class);
-		
+
 		SysOptionInfo fileOptInfo = systemService.getOption("file.access");
 		FILE_ACCESS_URL = fileOptInfo.getOptValue();
 
@@ -63,52 +59,7 @@ public class ServiceApiHelper {
 		return Instance;
 	}
 	
-	/**
-	 * cache the base64 image into the cache path, eg. {cache dir}/{img path}/123-20160201-123213.jpg
-	 * 
-	 * @return String the file name in cache folder, which include hash path and binary id.
-	 **/
-	public String cacheAvatar(String base64Img) throws BaseException{
-		
-		StorageInfo defaultStg = Instance.storageService.getDefaultStorage();
-		return cacheAvatar(defaultStg.getInfoId(), base64Img);
-		
-	}
-	
-	/**
-	 * cache the base64 image into the cache path, eg. {cache dir}/{img path}/123-20160201-123213.jpg
-	 * 
-	 * @param base64Img the base64 image string, data:image/png;base64,seYsxdYJJLddxd....
-	 * 
-	 * @return String the file name in cache folder, which include hash path and binary id.
-	 **/
-	public String cacheAvatar(InfoId storageId, String base64Img) throws BaseException{
-		
-		int pos = base64Img.indexOf(';');
-		
-		String prefix = base64Img.substring(0, pos);
-		pos = prefix.indexOf(GeneralConsts.SLASH_SEPARATOR);
-		String ext = prefix.substring(pos + 1); // get file extension
-    	
-		InfoId binaryId = Instance.storageService.newBinary(ServiceContext.getPseudoContext(), storageId, ext);
-		
-    	String cacheFileName = Binaries.getBinaryHashPath(binaryId, ext);
-    	BufferedImage bufImg = ImageUtils.read(base64Img);
-    	String cacheFile = Paths.get(FILE_CACHE_DIR , cacheFileName).toString();
-    	ImageUtils.write(bufImg, cacheFile, ext);
-    	
-    	InputStream source;
-		try {
-			source = new FileInputStream(cacheFile);
-			CabBinManager.instance().fillBinary(binaryId, source);
-			
-		} catch (FileNotFoundException e) {
-			throw new BaseException("excp.cache.avatar");
-		}
-		
-		return BinaryMode.AVATAR.uri().substring(1) + "/" + binaryId.getId().toString() + "." + ext;
 
-	}
 	
 	/**
 	 * Convert the relative URL into absolute one. 

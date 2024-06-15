@@ -9,7 +9,6 @@ import com.gp.dao.info.UserInfo;
 import com.gp.exception.BaseException;
 import com.gp.info.BaseIdKey;
 import com.gp.mq.IProducer;
-import com.gp.mq.MQManager;
 import com.gp.mq.MQMesg;
 import com.gp.svc.CommonService;
 import com.gp.svc.OperationService;
