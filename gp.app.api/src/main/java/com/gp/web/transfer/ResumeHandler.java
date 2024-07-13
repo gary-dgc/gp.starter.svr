@@ -29,7 +29,7 @@ import com.gp.web.api.ServiceApiHelper;
 import com.gp.web.model.ResumableInfo;
 import com.gp.web.model.ResumableInfo.ChunkNumber;
 import com.gp.web.util.WebUtils;
-import com.networknt.httpstring.ContentType;
+import com.networknt.common.ContentType;
 import io.undertow.server.BlockingHttpExchange;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;

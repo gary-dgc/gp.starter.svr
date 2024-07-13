@@ -26,7 +26,7 @@ import com.gp.oss.ContentRange;
 import com.gp.util.NumberUtils;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.api.ServiceApiHelper;
-import com.networknt.httpstring.ContentType;
+import com.networknt.common.ContentType;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.*;
 import org.slf4j.Logger;
