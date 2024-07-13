@@ -1,0 +1,6 @@
+DriverClassName: com.mysql.cj.jdbc.Driver
+jdbcUrl: jdbc:mysql://localhost/gpress_starter?characterEncoding=UTF-8&useEncoding=true&autoReconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false
+username: gpadmin
+password: gpress
+parameters:
+  maximumPoolSize: '10'

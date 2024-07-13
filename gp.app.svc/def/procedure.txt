@@ -1,0 +1,92 @@
+SET @@SESSION.max_sp_recursion_depth=25;
+DROP PROCEDURE IF EXISTS proc_dept_flat;
+DELIMITER go
+CREATE PROCEDURE proc_dept_flat( p_dept_id BIGINT )
+BEGIN
+  DECLARE i_dept_id, i_dept_pid, i_lvl, done BIGINT DEFAULT 0;
+  DECLARE up_cur CURSOR FOR
+    SELECT 
+      @r AS dept_id, 
+      (SELECT @r := dept_pid FROM gp_dept_hier WHERE dept_id = @r) AS dept_pid, 
+      @l := @l + 1 AS lvl 
+    FROM 
+      (SELECT @r := p_dept_id, @l := 0) vars,
+      gp_dept_hier h
+    WHERE @r <> 0;
+  
+  DECLARE down_cur CURSOR FOR
+    SELECT dept_id 
+    FROM gp_dept_hier
+    WHERE dept_pid = p_dept_id;
+    
+  DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+  
+  DELETE FROM gp_dept_flat WHERE dept_leaf_id = p_dept_id;
+  
+  OPEN up_cur;
+  FETCH up_cur INTO i_dept_id, i_dept_pid, i_lvl;
+  WHILE NOT done DO
+  	IF i_dept_pid > 0 THEN
+  	INSERT INTO gp_dept_flat (dept_pid, dept_leaf_id, hier_lvl) VALUES (i_dept_pid, p_dept_id, i_lvl);
+  	END IF;
+  	FETCH up_cur INTO i_dept_id, i_dept_pid, i_lvl;
+  END WHILE;
+  CLOSE up_cur;
+  
+  SET done = 0;
+  OPEN down_cur;
+  FETCH down_cur INTO i_dept_id;
+  WHILE NOT done DO
+  	CALL proc_dept_flat(i_dept_id);
+  	FETCH down_cur INTO i_dept_id;
+  END WHILE;
+END go
+DELIMITER ;
+
+
+SET @@SESSION.max_sp_recursion_depth=25;
+DROP PROCEDURE IF EXISTS proc_duty_flat;
+DELIMITER go
+CREATE PROCEDURE proc_duty_flat( p_duty_id BIGINT )
+BEGIN
+  DECLARE i_duty_id, i_duty_pid, i_lvl, done BIGINT DEFAULT 0;
+  DECLARE up_cur CURSOR FOR
+    SELECT 
+      @r AS duty_id, 
+      (SELECT @r := duty_pid FROM gp_duty_hier WHERE duty_id = @r) AS duty_pid, 
+      @l := @l + 1 AS lvl 
+    FROM 
+      (SELECT @r := p_duty_id, @l := 0) vars,
+      gp_duty_hier h
+    WHERE @r <> 0;
+  
+  DECLARE down_cur CURSOR FOR
+    SELECT duty_id 
+    FROM gp_duty_hier
+    WHERE duty_pid = p_duty_id;
+    
+  DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+  
+  DELETE FROM gp_duty_flat WHERE duty_leaf_id = p_duty_id;
+  
+  OPEN up_cur;
+  FETCH up_cur INTO i_duty_id, i_duty_pid, i_lvl;
+  WHILE NOT done DO
+  	IF i_duty_pid > 0 THEN
+  	INSERT INTO gp_duty_flat (duty_pid, duty_leaf_id, hier_lvl) VALUES (i_duty_pid, p_duty_id, i_lvl);
+  	END IF;
+  	FETCH up_cur INTO i_duty_id, i_duty_pid, i_lvl;
+  END WHILE;
+  CLOSE up_cur;
+  
+  SET done = 0;
+  OPEN down_cur;
+  FETCH down_cur INTO i_duty_id;
+  WHILE NOT done DO
+  	CALL proc_duty_flat(i_duty_id);
+  	FETCH down_cur INTO i_duty_id;
+  END WHILE;
+END go
+DELIMITER ;
+
+call duty_flat(1);
