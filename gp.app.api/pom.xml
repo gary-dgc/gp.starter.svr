@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.gp</groupId>
+	<groupId>com.groupress</groupId>
 	<artifactId>starter-server</artifactId>
 	<version>0.4</version>
 	<name>gp.starter.svr</name>
@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>com.gp</groupId>
+		<groupId>com.groupress</groupId>
 		<artifactId>gp-starter</artifactId>
 		<version>0.4</version>
 	</parent>
@@ -19,14 +19,14 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>com.gp</groupId>
+			<groupId>com.groupress</groupId>
 			<artifactId>gp-svc-starter</artifactId>
-			<version>0.4</version>
+			<version>${gpress.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.gp</groupId>
+			<groupId>com.groupress</groupId>
 			<artifactId>gp-core</artifactId>
-			<version>0.4</version>
+			<version>${gpress.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.networknt</groupId>

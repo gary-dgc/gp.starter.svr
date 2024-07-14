@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.gp</groupId>
+	<groupId>com.groupress</groupId>
 	<artifactId>gp-svc-starter</artifactId>
 	<version>0.4</version>
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>com.gp</groupId>
+		<groupId>com.groupress</groupId>
 		<artifactId>gp-starter</artifactId>
 		<version>0.4</version>
 	</parent>
@@ -18,14 +18,14 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.gp</groupId>
+			<groupId>com.groupress</groupId>
 			<artifactId>gp-common</artifactId>
-			<version>0.4</version>
+			<version>${gpress.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.gp</groupId>
+			<groupId>com.groupress</groupId>
 			<artifactId>gp-svc-base</artifactId>
-			<version>0.4</version>
+			<version>${gpress.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.ben-manes.caffeine</groupId>
