@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.groupress</groupId>
 	<artifactId>gp-svc-starter</artifactId>
-	<version>0.4</version>
+	<version>0.4.0</version>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>com.groupress</groupId>
 		<artifactId>gp-starter</artifactId>
-		<version>0.4</version>
+		<version>0.4.0</version>
 	</parent>
 
 	<properties>
@@ -41,19 +41,19 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
-			<version>2.3.28</version>
+			<version>${freemarker.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
+			<version>${logback.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

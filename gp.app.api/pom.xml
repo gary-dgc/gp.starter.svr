@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.groupress</groupId>
 	<artifactId>starter-server</artifactId>
-	<version>0.4</version>
+	<version>0.4.0</version>
 	<name>gp.starter.svr</name>
 	<url>http://maven.apache.org</url>
 	<packaging>jar</packaging>
@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>com.groupress</groupId>
 		<artifactId>gp-starter</artifactId>
-		<version>0.4</version>
+		<version>0.4.0</version>
 	</parent>
 	
 	<properties>

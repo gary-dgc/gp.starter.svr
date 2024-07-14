@@ -6,19 +6,19 @@
 
     <groupId>com.groupress</groupId>
     <artifactId>gp-starter</artifactId>
-    <version>0.4</version>
+    <version>0.4.0</version>
 
     <packaging>pom</packaging>
     <parent>
         <groupId>com.groupress</groupId>
         <artifactId>gp-root</artifactId>
-        <version>0.4</version>
+        <version>0.4.0</version>
         <relativePath>../gp.root</relativePath>
     </parent>
 
     <properties>
         <versions.maven-version>2.4</versions.maven-version>
-        <gpress.version>0.4</gpress.version>
+        <gpress.version>0.4.0</gpress.version>
     </properties>
 
     <modules>
