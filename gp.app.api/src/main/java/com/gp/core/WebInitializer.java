@@ -4,10 +4,7 @@ import com.google.common.collect.Maps;
 import com.gp.bind.BindScanner;
 import com.gp.cache.CacheManager;
 import com.gp.cache.ICache;
-import com.gp.common.Caches;
-import com.gp.common.GeneralConfig;
-import com.gp.common.Instructs;
-import com.gp.common.Operations;
+import com.gp.common.*;
 import com.gp.config.AppStartupHook;
 import com.gp.db.JdbiContext;
 import com.gp.exception.BaseException;
@@ -78,10 +75,12 @@ public class WebInitializer extends CoreInitializer{
 	}
 
 	private void initialService() {
+		// Set bean priority calculator
+		BindScanner.instance().setPrioritySetter(Services::calcPriority);
+
 		// Forward bean get invocation to SingletonServiceFactory
-		BindScanner.instance().setBeanGetter((Class<?> clazz) -> {
-			return SingletonServiceFactory.getBean(clazz);
-		});
+		BindScanner.instance().setBeanGetter(SingletonServiceFactory::getBean);
+
 		// Save bean into SingletonServiceFactory
 		BindScanner.instance().setBeanSetter((Class<?> clazz, Object bean) -> {
 			SingletonServiceFactory.setBean(clazz.getCanonicalName(), bean);
