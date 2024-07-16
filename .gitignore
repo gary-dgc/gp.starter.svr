@@ -9,3 +9,5 @@
 /.flattened-pom.xml
 /gp.app.svc/.flattened-pom.xml
 /gp.app.api/.flattened-pom.xml
+/gp.app.api/target/
+/gp.app.svc/target/
