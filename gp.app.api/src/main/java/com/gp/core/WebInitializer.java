@@ -72,14 +72,7 @@ public class WebInitializer extends CoreInitializer{
 			// initialize the engine
 			CoreDelegate coreFacade = new CoreDelegate();
 			CoreEngine.initial(coreFacade);
-			
-			try {
-				LOGGER.debug("Start: setup node api agent");
-				initialApiAgents();
-			} catch (Exception e) {
-				LOGGER.error("Start: Fail initial api agent");
-			}
-			
+
 		});
 		
 	}
@@ -127,92 +120,5 @@ public class WebInitializer extends CoreInitializer{
         
         SingletonServiceFactory.setBean(context.getClass().getName(), context);
     }
-	
-	private void initialApiAgents() throws Exception {
-		
-		// Prepare global api agent
-		NodeAccess gblAuth = NodeAccess.newNodeAccess(NodeApiAgent.GlobalName);
-		
-		AuthenData authen = new AuthenData();
-		authen.setAudience("1101");
-		authen.setGrantType(CoreConsts.GRANT_NODE_CRED);
-		
-		String appKey = ConfigUtils.getSystemOption("node.app.key");
-		String appSecret = ConfigUtils.getSystemOption("node.app.secret");
-		authen.setPrincipal(appKey);
-		authen.setCredential(appSecret);
-		
-    	Map<String, Object> extra = Maps.newHashMap();
-    	extra.put("client_secret", "sslssl");
-    	extra.put("scope", "read");
-    	extra.put("device", "101010111");
-    	
-    	authen.setExtra(extra);
-    	
-    	gblAuth.setAuthenData(authen);
-    	
-    	// prepare the SyncHttpClient
-    	String accessUrl = ConfigUtils.getSystemOption("global.access");
-    	URL globalUrl = new URL(accessUrl);    	
-    	gblAuth.setHost(globalUrl.getHost());
-    	gblAuth.setPort(globalUrl.getPort());
-    	
-    	LOGGER.info("Prepare Global Agent: {}:{}", globalUrl.getHost(), globalUrl.getPort());
-    	
-    	// Prepare sync api agent
-    	NodeAccess syncAuth = NodeAccess.newClientAccess(NodeApiAgent.SyncName);
-		
-		AuthenData syncData = new AuthenData();
-		syncData.setGrantType(CoreConsts.GRANT_CLIENT_CRED);
-		
-		String princ = GeneralConfig.getStringByKeys("authen", "sync.princ");
-		String cred = GeneralConfig.getStringByKeys("authen", "sync.cred");
-		syncData.setPrincipal(princ);
-		syncData.setCredential(cred);
-		
-    	Map<String, Object> sextra = Maps.newHashMap();
-    	extra.put("scope", "read");
-    	extra.put("device", "101010111");
-    	
-    	syncData.setExtra(sextra);
-    	
-    	syncAuth.setAuthenData(syncData);
-    	
-    	accessUrl = ConfigUtils.getSystemOption("sync.node.access");
-    	URL syncUrl = new URL(accessUrl);
-    	syncAuth.setHost(syncUrl.getHost());
-    	syncAuth.setPort(syncUrl.getPort());
-    	
-    	LOGGER.info("Prepare Sync Node Agent: {}:{}", syncUrl.getHost(), syncUrl.getPort());
-    	
-    	NodeApiAgent.instance().setNodeAccess(gblAuth, syncAuth);
-    	
-    	// Prepare converter api agent
-    	NodeAccess convertAuth = NodeAccess.newClientAccess(NodeApiAgent.ConvertName);
-		
-		AuthenData convertData = new AuthenData();
-		convertData.setGrantType(CoreConsts.GRANT_CLIENT_CRED);
-		
-		String cvtprinc = GeneralConfig.getStringByKeys("authen", "convert.princ");
-		String cvtcred = GeneralConfig.getStringByKeys("authen", "convert.cred");
-		convertData.setPrincipal(cvtprinc);
-		convertData.setCredential(cvtcred);
-		
-    	Map<String, Object> cextra = Maps.newHashMap();
-    	cextra.put("scope", "read");
-    	cextra.put("device", "101010111");
-    	
-    	convertData.setExtra(cextra);
-    	
-    	convertAuth.setAuthenData(convertData);
-    	
-    	accessUrl = ConfigUtils.getSystemOption("convert.access");
-    	URL cvertUrl = new URL(accessUrl);
-    	convertAuth.setHost(cvertUrl.getHost());
-    	convertAuth.setPort(cvertUrl.getPort());
-    	
-    	LOGGER.info("Prepare Converter Node Agent: {}:{}", cvertUrl.getHost(), cvertUrl.getPort());
-    	
-    	NodeApiAgent.instance().setNodeAccess(gblAuth, syncAuth, convertAuth);
-	}
+
 }
