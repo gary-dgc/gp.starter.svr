@@ -4,7 +4,7 @@ import com.gp.asm.AgentBinder;
 import com.gp.db.asm.JdbiTransformer;
 import com.networknt.server.Server;
 
-public class MasterServer {
+public class AppApiServer {
 
     public static void main(String[] args) throws Exception {
 

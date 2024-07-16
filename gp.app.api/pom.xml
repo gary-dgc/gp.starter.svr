@@ -14,7 +14,7 @@
 	</parent>
 	
 	<properties>
-
+		<start.main.class>com.gp.config.AppApiServer</start.main.class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -170,7 +170,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.gp.config.MasterServer</mainClass>
+							<mainClass>${start.main.class}</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
