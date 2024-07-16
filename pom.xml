@@ -9,6 +9,7 @@
     <version>0.4.0</version>
 
     <packaging>pom</packaging>
+
     <parent>
         <groupId>com.groupress</groupId>
         <artifactId>gp-root</artifactId>
