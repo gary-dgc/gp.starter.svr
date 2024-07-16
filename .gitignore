@@ -3,11 +3,10 @@
 /.classpath
 /.project
 /.DS_Store
-/testfile.dat
-/.gp.launch.sh.swp
 /dependency-reduced-pom.xml
 /.flattened-pom.xml
 /gp.app.svc/.flattened-pom.xml
 /gp.app.api/.flattened-pom.xml
 /gp.app.api/target/
 /gp.app.svc/target/
+/.idea/
