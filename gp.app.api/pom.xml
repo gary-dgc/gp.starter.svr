@@ -2,14 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>starter-server</artifactId>
+	<groupId>com.gpress.starter</groupId>
+	<artifactId>gp.starter.api</artifactId>
 
-	<name>gp.starter.svr</name>
-	<url>http://maven.apache.org</url>
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>com.starter</groupId>
+		<groupId>com.gpress.starter</groupId>
 		<artifactId>gp-starter</artifactId>
 		<version>0.4.0</version>
 	</parent>
@@ -19,7 +18,7 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>com.starter</groupId>
+			<groupId>com.gpress.starter</groupId>
 			<artifactId>gp-svc-starter</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -88,32 +87,6 @@
 			<artifactId>byte-buddy-agent</artifactId>
 			<version>${buddy.agent.version}</version>
 		</dependency>
-		<!-- 		<dependency>
-                    <groupId>com.networknt</groupId>
-                    <artifactId>openapi-parser</artifactId>
-                    <version>${light-4j.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.networknt</groupId>
-                    <artifactId>security</artifactId>
-                    <version>${light-4j.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.networknt</groupId>
-                    <artifactId>openapi-meta</artifactId>
-                    <version>${light-4j.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.networknt</groupId>
-                    <artifactId>openapi-security</artifactId>
-                    <version>${light-4j.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.networknt</groupId>
-                    <artifactId>openapi-validator</artifactId>
-                    <version>${light-4j.version}</version>
-                </dependency> -->
-		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -208,18 +181,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<id>nexus-aliyun</id>
-			<name>Nexus aliyun</name>
-			<layout>default</layout>
-			<url>http://maven.aliyun.com/nexus/content/groups/public//</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
 </project>
