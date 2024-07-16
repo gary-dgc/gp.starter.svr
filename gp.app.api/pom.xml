@@ -96,8 +96,16 @@
 
     </dependencies>
 	<build>
-		<directory>target</directory>
-		<finalName>${project.artifactId}-${project.version}</finalName>
+		<finalName>${project.artifactId}-${project.version}-${env}</finalName>
+		<filters> <!-- specify env filter -->
+			<filter>src/main/filters/filter-${env}.properties</filter>
+		</filters>
+		<resources>
+			<resource> <!-- specify resource path -->
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<pluginManagement>
 			<plugins>
 		        <plugin>
@@ -108,7 +116,7 @@
 						<executable>java</executable>
 						<arguments>
 							<argument>-jar</argument>
-							<argument>target/${project.build.finalName}.jar</argument>
+							<argument>target/${project.artifactId}-${project.version}-${env}.jar</argument>
 						</arguments>
 					</configuration>
 		        </plugin>
@@ -179,6 +187,42 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<nonFilteredFileExtensions>
+						<!-- ignore filtering file format -->
+						<nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
+						<nonFilteredFileExtension>crt</nonFilteredFileExtension>
+						<nonFilteredFileExtension>keystore</nonFilteredFileExtension>
+						<nonFilteredFileExtension>truststore</nonFilteredFileExtension>
+						<nonFilteredFileExtension>json</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+	<!-- Prepare the profile for different deploy purpose -->
+	<profiles>
+		<!-- develop purpose -->
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault><!-- set as default -->
+			</activation>
+		</profile>
+		<!-- production purpose -->
+		<profile>
+			<id>prod</id>
+			<properties>
+				<env>prod</env>
+			</properties>
+		</profile>
+	</profiles>
 </project>

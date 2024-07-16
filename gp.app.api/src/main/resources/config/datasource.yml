@@ -2,7 +2,7 @@ primary:
   driverClassName: com.mysql.cj.jdbc.Driver
   jdbcUrl: jdbc:mysql://localhost/gpress_starter?characterEncoding=UTF-8&useEncoding=true&autoReconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false
   username: gpadmin
-  password: CRYPT:6770:D16B96D62286D0001BC4F268C501281C
+  password: ${DATABASE_PWD}
   maximumPoolSize: 10
   minimumIdle: 4
   parameters:
@@ -11,7 +11,7 @@ secondary:
   driverClassName: com.mysql.cj.jdbc.Driver
   jdbcUrl: jdbc:mysql://localhost/gpress_starter?characterEncoding=UTF-8&useEncoding=true&autoReconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false
   username: gpadmin
-  password: CRYPT:6770:D16B96D62286D0001BC4F268C501281C
+  password: ${DATABASE_PWD}
   maximumPoolSize: 10
   minimumIdle: 4
   parameters:
