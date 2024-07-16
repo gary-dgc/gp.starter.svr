@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.groupress</groupId>
+    <groupId>com.starter</groupId>
     <artifactId>gp-starter</artifactId>
     <version>0.4.0</version>
 
@@ -13,7 +13,6 @@
         <groupId>com.groupress</groupId>
         <artifactId>gp-root</artifactId>
         <version>0.4.0</version>
-        <relativePath>../gp.root</relativePath>
     </parent>
 
     <properties>
