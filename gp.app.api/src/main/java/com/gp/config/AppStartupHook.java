@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import com.gp.core.CoreEngine;
 import com.networknt.server.StartupHookProvider;
 
-public class NodeStartupHook implements StartupHookProvider{
+public class AppStartupHook implements StartupHookProvider{
 
-	static Logger LOGGER = LoggerFactory.getLogger(NodeStartupHook.class);
+	static Logger LOGGER = LoggerFactory.getLogger(AppStartupHook.class);
 	
 	public static final String DATA_SOURCE = "datasource";
 	

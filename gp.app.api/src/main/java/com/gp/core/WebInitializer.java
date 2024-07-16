@@ -8,7 +8,7 @@ import com.gp.common.Caches;
 import com.gp.common.GeneralConfig;
 import com.gp.common.Instructs;
 import com.gp.common.Operations;
-import com.gp.config.NodeStartupHook;
+import com.gp.config.AppStartupHook;
 import com.gp.db.JdbiContext;
 import com.gp.exception.BaseException;
 import com.gp.launcher.CoreInitializer;
@@ -36,7 +36,7 @@ import java.util.Map;
  **/
 public class WebInitializer extends CoreInitializer{
 
-	static Logger LOGGER = LoggerFactory.getLogger(NodeStartupHook.class);
+	static Logger LOGGER = LoggerFactory.getLogger(AppStartupHook.class);
 	
 	public static final String DATA_SOURCE = "datasource";
 	

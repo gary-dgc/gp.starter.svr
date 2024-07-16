@@ -11,7 +11,7 @@ package com.gp.config;
 import com.gp.core.CoreEngine;
 import com.networknt.server.ShutdownHookProvider;
 
-public class NodeShutdownHook implements ShutdownHookProvider{
+public class AppShutdownHook implements ShutdownHookProvider{
 
 	@Override
 	public void onShutdown() {

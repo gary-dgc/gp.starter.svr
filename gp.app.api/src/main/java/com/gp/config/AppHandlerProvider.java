@@ -13,7 +13,7 @@ import io.undertow.server.RoutingHandler;
 import io.undertow.server.handlers.sse.ServerSentEventHandler;
 import io.undertow.util.Methods;
 
-public class NodeHandlerProvider implements HandlerProvider, BaseApiProvider {
+public class AppHandlerProvider implements HandlerProvider, BaseApiProvider {
 
     @Override
     public HttpHandler getHandler() {
