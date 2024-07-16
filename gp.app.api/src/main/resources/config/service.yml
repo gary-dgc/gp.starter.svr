@@ -3,15 +3,15 @@
 singletons:
 # HandlerProvider implementation
 - com.networknt.handler.HandlerProvider:
-  - com.gp.config.NodeHandlerProvider
+  - com.gp.config.AppHandlerProvider
 
 # StartupHookProvider implementations, there are one to many and they are called in the same sequence defined.
 - com.networknt.server.StartupHookProvider:
-  - com.gp.config.NodeStartupHook
+  - com.gp.config.AppStartupHook
 
 # ShutdownHookProvider implementations, there are one to many and they are called in the same sequence defined.
 - com.networknt.server.ShutdownHookProvider:
-  - com.gp.config.NodeShutdownHook
+  - com.gp.config.AppShutdownHook
 
 # MiddlewareHandler implementations, the calling sequence is as defined in the request/response chain.
 - com.networknt.handler.MiddlewareHandler:
