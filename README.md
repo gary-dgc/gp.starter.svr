@@ -36,6 +36,7 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
   * DAO的设计及实现
     * BaseDAO介绍
     * ExtendDAO介绍
+    * 服务代码生成工具介绍
   * Service数据服务的设计及实现
     * 基础服务的设计实现
     * LinkerService设计服务实现
