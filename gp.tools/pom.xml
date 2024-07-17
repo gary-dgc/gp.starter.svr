@@ -5,7 +5,7 @@
     <groupId>com.gpress.starter</groupId>
     <artifactId>gp-tools</artifactId>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <parent>
         <groupId>com.gpress.starter</groupId>
