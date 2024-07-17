@@ -24,6 +24,7 @@
     <modules>
         <module>gp.app.api</module>
         <module>gp.app.svc</module>
+        <module>gp.tools</module>
     </modules>
 
     <build>
