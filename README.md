@@ -9,7 +9,7 @@ Web应用开发从最早的Servlet开发到现在微服务开发，应用项目�
 groupress这个所谓的“轮子”的初衷。
 
 Spring框架经过多年的发展，它的优点无须赘述，至于缺点见仁见智，在此不做评述。在构思框架的过程中，发
-现了[light-4j](https://github.com/networknt/light-4j)，于是决定基于light-4j构建groupress框架。
+现了[light-4j](https://github.com/networknt/light-4j)，于是决定基于light-4j构建groupress框架（简称：GP）。
 
 *** 
 
@@ -22,8 +22,10 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
 ***
 
-- [ ] [Groupress框架介绍](./gp.help/framework.md)
-  
+## [Groupress框架介绍](./gp.help/framework.md)
+
+    对框架内部的设计构成及实现机制进行详细说明  
+
   * 框架基本结构（三方依赖说明）
     * 开发包整体结构及说明
     * 开发包依赖关系
@@ -45,7 +47,9 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
     * AppLauncher介绍（Daemon下的远程命令模式）
     * Light4j的启动过程介绍
   
-- [ ] [启动项目结构](./gp.help/project.md)
+***
+
+## [启动项目结构](./gp.help/project.md)
 
   * 应用依赖说明及模块命名规范
   * 应用环境说明
@@ -56,7 +60,9 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
   * 如何实现接口服务
   * 事件的捕捉和处理
 
-- [ ] [启动项目部署及发布](./gp.help/deploy.md)
+***
+
+## [启动项目部署及发布](./gp.help/deploy.md)
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
