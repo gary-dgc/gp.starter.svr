@@ -26,6 +26,7 @@ file:
 database:
   table.prefix: gp_
   query.max.rows: 2000
+  auto.gen.id: true
 
 # sync and convert authen setting
 authen:
