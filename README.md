@@ -1,4 +1,4 @@
-# Groupress框架演示项目
+# GROUPRESS框架演示项目
 
   * author：gary diao [(gary.diao@yahoo.com)](gary.diao@yahoo.com)
   * version：0.4.0
@@ -49,7 +49,7 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
     对框架内部的设计构成及实现机制进行详细说明  
 
-  * 框架基本结构（三方依赖说明）
+  * 框架基本结构（第三方依赖情况及使用说明）
     * 开发包整体结构及说明
     * 开发包依赖关系
     * 其他说明
