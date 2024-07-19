@@ -35,6 +35,12 @@
                     <mainClass>com.gp.dao.tool.DaoGenerator</mainClass>
                     <includePluginDependencies>true</includePluginDependencies>
                     <includeProjectDependencies>true</includeProjectDependencies>
+                    <systemProperties>
+                        <property>
+                            <key>myvar</key>
+                            <value>myValue</value>
+                        </property>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>
