@@ -46,25 +46,44 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 ***
 
 ## [GP框架介绍](./gp.help/framework.md)
+### [框架基本结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
 
-  * [框架基本结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
-    * [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
-    * 其他说明
-  * Bean声明及自动绑定设计及实现机制
-  * Bean数据复制的设计及实现机制
+* [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
+
+* [其他说明](./gp.help/framework/lib-other.md)
+
+### 特性详解
+
+  * [Bean声明及自动绑定设计及实现机制](./gp.help/framework/bean-bind.md)
+
+  * Bean数据读写机制的设计及实现机制
+
   * 数据事物的处理及实现机制
+
   * SQL代码的DSL开发风格设计及实现
+
   * DAO的设计及实现
+
     * BaseDAO介绍
+    
     * ExtendDAO介绍
+    
     * 服务代码生成工具介绍
+
   * Service数据服务的设计及实现
+    
     * 基础服务的设计实现
+    
     * LinkerService设计服务实现
+    
     * ActionService设计服务实现
+
   * API服务的设计及实现机制 
+
   * 接口服务校验的设计及实现
+
   * 异步事件的处理机制及设计实现
+
   * 应用启动器介绍
     * AppLauncher介绍（Daemon下的远程命令模式）
     * Light4j的启动过程介绍
