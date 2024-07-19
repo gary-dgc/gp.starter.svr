@@ -2,7 +2,7 @@
 
   * author：gary diao [(gary.diao@yahoo.com)](gary.diao@yahoo.com)
   * version：0.4.0
-  * repository: [GP Central Repository](https://central.sonatype.com/search?q=groupress)
+  * repository: [GP on Central Repository](https://central.sonatype.com/search?q=groupress)
 
 ![](./gp.help/frame-commits.png)
 *2017-2024*
@@ -45,11 +45,9 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
 ***
 
-## [Groupress框架介绍](./gp.help/framework.md)
+## [GP框架介绍](./gp.help/framework.md)
 
-    对框架内部的设计构成及实现机制进行详细说明  
-
-  * 框架基本结构（第三方依赖情况及使用说明）
+  * [框架基本结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
     * 开发包整体结构及说明
     * 开发包依赖关系
     * 其他说明

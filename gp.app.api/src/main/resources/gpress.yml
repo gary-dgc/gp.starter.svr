@@ -5,6 +5,7 @@ system:
   instance: 1
   audit.enable: true             # audit enable
   jgrp.prefix: api               # jgroup prefix
+  bind.strategy: KEY
   authen.type: 
     - MOBILE
     - EMAIL

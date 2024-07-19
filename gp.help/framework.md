@@ -1,6 +1,8 @@
 # Groupress Framework 
 
-* author: gary.diao@yahoo.com
-* modify: 2024
-* version: 0.4.0
+之前提到过GP框架目的在于构建系统产品的使用场景，而不是针对常见的管理后台型应用，因为这类应用通过常见的框架即可实现。
+而GP框架更多是关注于如何灵活清晰地构建复杂的逻辑功能，比如财务系统的月结，库存的收，发货等长流程的业务。因此框架尽量在纵向层级
+保持清晰，总体上框架由应用（Application）-接口（Interface）-服务（Service）三部分构成。
+
+
 

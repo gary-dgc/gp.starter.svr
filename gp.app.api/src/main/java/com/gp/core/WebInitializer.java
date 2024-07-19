@@ -78,11 +78,8 @@ public class WebInitializer extends CoreInitializer{
 		// Set bean priority calculator
 		BindScanner.instance().setPrioritySetter(Services::calcPriority);
 
-		// Forward bean get invocation to SingletonServiceFactory
-		BindScanner.instance().setBeanGetter(SingletonServiceFactory::getBean);
-
 		// Save bean into SingletonServiceFactory
-		BindScanner.instance().setBeanSetter((Class<?> clazz, Object bean) -> {
+		BindScanner.instance().setBeanMonitor((Class<?> clazz, Object bean) -> {
 			SingletonServiceFactory.setBean(clazz.getCanonicalName(), bean);
 		});
 		
@@ -116,8 +113,7 @@ public class WebInitializer extends CoreInitializer{
 			context.register(k, ds);
         });
         context.setDataSource("primary");
-        
-        SingletonServiceFactory.setBean(context.getClass().getName(), context);
+
     }
 
 }
