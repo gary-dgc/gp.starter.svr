@@ -48,8 +48,7 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 ## [GP框架介绍](./gp.help/framework.md)
 
   * [框架基本结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
-    * 开发包整体结构及说明
-    * 开发包依赖关系
+    * [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
     * 其他说明
   * Bean声明及自动绑定设计及实现机制
   * Bean数据复制的设计及实现机制
