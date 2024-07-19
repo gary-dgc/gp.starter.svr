@@ -84,7 +84,7 @@ public class WebInitializer extends CoreInitializer{
 		});
 		
 		// scan dao and service
-		BindScanner.instance().scanPackages("com.gp.dao", "com.gp.svc");
+		BindScanner.instance().scanPackages("com.gp.dao");
 
 	}
 	
