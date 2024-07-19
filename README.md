@@ -1,5 +1,12 @@
 # GROUPRESS框架演示项目
 
+      _____ _____  _____  ______  _____ _____
+    / ____|  __ \|  __ \|  ____|/ ____/ ____|
+    | |  __| |__) | |__) | |__  | (___| (___
+    | | |_ |  ___/|  _  /|  __|  \___ \\___ \
+    | |__| | |    | | \ \| |____ ____) |___) |
+    \_____|_|    |_|  \_\______|_____/_____/
+
   * author：gary diao [(gary.diao@yahoo.com)](gary.diao@yahoo.com)
   * version：0.4.0
   * repository: [GP on Central Repository](https://central.sonatype.com/search?q=groupress)
