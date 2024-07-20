@@ -57,11 +57,11 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
 ### GP框架基本情况
 
-* [框架结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
+  * [框架结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
 
-* [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
+  * [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
 
-* [其他说明](./gp.help/framework/lib-other.md)
+  * [其他说明](./gp.help/framework/lib-other.md)
 
 ### 特性详解
 
