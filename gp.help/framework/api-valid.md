@@ -106,3 +106,8 @@ public InfoId sendSMS(ServiceContext context, String userId) throws ServiceExcep
     return cnt == 0? null : info.getInfoId();
 }
 ```
+
+上述代码需要留意，在实际开发中有的开发者喜欢将检查代码声明为方法直接放在API的代码中进行检查。
+尽管效果没有差异，但在GP框架下不推荐此种做法，因为既然检查是为业务而设，没有必要将它进行复用目的单独定义。
+当然如果存在多个服务方法都需要执行用户存在检查那么可以直接在ExtendDAO中进行设计实现，那样就属于
+另外一个场景的问题了。
