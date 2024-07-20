@@ -1,10 +1,19 @@
-# Groupress框架演示项目
+# GROUPRESS框架演示项目
+
+      _____ _____  _____  ______  _____ _____
+     / ____|  __ \|  __ \|  ____|/ ____/ ____|
+    | |  __| |__) | |__) | |__  | (___| (___
+    | | |_ |  ___/|  _  /|  __|  \___ \\___ \
+    | |__| | |    | | \ \| |____ ____) |___) |
+     \_____|_|    |_|  \_\______|_____/_____/
 
   * author：gary diao [(gary.diao@yahoo.com)](gary.diao@yahoo.com)
   * version：0.4.0
-  * repository: [GP Central Repository](https://central.sonatype.com/search?q=groupress)
+  * repository: [GP on Central Repository](https://central.sonatype.com/search?q=groupress)
 
 ![](./gp.help/frame-commits.png)
+
+*2017-2024*
 
 ## 简介
 
@@ -38,38 +47,41 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
 * 透明化代码构成
 
-    任何框架随着升级必然会变的更加复杂，一方面增加了学习难度，另一方面复杂度的增加也意味着可靠性风险增加。面对复杂的程序和繁杂的封装，
+    任何框架随着升级不可避免会变的更加复杂，一方面增加了学习难度，另一方面复杂度的增加也意味着可靠性风险增加。面对复杂的程序和繁杂的封装，
     开发人员往往难以对应用有自下而上的全面了解和掌控，因此在设计框架中从纵向的分级构建和横向模块管理两方面尽量进行最简化设计，目的
     在于为开发人员提供一键JumpIn的开发体验，实现框架代码对开发者完全透明。
 
 ***
 
-## [Groupress框架介绍](./gp.help/framework.md)
+## [GP框架介绍](./gp.help/framework.md)
+### [框架基本结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
 
-    对框架内部的设计构成及实现机制进行详细说明  
+* [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
 
-  * 框架基本结构（三方依赖说明）
-    * 开发包整体结构及说明
-    * 开发包依赖关系
-    * 其他说明
-  * Bean声明及自动绑定设计及实现机制
-  * Bean数据复制的设计及实现机制
-  * 数据事物的处理及实现机制
-  * SQL代码的DSL开发风格设计及实现
-  * DAO的设计及实现
-    * BaseDAO介绍
-    * ExtendDAO介绍
-    * 服务代码生成工具介绍
-  * Service数据服务的设计及实现
-    * 基础服务的设计实现
-    * LinkerService设计服务实现
-    * ActionService设计服务实现
-  * API服务的设计及实现机制 
-  * 接口服务校验的设计及实现
-  * 异步事件的处理机制及设计实现
-  * 应用启动器介绍
-    * AppLauncher介绍（Daemon下的远程命令模式）
-    * Light4j的启动过程介绍
+* [其他说明](./gp.help/framework/lib-other.md)
+
+### 特性详解
+
+  * [Bean声明及自动绑定设计及实现机制](./gp.help/framework/bean-bind.md)
+
+  * [Bean数据读写机制的设计及实现机制](./gp.help/framework/bean-rw.md)
+
+  * [数据库事物的处理及实现机制](./gp.help/framework/db-trans.md)
+
+  * [SQL代码的DSL开发风格设计及实现](./gp.help/framework/sql-dsl.md)
+
+  * [DAO的设计及实现](./gp.help/framework/dao-intro.md)
+
+  * [Service数据服务的设计及实现](./gp.help/framework/service-intro.md)
+
+  * [API服务的设计及实现机制](./gp.help/framework/api-intro.md) 
+
+  * [接口服务校验的设计及实现](./gp.help/framework/api-valid.md)
+
+  * [异步事件的处理机制及设计实现](./gp.help/framework/eventbus-intro.md)
+
+  * [应用启动器介绍](./gp.help/framework/app-intro.md)
+
   
 ***
 

@@ -8,6 +8,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.gp.bind.BindScanner;
+import com.gp.bind.IBeanBinder;
 import com.gp.common.*;
 import com.gp.common.GroupUsers.AuthenType;
 import com.gp.dao.info.*;
@@ -46,7 +47,7 @@ import java.util.function.Function;
  * @author gdiao
  * @date 2017-10-12
  **/
-public class CoreDelegate implements CoreAdapter{
+public class CoreDelegate implements CoreAdapter, IBeanBinder {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(CoreDelegate.class);
 	
@@ -70,11 +71,11 @@ public class CoreDelegate implements CoreAdapter{
 		if(LOGGER.isDebugEnabled()) {
 			LOGGER.debug("The core delegate autowired and ready ...");
 		}
-		auditService = BindScanner.instance().getBean(AuditService.class);
-		authorizeService = BindScanner.instance().getBean(AuthorizeService.class);
-		dictService = BindScanner.instance().getBean(DictionaryService.class);
-		systemService = BindScanner.instance().getBean(SystemService.class);
-		securityService = BindScanner.instance().getBean(SecurityService.class);
+		auditService = getBean(AuditService.class);
+		authorizeService = getBean(AuthorizeService.class);
+		dictService = getBean(DictionaryService.class);
+		systemService = getBean(SystemService.class);
+		securityService = getBean(SecurityService.class);
 		
 		initial();
 		AuthenTypes.add(AuthenType.INTERIM);
