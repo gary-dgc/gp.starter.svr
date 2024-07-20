@@ -70,7 +70,7 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
   * [SQL代码的DSL开发风格设计及实现](./gp.help/framework/sql-dsl.md)
 
-  * DAO的设计及实现
+  * [DAO的设计及实现](./gp.help/framework/dao-intro.md)
 
     * BaseDAO介绍
     
