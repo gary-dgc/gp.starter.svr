@@ -84,7 +84,6 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
   * [异步事件的处理机制及设计实现](./gp.help/framework/eventbus-intro.md)
 
   * [应用启动器介绍](./gp.help/framework/app-intro.md)
-
   
 ***
 
