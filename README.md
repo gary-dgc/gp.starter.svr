@@ -74,15 +74,14 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
   * [Service数据服务的设计及实现](./gp.help/framework/service-intro.md)
 
-  * API服务的设计及实现机制 
+  * [API服务的设计及实现机制](./gp.help/framework/api-intro.md) 
 
-  * 接口服务校验的设计及实现
+  * [接口服务校验的设计及实现](./gp.help/framework/api-valid.md)
 
-  * 异步事件的处理机制及设计实现
+  * [异步事件的处理机制及设计实现](./gp.help/framework/eventbus-intro.md)
 
-  * 应用启动器介绍
-    * AppLauncher介绍（Daemon下的远程命令模式）
-    * Light4j的启动过程介绍
+  * [应用启动器介绍](./gp.help/framework/app-intro.md)
+
   
 ***
 
