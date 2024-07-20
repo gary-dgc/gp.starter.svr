@@ -53,12 +53,15 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
 ***
 
-## [GP框架介绍](./gp.help/framework.md)
-### [框架基本结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
+## GP框架介绍
 
-* [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
+### GP框架基本情况
 
-* [其他说明](./gp.help/framework/lib-other.md)
+  * [框架结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
+
+  * [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
+
+  * [其他说明](./gp.help/framework/lib-other.md)
 
 ### 特性详解
 
@@ -81,7 +84,6 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
   * [异步事件的处理机制及设计实现](./gp.help/framework/eventbus-intro.md)
 
   * [应用启动器介绍](./gp.help/framework/app-intro.md)
-
   
 ***
 
