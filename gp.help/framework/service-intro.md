@@ -239,3 +239,82 @@ OptionResult result = action.perform(param);
 ```
 
 ## LinkerService设计服务实现
+
+熟悉ERP开发的人一定对数据库的Trigger功能爱恨交加，一方面可以对特定事件进行捕捉处理，便于集成通用处理逻辑，但是因为执行环境的特殊性，使它
+又有难以控制的一面。如果深入思考以下就会明白，trigger重要的意义在于对特定业务事件的捕捉，进行采用相应的应对逻辑，这种设计模式，对于事件关
+联的业务代码进行集中维护很有帮助，比如跟踪订单状态的变化自动发出业务协同消息等。
+
+GP框架为了实现类似数据库的trgger功能，设计了LinkerService，通过LinkerService，开发者可以实现类似trgger的功能，它也是基于ServiceSupport基础
+上进行的扩展继承。
+
+``` 
+// LinderService声明示例
+@BindComponent
+public class DemoLinker extends LinkerSupport<OptionResult, DemoLink> implements BaseService, IBeanBinder {
+
+   ....
+    public DemoLinker(){
+        register();
+    }
+
+    @Override
+    protected OptionResult before() throws ServiceException {
+
+        TrsfLink param = getParameter();
+        ContextVars vars = resetVars(ContextVars::new);
+
+        if(IdKeys.isValidId(param.getLineId())){
+            vars.line = lineDAO.row(pair("line_id", param.getLineId()));
+        }
+
+        return null;
+    }
+
+    @Override
+    protected OptionResult after(boolean before) throws ServiceException {
+
+        DemoLink param = getParameter();
+        ContextVars vars = getVars();
+
+        if(IdKeys.isValidId(param.getDemoId())) {
+            DemoInfo demo = demoDAO.row(pair("demo_id", param.getDemoId()));
+            if (vars.line == null && before && demo != null){
+
+                insertTransfer(demo);
+            }else if(vars.line != null && before && demo != null){
+
+                updateTransfer(param.getDemoId());
+            }else if(vars.line != null && before && demo == null){
+
+                deleteTransfer(vars.line);
+            }
+        }
+
+        return null;
+    }
+   ....
+}
+
+// Linker Service的使用
+
+UpdateBuilder udpate = demoDAO.updateSql();
+update.set("c1", "v1");
+update.where("demo_id = ?");
+
+DemoLinker linker = ActionManager.getLinkerService(DemoLinker.class);
+DemoLink link = new DemoLink();
+
+// 执行更新及linker的触发绑定
+linker.perform(link, linkCtx ->{
+   update(update.build(), 1234L);
+});
+
+```
+
+## 总结
+
+在服务层的设计中，GP框架提供基本服务对象，ActionService对象和LinkerService对象。在实际工作中建议按如下的方式使用上述的的设计模式：
+1. ActionService和LinkerService仅用于对相对固化和复用代码的封装，不建议在二者上面进行事务控制。
+2. 事务控制通过基本服务对象配合TranService+@JdbiTran实现。
+3. 如果需要实现跨服务方法的线程安全，那么参考ActionService的设计模式。
+
