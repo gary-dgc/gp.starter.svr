@@ -33,7 +33,7 @@ public void handleEndpointSave(HttpServerExchange exchange) throws BaseException
     this.sendResult(exchange, result);
 }
 ```
-* Api服务中可以通过ParamInspector实现参数格式检查
+* Api服务中可以通过ParamInspector实现参数格式检查，该对象可以在检查参数的同时支持参数读取操作
 
 ```
 @WebApi(path="endpoint-save")
@@ -63,4 +63,46 @@ API格式检查支持如下检查项：
 
 ## 服务层的参数校验检查
 
+服务层的方法调用过程中有时需要对参数进行逻辑检查，比如又一个用户邮件通知短信API，
+提交的参数有用户id，但在服务层发短信过程中发现手机号码为空，此时的检查即是服务层校验检查。
 
+```
+// API服务声明代码
+@WebApi(path="send-sms")
+public void handleSendSms(HttpServerExchange exchange) throws BaseException {
+    ActionResult result = null;
+    Map<String, Object> params = this.getRequestBody(exchange);
+    // 参数检查
+    ParamInspector inspector = ParamInspector.wrap(params);
+    inspector.validate(valid->{
+       valid.require("user_id");
+    );
+    
+    ServiceContext context = this.getServiceContext(exchange);
+    String userId = inspector.getString("user_id");
+    service.sendSMS(context, userId);
+    ......
+    result = ActionResult.success(getMessage(exchange, "mesg.save.endpoint"));
+
+    this.sendResult(exchange, result);
+}
+
+// 对应服务层代码
+@JdbiTran
+public InfoId sendSMS(ServiceContext context, String userId) throws ServiceException {
+
+    UserInfo user = userDAO.row(pair("user_id", userId));
+    if(null == user){
+        // 用户不存在校验异常
+        abort("excp.unexist", "User");
+    }
+    if (Strings.isNullOrEmpty(user.getMobilePhone())) {
+        // 手机号不存在校验异常
+        abort("excp.miss.param", "Mobile Phone");
+    }
+    
+    ... send sms 
+
+    return cnt == 0? null : info.getInfoId();
+}
+```
