@@ -35,7 +35,7 @@ public class UserGrantDAO extends DAOSupport implements BaseDAO<UserGrantInfo> {
 
 	public static final RowParser<UserGrantInfo> INFO_PARSER = (rp, ctx) -> {
 		UserGrantInfo info = new UserGrantInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.USER_GRANT);
+		InfoId id = rp.getInfoId(AppIdKey.USER_GRANT);
 		info.setInfoId(id);
 
 		info.setUserId(rp.getLong("user_id"));
@@ -51,7 +51,7 @@ public class UserGrantDAO extends DAOSupport implements BaseDAO<UserGrantInfo> {
 
 	public static final RowMapper<UserGrantInfo> INFO_MAPPER = (rs, ctx) -> {
 		UserGrantInfo info = new UserGrantInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.USER_GRANT, rs.getLong("rel_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.USER_GRANT, rs.getLong("rel_id"));
 		info.setInfoId(id);
 
 		info.setUserId(rs.getLong("user_id"));
@@ -69,7 +69,7 @@ public class UserGrantDAO extends DAOSupport implements BaseDAO<UserGrantInfo> {
 	 * Default constructor
 	 **/
 	public UserGrantDAO (){
-		this.daoIdKey = MasterIdKey.USER_GRANT;
+		this.daoIdKey = AppIdKey.USER_GRANT;
 	}
 
 	/**

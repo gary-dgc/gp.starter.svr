@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
-import com.gp.common.MasterIdKey;
+import com.gp.common.AppIdKey;
 import com.gp.common.IdKeys;
 import com.gp.common.InfoId;
 import com.gp.common.ServiceContext;
@@ -44,9 +44,9 @@ public class DutyAcsService extends ServiceSupport implements TranService {
         builder.column("d.data_name");
 
         builder.from( from -> {
-           from.table(MasterIdKey.DUTY_ACS.schema("a"));
-           from.leftJoin(MasterIdKey.SYS_SUB.schema("s"), "s.sys_id = a.sys_id");
-           from.leftJoin(MasterIdKey.DATA_MODEL.schema("d"), "d.data_id = a.data_id");
+           from.table(AppIdKey.DUTY_ACS.schema("a"));
+           from.leftJoin(AppIdKey.SYS_SUB.schema("s"), "s.sys_id = a.sys_id");
+           from.leftJoin(AppIdKey.DATA_MODEL.schema("d"), "d.data_id = a.data_id");
         });
 
         Map<String, Object> params = Maps.newHashMap();
@@ -83,9 +83,9 @@ public class DutyAcsService extends ServiceSupport implements TranService {
         builder.column("d.data_name");
 
         builder.from( from -> {
-            from.table(MasterIdKey.DUTY_ACS.schema("a"));
-            from.leftJoin(MasterIdKey.SYS_SUB.schema("s"), "s.sys_id = a.sys_id");
-            from.leftJoin(MasterIdKey.DATA_MODEL.schema("d"), "d.data_id = a.data_id");
+            from.table(AppIdKey.DUTY_ACS.schema("a"));
+            from.leftJoin(AppIdKey.SYS_SUB.schema("s"), "s.sys_id = a.sys_id");
+            from.leftJoin(AppIdKey.DATA_MODEL.schema("d"), "d.data_id = a.data_id");
         });
 
         Map<String, Object> params = Maps.newHashMap();
@@ -105,7 +105,7 @@ public class DutyAcsService extends ServiceSupport implements TranService {
     @JdbiTran
     public InfoId addDutyAcs(ServiceContext svcctx, DutyAcsInfo acs) throws ServiceException {
 
-        SelectBuilder countSql = SqlBuilder.select(MasterIdKey.SYS_SUB.schema());
+        SelectBuilder countSql = SqlBuilder.select(AppIdKey.SYS_SUB.schema());
         countSql.column("count(sys_id)");
         countSql.where("sys_id = ?");
 
@@ -114,7 +114,7 @@ public class DutyAcsService extends ServiceSupport implements TranService {
             throw new ServiceException("system not exists");
         }
 
-        countSql = SqlBuilder.select(MasterIdKey.DATA_MODEL.schema());
+        countSql = SqlBuilder.select(AppIdKey.DATA_MODEL.schema());
         countSql.column("count(data_id)");
         countSql.where("data_id = ?").and("sys_id = ?");
 
@@ -140,7 +140,7 @@ public class DutyAcsService extends ServiceSupport implements TranService {
     @JdbiTran
     public int saveDutyAcs(ServiceContext svcctx, DutyAcsInfo acs) throws ServiceException{
 
-        SelectBuilder countSql = SqlBuilder.select(MasterIdKey.SYS_SUB.schema());
+        SelectBuilder countSql = SqlBuilder.select(AppIdKey.SYS_SUB.schema());
         countSql.column("count(sys_id)");
         countSql.where("sys_id = ?");
 
@@ -149,7 +149,7 @@ public class DutyAcsService extends ServiceSupport implements TranService {
             throw new ServiceException("system not exists");
         }
 
-        countSql = SqlBuilder.select(MasterIdKey.DATA_MODEL.schema());
+        countSql = SqlBuilder.select(AppIdKey.DATA_MODEL.schema());
         countSql.column("count(data_id)");
         countSql.where("data_id = ?").and("sys_id = ?");
 

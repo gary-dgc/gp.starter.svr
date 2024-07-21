@@ -9,17 +9,30 @@
 package com.gp.svc.dev;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.gp.action.DemoAction;
+import com.gp.action.DemoLinker;
+import com.gp.action.param.DemoLink;
+import com.gp.action.param.DemoParam;
 import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
+import com.gp.common.InfoId;
+import com.gp.common.ServiceContext;
 import com.gp.common.SymmetricToken;
 import com.gp.dao.UserDAO;
 import com.gp.dao.ext.Sync1Ext;
 import com.gp.dao.info.SysOptionInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.db.JdbiTran;
+import com.gp.exception.ServiceException;
+import com.gp.exec.OptionArg;
+import com.gp.exec.OptionResult;
+import com.gp.sql.SqlBuilder;
+import com.gp.sql.update.UpdateBuilder;
 import com.gp.svc.BaseService;
 import com.gp.svc.ServiceSupport;
 import com.gp.svc.SystemService;
+import com.gp.util.BaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,4 +76,59 @@ public class DebugService extends ServiceSupport implements BaseService {
 
 	}
 
+	@JdbiTran
+	public int advanceDemoMethod(InfoId key) throws ServiceException {
+
+		UpdateBuilder update = SqlBuilder.update();
+		update.set("a", "?");
+		update.where("id = ?");
+
+		List<Object> params = Lists.newArrayList();
+
+		BaseUtils.reset(params, "a", 1234L);
+
+		// 在服务中嵌入Linker处理
+		DemoLink link = new DemoLink();
+		link.setVar1("a");
+
+		DemoLinker linker = getLinkerService(DemoLinker.class);
+
+		OptionResult result = linker.perform(link, linkCtx -> {
+			update(update.build(), params);
+		});
+
+		// 在服务中嵌入Action处理
+		DemoParam param = new DemoParam();
+		// 设定可变参数
+		param.setVar1("1");
+		param.addArg(OptionArg.newArg("varg1", 111));
+
+		DemoAction action = getActionService(DemoAction.class);
+
+		result = action.perform(param);
+
+		// 获取返回结果
+		OptionArg<Integer> rtv = result.getArg("cnt");
+
+		return rtv.getValue();
+	}
+
+	@JdbiTran
+	public String demoMeth(ServiceContext context, String username, String password) throws ServiceException {
+
+		List<UserInfo> list =  userdao.query(cond -> {
+			cond.and("username = '" + username +"'");
+		});
+		UserInfo uinfo = Iterables.getFirst(list, null);
+
+		if (null == uinfo) {
+			abort("excp.unexist", "用户信息");
+		}
+
+		// 在开发调试的情况，以下代码抛出异常，导致事务回滚，方便开发调试
+		assertDebug(context);
+
+		return null;
+
+	}
 }

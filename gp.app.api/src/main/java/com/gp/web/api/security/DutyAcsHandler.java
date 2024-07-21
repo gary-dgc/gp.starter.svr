@@ -49,7 +49,7 @@ public class DutyAcsHandler extends BaseApiSupport {
         ServiceContext svcctx = this.getServiceContext(exchange, Operations.ORG_NEW);
 
         DutyAcsInfo acs = new DutyAcsInfo();
-        acs.setInfoId(IdKeys.newInfoId(MasterIdKey.DUTY_ACS));
+        acs.setInfoId(IdKeys.newInfoId(AppIdKey.DUTY_ACS));
         acs.setDutyId(Filters.filterLong(params, "duty_id"));
         acs.setSysId(Filters.filterLong(params, "sys_id"));
         acs.setDataId(Filters.filterLong(params, "data_id"));
@@ -89,7 +89,7 @@ public class DutyAcsHandler extends BaseApiSupport {
 
         ServiceContext svcctx = this.getServiceContext(exchange, Operations.ORG_NEW);
 
-        InfoId acsKey = Filters.filterInfoId(params, "access_id", MasterIdKey.DUTY_ACS);
+        InfoId acsKey = Filters.filterInfoId(params, "access_id", AppIdKey.DUTY_ACS);
         DutyAcsInfo acs = new DutyAcsInfo();
         acs.setInfoId(acsKey);
         acs.setDutyId(Filters.filterLong(params, "duty_id"));
@@ -129,7 +129,7 @@ public class DutyAcsHandler extends BaseApiSupport {
                 .require("access_id")
                 .validate(true);
 
-        InfoId id = Filters.filterInfoId(params, "access_id", MasterIdKey.DUTY_ACS);
+        InfoId id = Filters.filterInfoId(params, "access_id", AppIdKey.DUTY_ACS);
 
         svcctx.setOperationObject(id);
         if(dutyAcsService.removeDutyAcs(id) == 0){
@@ -151,9 +151,9 @@ public class DutyAcsHandler extends BaseApiSupport {
                 .require("duty_id")
                 .validate(true);
 
-        InfoId dutyKey = Filters.filterInfoId(params, "duty_id", MasterIdKey.DUTY_HIER);
-        InfoId sysKey = Filters.filterInfoId(params, "sys_id", MasterIdKey.SYS_SUB);
-        InfoId dataKey = Filters.filterInfoId(params, "data_id", MasterIdKey.DATA_MODEL);
+        InfoId dutyKey = Filters.filterInfoId(params, "duty_id", AppIdKey.DUTY_HIER);
+        InfoId sysKey = Filters.filterInfoId(params, "sys_id", AppIdKey.SYS_SUB);
+        InfoId dataKey = Filters.filterInfoId(params, "data_id", AppIdKey.DATA_MODEL);
 
         svcctx.addOperationPredicates(params);
 
@@ -191,7 +191,7 @@ public class DutyAcsHandler extends BaseApiSupport {
                 .require("access_id")
                 .validate(true);
 
-        InfoId acsKey = Filters.filterInfoId(params, "access_id", MasterIdKey.DUTY_ACS);
+        InfoId acsKey = Filters.filterInfoId(params, "access_id", AppIdKey.DUTY_ACS);
 
         svcctx.addOperationPredicates(params);
 

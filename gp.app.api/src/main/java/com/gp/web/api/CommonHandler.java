@@ -94,14 +94,14 @@ public class CommonHandler extends BaseApiSupport {
 		Map<String, Object> paramMap = this.getRequestBody(exchange);
 		
 		String uname = Filters.filterString( paramMap, "keyword");
-		Long sourceId = Filters.filterLong(paramMap, "source_id");
+
 		Boolean boundOnly = Filters.filterBoolean(paramMap, "bound_only");
 		
 		ActionResult result = new ActionResult();
 		List<Object> list = null;
 
 		// query accounts information
-		List<UserInfo> cresult = userService.getUsers( uname, sourceId, null, null, boundOnly, null);
+		List<UserInfo> cresult = userService.getUsers( uname, null, null, boundOnly, null);
 		list = cresult.stream().map((info) -> {
 			
 			DataBuilder builder = new DataBuilder();
@@ -148,7 +148,7 @@ public class CommonHandler extends BaseApiSupport {
 			return;
 		}
 		
-		InfoId oid = IdKeys.getInfoId(MasterIdKey.ORG_HIER,orgId);
+		InfoId oid = IdKeys.getInfoId(AppIdKey.ORG_HIER,orgId);
 		
 		List<OrgHierInfo> gresult = orghierService.getOrgHierAllNodes( oid);
 		  
@@ -184,7 +184,7 @@ public class CommonHandler extends BaseApiSupport {
 
 		ActionResult result = new ActionResult();
 		
-		InfoId pid = orgPid == null ? null: IdKeys.getInfoId(MasterIdKey.ORG_HIER, NumberUtils.toLong(orgPid));
+		InfoId pid = orgPid == null ? null: IdKeys.getInfoId(AppIdKey.ORG_HIER, NumberUtils.toLong(orgPid));
 		
 		List<OrgHierInfo> olist = orghierService.getOrgHierNodes( orgName, pid);
 		

@@ -1,11 +1,9 @@
 package com.gp.web.api.security;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.gp.bind.BindScanner;
 import com.gp.common.*;
 import com.gp.dao.info.DataModelInfo;
-import com.gp.dao.info.DutyAcsInfo;
 import com.gp.exception.BaseException;
 import com.gp.info.DataBuilder;
 import com.gp.info.FilterMode;
@@ -23,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DataModelHandler extends BaseApiSupport {
@@ -51,7 +48,7 @@ public class DataModelHandler extends BaseApiSupport {
         ServiceContext svcctx = this.getServiceContext(exchange, Operations.ORG_NEW);
 
         DataModelInfo model = new DataModelInfo();
-        model.setInfoId(IdKeys.newInfoId(MasterIdKey.DATA_MODEL));
+        model.setInfoId(IdKeys.newInfoId(AppIdKey.DATA_MODEL));
         model.setDataName(Filters.filterString(params, "data_name"));
         model.setDescription(Filters.filterString(params, "description"));
         model.setSysId(Filters.filterLong(params, "sys_id"));
@@ -81,7 +78,7 @@ public class DataModelHandler extends BaseApiSupport {
 
         ServiceContext svcctx = this.getServiceContext(exchange, Operations.ORG_NEW);
 
-        InfoId dataKey = Filters.filterInfoId(params, "data_id", MasterIdKey.DATA_MODEL);
+        InfoId dataKey = Filters.filterInfoId(params, "data_id", AppIdKey.DATA_MODEL);
         DataModelInfo model = new DataModelInfo();
         model.setInfoId(dataKey);
         model.setDataName(Filters.filterString(params, "data_name"));
@@ -116,7 +113,7 @@ public class DataModelHandler extends BaseApiSupport {
                 .require("data_id")
                 .validate(true);
 
-        InfoId id = Filters.filterInfoId(params, "data_id", MasterIdKey.DATA_MODEL);
+        InfoId id = Filters.filterInfoId(params, "data_id", AppIdKey.DATA_MODEL);
 
         svcctx.setOperationObject(id);
         if(dataModelService.removeDataModel(id) == 0){
@@ -172,7 +169,7 @@ public class DataModelHandler extends BaseApiSupport {
                 .require("data_id")
                 .validate(true);
 
-        InfoId dataKey = Filters.filterInfoId(params, "data_id", MasterIdKey.DATA_MODEL);
+        InfoId dataKey = Filters.filterInfoId(params, "data_id", AppIdKey.DATA_MODEL);
 
         svcctx.addOperationPredicates(params);
 

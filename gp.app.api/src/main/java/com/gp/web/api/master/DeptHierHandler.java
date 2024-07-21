@@ -98,7 +98,7 @@ public class DeptHierHandler extends BaseApiSupport {
 			.validate(true);
 		
 		long nodeid = Filters.filterLong(params, "dept_id");
-		InfoId nodeId = IdKeys.getInfoId(MasterIdKey.DEPT_HIER, nodeid);
+		InfoId nodeId = IdKeys.getInfoId(AppIdKey.DEPT_HIER, nodeid);
 			
 		svcctx.setOperationObject(nodeId);
 		
@@ -128,7 +128,7 @@ public class DeptHierHandler extends BaseApiSupport {
 			.require("dept_id")
 			.validate(true);
 		
-		InfoId id = Filters.filterInfoId(params, "dept_id", MasterIdKey.DEPT_HIER);
+		InfoId id = Filters.filterInfoId(params, "dept_id", AppIdKey.DEPT_HIER);
 		
 		svcctx.setOperationObject(id);
 		depthiderSvc.removeDeptHierNode( id );
@@ -155,7 +155,7 @@ public class DeptHierHandler extends BaseApiSupport {
 			String orgIdStr = (String)params.get("dept_id");
 			
 			Long nid = Long.valueOf(orgIdStr);
-			InfoId nodeId = IdKeys.getInfoId(MasterIdKey.ORG_HIER, nid);
+			InfoId nodeId = IdKeys.getInfoId(AppIdKey.ORG_HIER, nid);
 			
 			List<Long> mbrs = Lists.newArrayList();
 			
@@ -188,7 +188,7 @@ public class DeptHierHandler extends BaseApiSupport {
 			.require("dept_id", "member")
 			.validate(true);
 		
-		InfoId nodeId = IdKeys.getInfoId(MasterIdKey.DEPT_HIER, Filters.filterLong(paramap, "dept_id"));
+		InfoId nodeId = IdKeys.getInfoId(AppIdKey.DEPT_HIER, Filters.filterLong(paramap, "dept_id"));
 		Long mbrUid = Filters.filterLong(paramap, "member");
 		
 		svcctx.setOperationObject(nodeId);
@@ -215,7 +215,7 @@ public class DeptHierHandler extends BaseApiSupport {
 			.require("dept_id")
 			.validate(true);
 		
-		InfoId deptId = Filters.filterInfoId(paramap, "dept_id", MasterIdKey.DEPT_HIER);
+		InfoId deptId = Filters.filterInfoId(paramap, "dept_id", AppIdKey.DEPT_HIER);
 		String keyword = Filters.filterString(paramap, "keyword");
 		List<String> features = Filters.filterList(paramap, "features", String.class);
 		PageQuery pquery = Filters.filterPageQuery(paramap);
@@ -267,8 +267,8 @@ public class DeptHierHandler extends BaseApiSupport {
 		.requireOne("dept_pid", "org_id")
 		.validate(true);	
 
-		InfoId deptid = Filters.filterInfoId(paramap, "dept_pid", MasterIdKey.DEPT_HIER);
-		InfoId orgid = Filters.filterInfoId(paramap, "org_id", MasterIdKey.ORG_HIER);
+		InfoId deptid = Filters.filterInfoId(paramap, "dept_pid", AppIdKey.DEPT_HIER);
+		InfoId orgid = Filters.filterInfoId(paramap, "org_id", AppIdKey.ORG_HIER);
 		
 		if(!IdKeys.isValidId(deptid)) {
 			DeptHierInfo dept = depthiderSvc.getDeptHierRoot(orgid);
@@ -307,7 +307,7 @@ public class DeptHierHandler extends BaseApiSupport {
 			.require("dept_id")
 			.validate(true);
 
-		InfoId oid = Filters.filterInfoId(paramap, "dept_id", MasterIdKey.DEPT_HIER);
+		InfoId oid = Filters.filterInfoId(paramap, "dept_id", AppIdKey.DEPT_HIER);
 		svcctx.setOperationObject(oid);
 		DeptHierInfo orghier = depthiderSvc.getDeptHierNode( oid );
 		
@@ -336,7 +336,7 @@ public class DeptHierHandler extends BaseApiSupport {
 			.require("org_id")
 			.validate(true);
 
-		InfoId oid = Filters.filterInfoId(paramap, "org_id", MasterIdKey.ORG_HIER);
+		InfoId oid = Filters.filterInfoId(paramap, "org_id", AppIdKey.ORG_HIER);
 		svcctx.setOperationObject(oid);
 		DeptHierInfo orghier = depthiderSvc.getDeptHierRoot( oid );
 		

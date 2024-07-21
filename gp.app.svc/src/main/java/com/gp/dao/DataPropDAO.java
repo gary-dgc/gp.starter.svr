@@ -36,7 +36,7 @@ public class DataPropDAO extends DAOSupport implements BaseDAO<DataPropInfo> {
 
 	public static final RowParser<DataPropInfo> INFO_PARSER = (rp, ctx) -> {
 		DataPropInfo info = new DataPropInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.DATA_PROP);
+		InfoId id = rp.getInfoId(AppIdKey.DATA_PROP);
 		info.setInfoId(id);
 
 		info.setDataId(rp.getLong("data_id"));
@@ -56,7 +56,7 @@ public class DataPropDAO extends DAOSupport implements BaseDAO<DataPropInfo> {
 
 	public static final RowMapper<DataPropInfo> INFO_MAPPER = (rs, ctx) -> {
 		DataPropInfo info = new DataPropInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.DATA_PROP, rs.getLong("prop_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.DATA_PROP, rs.getLong("prop_id"));
 		info.setInfoId(id);
 
 		info.setDataId(rs.getLong("data_id"));
@@ -78,7 +78,7 @@ public class DataPropDAO extends DAOSupport implements BaseDAO<DataPropInfo> {
 	 * Default constructor
 	 **/
 	public DataPropDAO (){
-		this.daoIdKey = MasterIdKey.DATA_PROP;
+		this.daoIdKey = AppIdKey.DATA_PROP;
 	}
 
 	/**

@@ -144,12 +144,8 @@ public class SecurityService extends ServiceSupport implements BaseService {
 		SelectBuilder builder = SqlBuilder.select();
 		builder.column("usr.user_id", "usr.username", "usr.source_id", "usr.user_gid", "usr.classification");
 		builder.column("usr.language", "usr.timezone", "usr.category");
-		builder.column("src.node_gid");
 
-		builder.from((from) -> {
-			from.table("gp_user usr");
-			from.leftJoin("(select node_gid, source_id from gp_source) src", "usr.source_id = src.source_id");
-		});
+		builder.from(BaseIdKey.USER.schema("usr"));
 		builder.from("gp_user_login l");
 
 		builder.where("l.user_id = usr.user_id");
@@ -165,11 +161,7 @@ public class SecurityService extends ServiceSupport implements BaseService {
 			builder.and("usr.user_gid = ?");
 			params.add(userGid);
 		}
-		if(!Strings.isNullOrEmpty(nodeGid)) {
-			builder.and("src.node_gid = ?");
-			params.add(nodeGid);
-		}
-		
+
 		KVPair<String, Principal> pholder = KVPair.newPair("principal", null);
 		
 		if (LOGGER.isDebugEnabled()) {
@@ -208,8 +200,8 @@ public class SecurityService extends ServiceSupport implements BaseService {
 			SelectBuilder rlist = SqlBuilder.select();
 			rlist.column("r.role_abbr");
 			rlist.from(from -> {
-				from.table(MasterIdKey.ROLE.schema() + " r");
-				from.join(MasterIdKey.USER_ROLE.schema() + " ur", "ur.role_id = r.role_id");
+				from.table(AppIdKey.ROLE.schema() + " r");
+				from.join(AppIdKey.USER_ROLE.schema() + " ur", "ur.role_id = r.role_id");
 			});
 			rlist.where("ur.user_id = ?");
 
@@ -253,7 +245,7 @@ public class SecurityService extends ServiceSupport implements BaseService {
 		itk.initial(uinfo.getCryptoKey(), randomIV);
 		String hashpwd = itk.encrypt(password);
 
-		UpdateBuilder updbuilder = SqlBuilder.update(MasterIdKey.USER_LOGIN.schema());
+		UpdateBuilder updbuilder = SqlBuilder.update(AppIdKey.USER_LOGIN.schema());
 		updbuilder.column("credential");
 		updbuilder.where("user_id = ?");
 		updbuilder.and("authen_type = ?");
@@ -422,7 +414,7 @@ public class SecurityService extends ServiceSupport implements BaseService {
 			return false;
 		}
 
-		builder = SqlBuilder.select(MasterIdKey.ROLE_PERM.schema());
+		builder = SqlBuilder.select(AppIdKey.ROLE_PERM.schema());
 		builder.column("count(perm_id)");
 		builder.where("role_id in ( <role_ids> )");
 		builder.and("authorized = :authorized");
@@ -445,7 +437,7 @@ public class SecurityService extends ServiceSupport implements BaseService {
 	public InfoId checkLogin(String... logins) throws ServiceException{
 
 		if (null != logins && logins.length > 0) {
-			SelectBuilder builder = SqlBuilder.select(MasterIdKey.USER_LOGIN.schema());
+			SelectBuilder builder = SqlBuilder.select(AppIdKey.USER_LOGIN.schema());
 			builder.distinct();
 			builder.column("user_id");
 			builder.where("login in ('" + Joiner.on("','").join(logins) + "')");
@@ -492,7 +484,7 @@ public class SecurityService extends ServiceSupport implements BaseService {
 		String randomIV = opt.getOptValue();
 		
 		Map<String, Object> params = new HashMap<String, Object>();
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.USER_LOGIN.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.USER_LOGIN.schema());
 		builder.where("authen_type IN ( <authen_types> )");
 		params.put("authen_types", types);
 		
@@ -580,7 +572,7 @@ public class SecurityService extends ServiceSupport implements BaseService {
 	@JdbiTran
 	public String newInterimLogin(ServiceContext svcctx, InfoId userId, String device) {
 
-		DeleteBuilder delSql = SqlBuilder.delete(MasterIdKey.USER_LOGIN.schema());
+		DeleteBuilder delSql = SqlBuilder.delete(AppIdKey.USER_LOGIN.schema());
 		delSql.where("user_id = ?");
 		delSql.and("login = ?");
 		delSql.and("authen_type = 'INTERIM'");

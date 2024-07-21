@@ -35,7 +35,7 @@ public class DataModelDAO extends DAOSupport implements BaseDAO<DataModelInfo> {
 
 	public static final RowParser<DataModelInfo> INFO_PARSER = (rp, ctx) -> {
 		DataModelInfo info = new DataModelInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.DATA_MODEL);
+		InfoId id = rp.getInfoId(AppIdKey.DATA_MODEL);
 		info.setInfoId(id);
 
 		info.setSysId(rp.getLong("sys_id"));
@@ -50,7 +50,7 @@ public class DataModelDAO extends DAOSupport implements BaseDAO<DataModelInfo> {
 
 	public static final RowMapper<DataModelInfo> INFO_MAPPER = (rs, ctx) -> {
 		DataModelInfo info = new DataModelInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.DATA_MODEL, rs.getLong("data_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.DATA_MODEL, rs.getLong("data_id"));
 		info.setInfoId(id);
 
 		info.setSysId(rs.getLong("sys_id"));
@@ -67,7 +67,7 @@ public class DataModelDAO extends DAOSupport implements BaseDAO<DataModelInfo> {
 	 * Default constructor
 	 **/
 	public DataModelDAO(){
-		this.daoIdKey = MasterIdKey.DATA_MODEL;
+		this.daoIdKey = AppIdKey.DATA_MODEL;
 	}
 
 	/**

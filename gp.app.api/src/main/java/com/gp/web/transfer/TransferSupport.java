@@ -12,7 +12,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import com.google.protobuf.ServiceException;
+
 import com.gp.cab.CabBinManager;
 import com.gp.cab.CabBinMeta;
 import com.gp.common.IdKeys;
@@ -21,6 +21,7 @@ import com.gp.common.KVPair;
 import com.gp.common.MimeTypes;
 import com.gp.exception.BaseException;
 import com.gp.exception.CoreException;
+import com.gp.exception.ServiceException;
 import com.gp.info.BaseIdKey;
 import com.gp.oss.ContentRange;
 import com.gp.util.NumberUtils;

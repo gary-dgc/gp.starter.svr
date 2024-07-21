@@ -37,7 +37,7 @@ public class SyncTraceDAO extends DAOSupport implements BaseDAO<SyncTraceInfo> {
 
 	public static final RowParser<SyncTraceInfo> INFO_PARSER = (rp, ctx) -> {
 		SyncTraceInfo info = new SyncTraceInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.SYNC_TRACE);
+		InfoId id = rp.getInfoId(AppIdKey.SYNC_TRACE);
 		info.setInfoId(id);
 
 		info.setChronicalId(rp.getLong("chronical_id"));
@@ -60,7 +60,7 @@ public class SyncTraceDAO extends DAOSupport implements BaseDAO<SyncTraceInfo> {
 
 	public static final RowMapper<SyncTraceInfo> INFO_MAPPER = (rs, ctx) -> {
 		SyncTraceInfo info = new SyncTraceInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.SYNC_TRACE, rs.getLong("trace_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.SYNC_TRACE, rs.getLong("trace_id"));
 		info.setInfoId(id);
 
 		info.setChronicalId(rs.getLong("chronical_id"));
@@ -85,7 +85,7 @@ public class SyncTraceDAO extends DAOSupport implements BaseDAO<SyncTraceInfo> {
 	 * Default constructor
 	 **/
 	public SyncTraceDAO (){
-		this.daoIdKey = MasterIdKey.SYNC_TRACE;
+		this.daoIdKey = AppIdKey.SYNC_TRACE;
 	}
 
 	/**

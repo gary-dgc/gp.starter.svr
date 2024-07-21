@@ -72,7 +72,7 @@ public class OrgHierHandler extends BaseApiSupport {
 		OrgHierInfo orghier = new OrgHierInfo();
 		
 		orghier.setOrgPid(parentId);
-		orghier.setInfoId(IdKeys.newInfoId(MasterIdKey.ORG_HIER));
+		orghier.setInfoId(IdKeys.newInfoId(AppIdKey.ORG_HIER));
 		
 		orghier.setDescription(Filters.filterString(params, "description"));
 		orghier.setEmail(Filters.filterString(params, "email"));
@@ -111,7 +111,7 @@ public class OrgHierHandler extends BaseApiSupport {
 		ArgsValidator.newValidator(params)
 			.require("org_id", "org_name")
 			.validate(true);
-		InfoId nodeId = Filters.filterInfoId(params, "org_id", MasterIdKey.ORG_HIER);
+		InfoId nodeId = Filters.filterInfoId(params, "org_id", AppIdKey.ORG_HIER);
 			
 		svcctx.setOperationObject(nodeId);
 		OrgHierInfo orghier =  orghiderSvc.getOrgHierNode( nodeId );
@@ -149,7 +149,7 @@ public class OrgHierHandler extends BaseApiSupport {
 		
 		Map<String, Object> params = this.getRequestBody(exchange);
 		
-		InfoId id = Filters.filterInfoId(params, "org_id", MasterIdKey.ORG_HIER);
+		InfoId id = Filters.filterInfoId(params, "org_id", AppIdKey.ORG_HIER);
 		
 		svcctx.setOperationObject(id);
 		orghiderSvc.removeOrgHierNode( id );
@@ -173,7 +173,7 @@ public class OrgHierHandler extends BaseApiSupport {
 		
 		try{
 		
-			InfoId nodeId = Filters.filterInfoId(params, "org_id", MasterIdKey.ORG_HIER);
+			InfoId nodeId = Filters.filterInfoId(params, "org_id", AppIdKey.ORG_HIER);
 			
 			List<Long> mbrs = Lists.newArrayList();
 			
@@ -212,7 +212,7 @@ public class OrgHierHandler extends BaseApiSupport {
 			.require("org_id", "member")
 			.validate(true);
 		
-		InfoId nodeId = Filters.filterInfoId(paramap, "org_id", MasterIdKey.ORG_HIER);
+		InfoId nodeId = Filters.filterInfoId(paramap, "org_id", AppIdKey.ORG_HIER);
 		String mbrUid = Filters.filterString(paramap, "member");
 		
 		svcctx.setOperationObject(nodeId);
@@ -238,7 +238,7 @@ public class OrgHierHandler extends BaseApiSupport {
 			.validate(true);
 		
 		PageQuery pquery = Filters.filterPageQuery(paramap);
-		InfoId nodeId = Filters.filterInfoId(paramap, "org_id", MasterIdKey.ORG_HIER);
+		InfoId nodeId = Filters.filterInfoId(paramap, "org_id", AppIdKey.ORG_HIER);
 		String keyword = Filters.filterString(paramap, "keyword");
 		List<String> features = Filters.filterList(paramap, "features", String.class);
 		
@@ -289,7 +289,7 @@ public class OrgHierHandler extends BaseApiSupport {
 			.requireOne("org_pid")
 			.validate(true);
 		
-		InfoId oid = Filters.filterInfoId(paramap, "org_pid", MasterIdKey.ORG_HIER);
+		InfoId oid = Filters.filterInfoId(paramap, "org_pid", AppIdKey.ORG_HIER);
 
 		List<OrgHierInfo> gresult =  orghiderSvc.getOrgHierChildNodes(true, oid);
 		List<Map<String, Object>> olist =  gresult.stream().map((orghier)->{
@@ -327,7 +327,7 @@ public class OrgHierHandler extends BaseApiSupport {
 			.require("org_id")
 			.validate(true);
 
-		InfoId oid = Filters.filterInfoId(paramap, "org_id", MasterIdKey.ORG_HIER);;
+		InfoId oid = Filters.filterInfoId(paramap, "org_id", AppIdKey.ORG_HIER);;
 		svcctx.setOperationObject(oid);
 		OrgHierInfo orghier = orghiderSvc.getOrgHierNode( oid );
 		if(orghier == null) {

@@ -16,7 +16,7 @@ import com.gp.bind.BindComponent;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKeys;
 import com.gp.common.InfoId;
-import com.gp.common.MasterIdKey;
+import com.gp.common.AppIdKey;
 import com.gp.dao.ClientDAO;
 import com.gp.dao.EndpointDAO;
 import com.gp.dao.RoleDAO;
@@ -57,7 +57,7 @@ public class AuthorizeService extends ServiceSupport implements BaseService {
 	
 	@JdbiTran
 	public List<RoleInfo> getAllRoles() {
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ROLE.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ROLE.schema());
 
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("SQL : {}" + builder.toString());
@@ -76,8 +76,8 @@ public class AuthorizeService extends ServiceSupport implements BaseService {
 		builder.column("r.*");
 		
 		builder.from(from ->{
-			from.table(MasterIdKey.USER_ROLE.schema() + " ur");
-			from.leftJoin(MasterIdKey.ROLE.schema() + " r", "ur.role_id = r.role_id");
+			from.table(AppIdKey.USER_ROLE.schema() + " ur");
+			from.leftJoin(AppIdKey.ROLE.schema() + " r", "ur.role_id = r.role_id");
 			from.leftJoin(BaseIdKey.USER.schema() + " u", "ur.user_id = u.user_id");
 		});
 		
@@ -103,7 +103,7 @@ public class AuthorizeService extends ServiceSupport implements BaseService {
 	@JdbiTran
 	public List<RolePermInfo> getRolePerms(InfoId roleId) {
 		SelectBuilder builder = SqlBuilder.select();
-		builder.from(MasterIdKey.ROLE_PERM.schema());
+		builder.from(AppIdKey.ROLE_PERM.schema());
 		builder.where("role_id = ?");
 
 		List<Object> params = Arrays.asList( roleId.getId() );
@@ -122,7 +122,7 @@ public class AuthorizeService extends ServiceSupport implements BaseService {
 		int cnt = 0;
 		for (InfoId epid : endpointId) {
 			
-			SelectBuilder builder = SqlBuilder.select(MasterIdKey.ROLE_PERM.schema());
+			SelectBuilder builder = SqlBuilder.select(AppIdKey.ROLE_PERM.schema());
 			builder.where("role_id = ?");
 			builder.and("endpoint_id = ?");
 
@@ -136,7 +136,7 @@ public class AuthorizeService extends ServiceSupport implements BaseService {
 			RolePermInfo rpinfo = Iterables.getFirst(pinfos, null);
 			if (null == rpinfo) {
 				EndpointInfo epinfo = endpointdao.row(epid);
-				InfoId rpid = IdKeys.newInfoId(MasterIdKey.ROLE_PERM);
+				InfoId rpid = IdKeys.newInfoId(AppIdKey.ROLE_PERM);
 				RolePermInfo newrp = new RolePermInfo();
 				newrp.setInfoId(rpid);
 				newrp.setAccessPath(epinfo.getAccessPath());

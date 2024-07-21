@@ -79,7 +79,7 @@ public class RolePermHandler extends BaseApiSupport{
 		Principal principal = super.getPrincipal(exchange);
 		
 		RoleInfo role = new RoleInfo();
-		role.setInfoId(IdKeys.getInfoId(MasterIdKey.ROLE, Filters.filterLong(params, "role_id")));
+		role.setInfoId(IdKeys.getInfoId(AppIdKey.ROLE, Filters.filterLong(params, "role_id")));
 		role.setSysId(Filters.filterLong(params, "sys_id"));
 		role.setRoleName(Filters.filterString(params, "role_name"));
 		role.setRoleAbbr(Filters.filterString(params, "role_abbr"));
@@ -104,7 +104,7 @@ public class RolePermHandler extends BaseApiSupport{
 		svcctx.addOperationPredicates(params);		
 				
 		RoleInfo role = new RoleInfo();
-		role.setInfoId(IdKeys.getInfoId(MasterIdKey.ROLE, Filters.filterLong(params, "role_id")));
+		role.setInfoId(IdKeys.getInfoId(AppIdKey.ROLE, Filters.filterLong(params, "role_id")));
 
 		role.setRoleName(Filters.filterString(params, "role_name"));
 		role.setRoleAbbr(Filters.filterString(params, "role_abbr"));
@@ -132,7 +132,7 @@ public class RolePermHandler extends BaseApiSupport{
 		ServiceContext svcctx = this.getServiceContext(exchange, Operations.ROL_UPD);
 		svcctx.addOperationPredicates(params);
 
-		InfoId roleKey = Filters.filterInfoId(params, "role_id", MasterIdKey.ROLE);
+		InfoId roleKey = Filters.filterInfoId(params, "role_id", AppIdKey.ROLE);
 		boolean success = rolePermSvc.removeRole(roleKey);
 
 		result = success ? ActionResult.success(getMessage(exchange, "mesg.remove.role")) :
@@ -156,7 +156,7 @@ public class RolePermHandler extends BaseApiSupport{
 			throw new CoreException("excp.param.missed");
 		}
 		
-		InfoId rId = IdKeys.getInfoId(MasterIdKey.ROLE, roleId);
+		InfoId rId = IdKeys.getInfoId(AppIdKey.ROLE, roleId);
 		
 		List<EndpointInfo> endpoints = rolePermSvc.getRoleEndpoints(rId);
 		List<Map<String, Object>> rps = endpoints.stream().map((EndpointInfo epi) -> {
@@ -195,8 +195,8 @@ public class RolePermHandler extends BaseApiSupport{
 		}
 		
 		boolean success ;
-		InfoId rId = IdKeys.getInfoId(MasterIdKey.ROLE, roleId);
-		InfoId endId = IdKeys.getInfoId(MasterIdKey.ENDPOINT, endpointId);
+		InfoId rId = IdKeys.getInfoId(AppIdKey.ROLE, roleId);
+		InfoId endId = IdKeys.getInfoId(AppIdKey.ENDPOINT, endpointId);
 		if(authorized) {
 			success = rolePermSvc.grantPerm(svcctx, rId, endId);
 		} else {
@@ -224,7 +224,7 @@ public class RolePermHandler extends BaseApiSupport{
 			throw new CoreException("excp.param.missed");
 		}
 		
-		InfoId rId = IdKeys.getInfoId(MasterIdKey.ROLE, roleId);
+		InfoId rId = IdKeys.getInfoId(AppIdKey.ROLE, roleId);
 		List<UserInfo> infos = rolePermSvc.getRoleMembers(rId);
 		
 		List<Map<String, Object>> usrs = infos.stream().map((UserInfo item) -> {
@@ -277,7 +277,7 @@ public class RolePermHandler extends BaseApiSupport{
 				});
 			}
 		
-		InfoId roleId = IdKeys.getInfoId(MasterIdKey.ROLE, NumberUtils.toLong(idStr));
+		InfoId roleId = IdKeys.getInfoId(AppIdKey.ROLE, NumberUtils.toLong(idStr));
 		
 		svcctx.setOperationObject(roleId);
 		svcctx.addOperationPredicate("members", acnts);
@@ -312,7 +312,7 @@ public class RolePermHandler extends BaseApiSupport{
 			acnts.add(NumberUtils.toLong(mbrNode));
 		}
 	
-		InfoId roleId = IdKeys.getInfoId(MasterIdKey.ROLE, NumberUtils.toLong(idStr));
+		InfoId roleId = IdKeys.getInfoId(AppIdKey.ROLE, NumberUtils.toLong(idStr));
 		
 		svcctx.setOperationObject(roleId);
 		svcctx.addOperationPredicate("members", acnts);

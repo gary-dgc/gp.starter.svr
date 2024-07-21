@@ -17,7 +17,7 @@ import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
 import com.gp.common.IdKeys;
 import com.gp.common.InfoId;
-import com.gp.common.MasterIdKey;
+import com.gp.common.AppIdKey;
 import com.gp.common.ServiceContext;
 import com.gp.dao.*;
 import com.gp.dao.info.*;
@@ -47,7 +47,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 
 	public static RowMapper<EndpointInfo> EPOINT_EXT_MAPPER = (rs, context) -> {
 		EndpointInfo info = new EndpointInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.ENDPOINT, rs.getLong("endpoint_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.ENDPOINT, rs.getLong("endpoint_id"));
 		info.setInfoId(id);
 
 		info.setEndpointName(rs.getString("endpoint_name"));
@@ -88,7 +88,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 		builder.column("s.sys_name");
 
 		builder.from(from -> {
-			from.table(MasterIdKey.ROLE.schema("r"));
+			from.table(AppIdKey.ROLE.schema("r"));
 			from.leftJoin("gp_sys_sub s", "s.sys_id = r.sys_id");
 		});
 		builder.where(cond -> {
@@ -108,7 +108,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 
 		if (Objects.nonNull(pquery)) {
 			SelectBuilder countBuilder = builder.clone();
-			countBuilder.column().column("count(" + MasterIdKey.ROLE.idColumn() + ")");
+			countBuilder.column().column("count(" + AppIdKey.ROLE.idColumn() + ")");
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("SQL : {} / PARAMS : {}", countBuilder.build(), paramMap);
 			}
@@ -134,7 +134,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 	@JdbiTran(readOnly = true)
 	public List<EndpointInfo> getEndpoints(String module) {
 
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ENDPOINT.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ENDPOINT.schema());
 		builder.all();
 
 		List<Object> params = Lists.newArrayList();
@@ -153,7 +153,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 	@JdbiTran
 	public boolean newRole(ServiceContext svcctx, RoleInfo role) throws ServiceException {
 		
-		InfoId check = getInfoId(MasterIdKey.ROLE,
+		InfoId check = getInfoId(AppIdKey.ROLE,
 						"role_abbr = '" + role.getRoleAbbr() + "'",
 						"(del_flag < 1 OR del_flag IS NULL)"
 					);
@@ -181,7 +181,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 
 		List<Object> params = Arrays.asList( roleId.getId() );
 
-		DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.ROLE_PERM.schema());
+		DeleteBuilder builder = SqlBuilder.delete(AppIdKey.ROLE_PERM.schema());
 		builder.where("role_id = ?");
 
 		if (LOGGER.isDebugEnabled()) {
@@ -189,7 +189,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 		}
 		update(builder.build(), params);
 
-		builder = SqlBuilder.delete(MasterIdKey.USER_ROLE.schema());
+		builder = SqlBuilder.delete(AppIdKey.USER_ROLE.schema());
 		builder.where("role_id = ?");
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("SQL : {} / params : {}", builder.build(), params);
@@ -221,8 +221,8 @@ public class RolePermService extends ServiceSupport implements BaseService {
 	@JdbiTran
 	public boolean grantPerm(ServiceContext svcctx, InfoId roleId, InfoId endpointId) {
 
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ROLE_PERM.schema());
-		builder.column("count(" + MasterIdKey.ROLE_PERM.idColumn() + ")");
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ROLE_PERM.schema());
+		builder.column("count(" + AppIdKey.ROLE_PERM.idColumn() + ")");
 		builder.where("role_id = ?");
 		builder.and("endpoint_id = ?");
 
@@ -243,7 +243,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 
 			return rolePermDao.create(rolePerm) > 0;
 		} else {
-			UpdateBuilder upd = SqlBuilder.update(MasterIdKey.ROLE_PERM.schema());
+			UpdateBuilder upd = SqlBuilder.update(AppIdKey.ROLE_PERM.schema());
 			upd.column("authorized", "1");
 			upd.where("role_id = ?");
 			upd.and("endpoint_id = ?");
@@ -256,7 +256,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 	@JdbiTran
 	public boolean revokePerm(ServiceContext svcctx, InfoId roleId, InfoId endpointId) {
 
-		DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.ROLE_PERM.schema());
+		DeleteBuilder builder = SqlBuilder.delete(AppIdKey.ROLE_PERM.schema());
 		builder.where("role_id = ?");
 		builder.and("endpoint_id = ?");
 
@@ -273,8 +273,8 @@ public class RolePermService extends ServiceSupport implements BaseService {
 	public boolean[] addRoleMember(ServiceContext svcctx, InfoId roleId, Long... members) {
 		boolean[] cnts = new boolean[members.length];
 
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.USER_ROLE.schema());
-		builder.column("count(" + MasterIdKey.USER_ROLE.idColumn() + ")");
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.USER_ROLE.schema());
+		builder.column("count(" + AppIdKey.USER_ROLE.idColumn() + ")");
 		builder.where("role_id = ?");
 		builder.and("user_id = ?");
 
@@ -304,7 +304,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 
 	@JdbiTran
 	public boolean[] removeRoleMember(ServiceContext svcctx, InfoId roleId, Long... members) {
-		DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.USER_ROLE.schema());
+		DeleteBuilder builder = SqlBuilder.delete(AppIdKey.USER_ROLE.schema());
 		builder.where("role_id = :rid");
 		builder.and("user_id in ( <accts> )");
 
@@ -317,8 +317,8 @@ public class RolePermService extends ServiceSupport implements BaseService {
 		}
 
 		update(builder.build(), paraMap);
-		SelectBuilder select = SqlBuilder.select(MasterIdKey.USER_ROLE.schema());
-		select.column(MasterIdKey.USER_ROLE.idColumn());
+		SelectBuilder select = SqlBuilder.select(AppIdKey.USER_ROLE.schema());
+		select.column(AppIdKey.USER_ROLE.idColumn());
 		select.where("role_id = :rid");
 		select.and("user_id in ( <accts> )");
 		Set<Long> accts = Sets.newHashSet();
@@ -364,7 +364,7 @@ public class RolePermService extends ServiceSupport implements BaseService {
 
 	@JdbiTran(readOnly = true)
 	public RoleInfo getRole(String abbr) {
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ROLE.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ROLE.schema());
 		builder.all();
 		builder.where("role_abbr = ?");
 

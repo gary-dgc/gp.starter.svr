@@ -15,7 +15,6 @@ import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
 import com.gp.common.*;
 import com.gp.dao.*;
-import com.gp.dao.ext.GroupExt;
 import com.gp.dao.info.DeptHierInfo;
 import com.gp.dao.info.GroupInfo;
 import com.gp.dao.info.GroupUserInfo;
@@ -62,7 +61,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 	public List<OrgHierInfo> getOrgHierNodes(String orgName, InfoId parentNodeId) {
 
 		List<OrgHierInfo> orglist = null;
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ORG_HIER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ORG_HIER.schema());
 		Map<String, Object> params = Maps.newHashMap();
 		if (!Strings.isNullOrEmpty(orgName)) {
 			builder.and("org_name like :name");
@@ -87,11 +86,11 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 
 		svcctx.setTraceInfo(orginfo);
 				
-		InfoId orgId = IdKeys.newInfoId(MasterIdKey.ORG_HIER);
+		InfoId orgId = IdKeys.newInfoId(AppIdKey.ORG_HIER);
 		orginfo.setInfoId(orgId);
 				
-		InfoId grpId = IdKeys.newInfoId(MasterIdKey.GROUP);
-		InfoId deptId = IdKeys.newInfoId(MasterIdKey.DEPT_HIER);
+		InfoId grpId = IdKeys.newInfoId(AppIdKey.GROUP);
+		InfoId deptId = IdKeys.newInfoId(AppIdKey.DEPT_HIER);
 		
 		// create default dept record with parent id: 99
 		DeptHierInfo dept = new DeptHierInfo();
@@ -106,7 +105,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 		GroupInfo group = new GroupInfo();
 		group.setInfoId(grpId);
 		group.setGroupName(orginfo.getOrgName() +"'s user group");
-		group.setGroupType(MasterIdKey.DEPT_HIER.name());
+		group.setGroupType(AppIdKey.DEPT_HIER.name());
 		group.setManageId(deptId.getId());
 		
 		svcctx.setTraceInfo(group);
@@ -135,7 +134,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 	public boolean removeOrgHierNode(InfoId orgid) {
 
 		// delete group  user
-		DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.GROUP_USER.schema());
+		DeleteBuilder builder = SqlBuilder.delete(AppIdKey.GROUP_USER.schema());
 		builder.where("group_id IN ("
 				+ "select g.group_id "
 				+ "from gp_dept_hier d, gp_group g "
@@ -149,7 +148,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 		update(builder.toString(), params);
 
 		// delete group under organization
-		builder = SqlBuilder.delete(MasterIdKey.GROUP.schema());
+		builder = SqlBuilder.delete(AppIdKey.GROUP.schema());
 		builder.where("manage_id IN ("
 					+ "select dept_id "
 					+ "from gp_dept_hier "
@@ -161,7 +160,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 		update(builder.toString(), params);
 		
 		// delete deptartment under organization
-		builder = SqlBuilder.delete(MasterIdKey.DEPT_HIER.schema());
+		builder = SqlBuilder.delete(AppIdKey.DEPT_HIER.schema());
 			builder.where("org_id = ?");
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("SQL : " + builder.toString() + " / params : " + params);
@@ -187,7 +186,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 		}
 		
 		// check user exists in groups under organization
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.GROUP_USER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.GROUP_USER.schema());
 		builder.where("group_id IN ("
 				+ "select g.group_id "
 				+ "from gp_dept_hier d, gp_group g "
@@ -201,7 +200,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("SQL: {} / PARAMS: {}", builder.toString(),params);
 			}
-			InfoId mbrid = IdKeys.getInfoId(MasterIdKey.GROUP_USER, -1l);
+			InfoId mbrid = IdKeys.getInfoId(AppIdKey.GROUP_USER, -1l);
 			query(builder.toString(), (rs) -> {
 				mbrid.setId(rs.getLong("rel_id"));
 			}, params);
@@ -211,7 +210,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 				continue;
 			}
 			GroupUserInfo guinfo = new GroupUserInfo();
-			InfoId rid = IdKeys.newInfoId(MasterIdKey.GROUP_USER);
+			InfoId rid = IdKeys.newInfoId(AppIdKey.GROUP_USER);
 			guinfo.setInfoId(rid);
 			guinfo.setGroupId(rootGroupId);
 			guinfo.setType(GroupUsers.MemberType.USER.name());
@@ -230,7 +229,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 
 		for (Long member : members) {
 			
-			DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.GROUP_USER.schema());
+			DeleteBuilder builder = SqlBuilder.delete(AppIdKey.GROUP_USER.schema());
 			builder.where("group_id IN ("
 					+ "select g.group_id "
 					+ "from gp_dept_hier d, gp_group g "
@@ -260,8 +259,8 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 		builder.column("s.source_id", "s.source_name", "s.abbr", "s.node_gid");
 
 		builder.from((from) -> {
-			from.table(MasterIdKey.GROUP_USER.schema("a"));
-			from.join(MasterIdKey.GROUP.schema("g"), "g.group_id = a.group_id");
+			from.table(AppIdKey.GROUP_USER.schema("a"));
+			from.join(AppIdKey.GROUP.schema("g"), "g.group_id = a.group_id");
 			from.leftJoin(BaseIdKey.USER.schema("b"), "a.member_uid = b.user_id");
 			from.leftJoin(BaseIdKey.SOURCE.schema("s"), "b.source_id = s.source_id");
 		});
@@ -292,7 +291,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 		
 		if (Objects.nonNull(pquery)) {
 			SelectBuilder countBuilder = builder.clone();
-			countBuilder.column().column("count(" + MasterIdKey.GROUP_USER.idColumn() + ")");
+			countBuilder.column().column("count(" + AppIdKey.GROUP_USER.idColumn() + ")");
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("SQL : {} / PARAMS : {}", countBuilder.build(), params);
 			}
@@ -334,7 +333,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 
 		List<Long> oids = new ArrayList<Long>();
 		Map<String, Object> params = new HashMap<String, Object>();
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ORG_HIER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ORG_HIER.schema());
 		if (orgids != null && orgids.length > 0) {
 
 			for (InfoId id : orgids) {
@@ -360,7 +359,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 		List<OrgHierInfo> all = new ArrayList<OrgHierInfo>();
 		List<InfoId> ids = new ArrayList<InfoId>();
 
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ORG_HIER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ORG_HIER.schema());
 		builder.where("org_pid = ?");
 		builder.orderBy("org_id", SortOrder.ASC);
 
@@ -389,7 +388,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 
 		List<Long> oids = new ArrayList<Long>();
 		Map<String, Object> params = new HashMap<String, Object>();
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ORG_HIER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ORG_HIER.schema());
 		if (orgNodeIds != null && orgNodeIds.length > 0) {
 
 			for (InfoId id : orgNodeIds) {
@@ -431,7 +430,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("org_ids", oids);
 
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ORG_HIER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ORG_HIER.schema());
 		builder.column("count(org_id) as grand_cnt", "org_pid");
 
 		builder.where("org_pid in (select org_id from gp_org_hier where org_pid IN ( <org_ids> ) )");
@@ -444,7 +443,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 			countMap.put(rs.getLong("org_pid"), rs.getInt("grand_cnt"));
 		}, params);
 
-		builder = SqlBuilder.select(MasterIdKey.ORG_HIER.schema());
+		builder = SqlBuilder.select(AppIdKey.ORG_HIER.schema());
 		builder.where("org_pid IN ( <org_ids> ) ");
 		builder.and("(del_flag IS NULL OR del_flag = 0)");
 		builder.orderBy("org_id", SortOrder.ASC);
@@ -474,7 +473,7 @@ public class OrgHierService extends ServiceSupport implements BaseService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("node_gid", nodeGid);
 		
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ORG_HIER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ORG_HIER.schema());
 		builder.where("node_gid = :node_gid ");
 		builder.and("(del_flag IS NULL OR del_flag = 0)");
 		

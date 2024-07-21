@@ -14,7 +14,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.common.primitives.Longs;
 import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
 import com.gp.common.*;
@@ -24,7 +23,6 @@ import com.gp.common.GroupUsers.UserState;
 import com.gp.dao.*;
 import com.gp.dao.info.*;
 import com.gp.db.JdbiTran;
-import com.gp.exception.ServiceException;
 import com.gp.info.BaseIdKey;
 import com.gp.info.FilterMode;
 import com.gp.paging.PageQuery;
@@ -43,9 +41,7 @@ import com.gp.util.BaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * User Operation  
@@ -122,7 +118,7 @@ public class UserService extends ServiceSupport implements BaseService {
 			
 			for(String role: roles) {
 				
-				SelectBuilder select = SqlBuilder.select(MasterIdKey.ROLE.schema());
+				SelectBuilder select = SqlBuilder.select(AppIdKey.ROLE.schema());
 				select.column("role_id");
 				select.where("role_id = ?");
 				select.or("role_abbr = ?");
@@ -191,7 +187,7 @@ public class UserService extends ServiceSupport implements BaseService {
 		
 		logins.forEach(login -> {
 
-			UpdateBuilder builder = SqlBuilder.update(MasterIdKey.USER_LOGIN.schema());
+			UpdateBuilder builder = SqlBuilder.update(AppIdKey.USER_LOGIN.schema());
 
 			builder.set("login", "?");
 			builder.where("user_id = ?");
@@ -216,7 +212,7 @@ public class UserService extends ServiceSupport implements BaseService {
 			
 			for(String role: roles) {
 				
-				SelectBuilder select = SqlBuilder.select(MasterIdKey.ROLE.schema());
+				SelectBuilder select = SqlBuilder.select(AppIdKey.ROLE.schema());
 				select.column("role_id");
 				select.where("role_id = ?");
 				select.or("role_abbr = ?");
@@ -384,16 +380,14 @@ public class UserService extends ServiceSupport implements BaseService {
 	}
 
 	@JdbiTran(readOnly = true)
-	public List<UserInfo> getUsers(String username, Long sourceId, UserCategory[] category, UserState[] states,
+	public List<UserInfo> getUsers(String username, UserCategory[] category, UserState[] states,
 			Boolean boundOnly, PageQuery pquery) {
 
 		SelectBuilder builder = SqlBuilder.select();
-		builder.column("a.*", "b.*");
+		builder.column("a.*");
 		
 		builder.from((from) -> {
 			from.table("gp_user a");
-			from.leftJoin("(SELECT source_id, node_gid, source_name,short_name, abbr FROM gp_source) b",
-					"a.source_id = b.source_id");
 		});
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -406,19 +400,6 @@ public class UserService extends ServiceSupport implements BaseService {
 		}
 		// entity condition
 
-		if (null != sourceId) {
-			if (0 == sourceId) {
-
-				builder.and("a.source_id > :srcid");
-				params.put("srcid", sourceId);
-			} else if (-9999 == sourceId) {
-				builder.and("a.source_id = :srcid");
-				params.put("srcid", sourceId);
-			} else {
-				builder.and("a.source_id = :srcid");
-				params.put("srcid", sourceId);
-			}
-		}
 		// user type condition
 		if (null != category && category.length > 0) {
 			builder.and("a.category in ( <types> )");
@@ -433,22 +414,10 @@ public class UserService extends ServiceSupport implements BaseService {
 		if (null != boundOnly && boundOnly) {
 			builder.and("a.user_gid <> ''").and("a.user_gid IS NOT NULL");
 		}
-		
-		if (Objects.nonNull(pquery)) {
-			SelectBuilder countBuilder = builder.clone();
-			countBuilder.column().column("count(" + BaseIdKey.USER.idColumn() + ")");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("SQL : {} / PARAMS : {}", countBuilder.build(), params);
-			}
-			Integer total = row(countBuilder.toString(), Integer.class, params);
-			Paginator paginator = new Paginator(total, pquery);
-			Pagination pagination = paginator.getPagination();
-			pquery.setPagination(pagination);
 
-			SortOrder orderType = SortOrder.valueOf(pquery.getOrder().toUpperCase());
-			builder.orderBy(pquery.getOrderBy(), orderType);
-			builder.limit(pagination.getPageStartRow(), pquery.getPageSize());
-		}
+		// paginate the query
+		paginate("count(" + BaseIdKey.USER.idColumn() + ")", builder, params, pquery);
+
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("SQL : " + builder.toString() + " / PARAMS : " + params.toString());
 		}
@@ -497,7 +466,7 @@ public class UserService extends ServiceSupport implements BaseService {
 
 	@JdbiTran
 	public boolean removeLogin(ServiceContext svcctx, String... login) {
-		DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.USER_LOGIN.schema());
+		DeleteBuilder builder = SqlBuilder.delete(AppIdKey.USER_LOGIN.schema());
 		builder.where("login in ('" + Joiner.on("','").join(login) + "')");
 
 		int cnt = update(builder.build());
@@ -508,7 +477,7 @@ public class UserService extends ServiceSupport implements BaseService {
 	@JdbiTran(readOnly = true)
 	public UserLoginInfo getUserLogin(InfoId userId, String authenType) {
 
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.USER_LOGIN.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.USER_LOGIN.schema());
 		builder.all();
 		List<Object> params = Lists.newArrayList();
 
@@ -533,7 +502,7 @@ public class UserService extends ServiceSupport implements BaseService {
 
 	@JdbiTran(readOnly = true)
 	public List<UserTitleInfo> getUserTitles(InfoId userId) {
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.USER_TITLE.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.USER_TITLE.schema());
 		builder.all();
 
 		builder.and("user_id = ?");

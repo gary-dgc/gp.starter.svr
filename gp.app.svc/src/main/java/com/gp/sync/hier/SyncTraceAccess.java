@@ -44,14 +44,14 @@ public class SyncTraceAccess extends ServiceSupport implements TraceAccess {
 
         if(null == traces || traces.length == 0) return null;
         String nodeGid = getLocalNodeGid();
-        InfoId chronicalId = IdKeys.newInfoId(MasterIdKey.SYNC_TRACE);
+        InfoId chronicalId = IdKeys.newInfoId(AppIdKey.SYNC_TRACE);
         int cnt = 0;
         for(DataShot shot : traces) {
 
             NodeMeta nodeMeta = HierSchema.instance().getNodeMeta(shot.getHierKey());
             SyncTraceInfo trace = new SyncTraceInfo();
 
-            trace.setInfoId(cnt == 0 ? chronicalId : IdKeys.newInfoId(MasterIdKey.SYNC_TRACE));
+            trace.setInfoId(cnt == 0 ? chronicalId : IdKeys.newInfoId(AppIdKey.SYNC_TRACE));
 
             trace.setChronicalId(chronicalId.getId());
             trace.setTraceOp(shot.getTraceOp().name());
@@ -90,7 +90,7 @@ public class SyncTraceAccess extends ServiceSupport implements TraceAccess {
     public InfoId persistRemote(DataShot... traces) {
 
         if(null == traces || traces.length == 0) return null;
-        InfoId chronicalId = IdKeys.newInfoId(MasterIdKey.SYNC_TRACE);
+        InfoId chronicalId = IdKeys.newInfoId(AppIdKey.SYNC_TRACE);
         int cnt = 0;
         for(DataShot shot : traces) {
 
@@ -102,7 +102,7 @@ public class SyncTraceAccess extends ServiceSupport implements TraceAccess {
             NodeMeta nodeMeta = HierSchema.instance().getNodeMeta(shot.getHierKey());
             SyncTraceInfo trace = new SyncTraceInfo();
 
-            trace.setInfoId(cnt == 0 ? chronicalId : IdKeys.newInfoId(MasterIdKey.SYNC_TRACE));
+            trace.setInfoId(cnt == 0 ? chronicalId : IdKeys.newInfoId(AppIdKey.SYNC_TRACE));
 
             trace.setChronicalId(chronicalId.getId());
             trace.setTraceOp(shot.getTraceOp().name());
@@ -223,7 +223,7 @@ public class SyncTraceAccess extends ServiceSupport implements TraceAccess {
 
             // parse the trace op
             Syncs.TraceOp op = Enums.getIfPresent(Syncs.TraceOp.class, rs.getString("trace_op")).or(Syncs.TraceOp.UNKNOWN);
-            InfoId traceKey = IdKeys.getInfoId(MasterIdKey.SYNC_TRACE,rs.getLong("trace_id"));
+            InfoId traceKey = IdKeys.getInfoId(AppIdKey.SYNC_TRACE,rs.getLong("trace_id"));
             shot.setTraceId(traceKey);
             shot.setTraceOp(op);
             shot.setTraceCode(rs.getString("trace_code"));
@@ -246,14 +246,14 @@ public class SyncTraceAccess extends ServiceSupport implements TraceAccess {
         SelectBuilder select = syncTraceDAO.selectSql();
         select.all();
         select.where("chronical_id = " + chronicalId.getId());
-        select.orderBy(MasterIdKey.SYNC_TRACE.idColumn(), SortOrder.ASC);
+        select.orderBy(AppIdKey.SYNC_TRACE.idColumn(), SortOrder.ASC);
 
         return rows(select.toString(), (rs, ctx) -> {
             DataShot shot = new DataShot();
 
             // parse the trace op
             Syncs.TraceOp op = Enums.getIfPresent(Syncs.TraceOp.class, rs.getString("trace_op")).or(Syncs.TraceOp.UNKNOWN);
-            InfoId traceKey = IdKeys.getInfoId(MasterIdKey.SYNC_TRACE,rs.getLong("trace_id"));
+            InfoId traceKey = IdKeys.getInfoId(AppIdKey.SYNC_TRACE,rs.getLong("trace_id"));
             shot.setTraceId(traceKey);
             shot.setTraceOp(op);
             shot.setTraceCode(rs.getString("trace_code"));

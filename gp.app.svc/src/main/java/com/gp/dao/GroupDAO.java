@@ -35,7 +35,7 @@ public class GroupDAO extends DAOSupport implements BaseDAO<GroupInfo> {
 
 	public static final RowParser<GroupInfo> INFO_PARSER = (rp, ctx) -> {
 		GroupInfo info = new GroupInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.GROUP);
+		InfoId id = rp.getInfoId(AppIdKey.GROUP);
 		info.setInfoId(id);
 
 		info.setManageId(rp.getLong("manage_id"));
@@ -51,7 +51,7 @@ public class GroupDAO extends DAOSupport implements BaseDAO<GroupInfo> {
 
 	public static final RowMapper<GroupInfo> INFO_MAPPER = (rs, ctx) -> {
 		GroupInfo info = new GroupInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.GROUP, rs.getLong("group_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.GROUP, rs.getLong("group_id"));
 		info.setInfoId(id);
 
 		info.setManageId(rs.getLong("manage_id"));
@@ -69,7 +69,7 @@ public class GroupDAO extends DAOSupport implements BaseDAO<GroupInfo> {
 	 * Default constructor
 	 **/
 	public GroupDAO (){
-		this.daoIdKey = MasterIdKey.GROUP;
+		this.daoIdKey = AppIdKey.GROUP;
 	}
 
 	/**

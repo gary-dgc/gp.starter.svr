@@ -16,7 +16,7 @@ import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
 import com.gp.common.IdKeys;
 import com.gp.common.InfoId;
-import com.gp.common.MasterIdKey;
+import com.gp.common.AppIdKey;
 import com.gp.common.ServiceContext;
 import com.gp.dao.GroupDAO;
 import com.gp.dao.GroupUserDAO;
@@ -57,7 +57,7 @@ public class GroupService extends ServiceSupport implements BaseService {
 
 	@JdbiTran(readOnly = true)
 	public List<GroupInfo> getGroups(String groupName, String groupType, PageQuery pquery) {
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.GROUP.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.GROUP.schema());
 		List<Object> params = Lists.newArrayList();
 
 		if (!Strings.isNullOrEmpty(groupType)) {
@@ -70,7 +70,7 @@ public class GroupService extends ServiceSupport implements BaseService {
 
 		if (Objects.nonNull(pquery)) {
 			SelectBuilder countBuilder = builder.clone();
-			countBuilder.column().column("count(" + MasterIdKey.GROUP.idColumn() + ")");
+			countBuilder.column().column("count(" + AppIdKey.GROUP.idColumn() + ")");
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("SQL : {} / PARAMS : {}", countBuilder.build(), params);
 			}
@@ -102,7 +102,7 @@ public class GroupService extends ServiceSupport implements BaseService {
 	@JdbiTran
 	public boolean removeGroup(ServiceContext svcctx, InfoId groupId) {
 
-		DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.GROUP_USER.schema());
+		DeleteBuilder builder = SqlBuilder.delete(AppIdKey.GROUP_USER.schema());
 		builder.where("group_id = ?");
 		
 		if (LOGGER.isDebugEnabled()) {
@@ -125,7 +125,7 @@ public class GroupService extends ServiceSupport implements BaseService {
 	@JdbiTran
 	public boolean[] addGroupMember(ServiceContext svcctx, InfoId groupId, Long... members) {
 		boolean[] cnts = new boolean[members.length];
-		SelectBuilder check = SqlBuilder.select(MasterIdKey.GROUP_USER.schema());
+		SelectBuilder check = SqlBuilder.select(AppIdKey.GROUP_USER.schema());
 		check.column("count(rel_id)");
 		check.where("group_id = ?");
 		check.and("member_uid = ?");
@@ -141,7 +141,7 @@ public class GroupService extends ServiceSupport implements BaseService {
 			}
 			GroupUserInfo guser = null;
 
-			InfoId guid = IdKeys.newInfoId(MasterIdKey.GROUP_USER);
+			InfoId guid = IdKeys.newInfoId(AppIdKey.GROUP_USER);
 
 			guser = new GroupUserInfo();
 			guser.setInfoId(guid);
@@ -158,7 +158,7 @@ public class GroupService extends ServiceSupport implements BaseService {
 
 	@JdbiTran
 	public boolean[] removeGroupMember(ServiceContext svcctx, InfoId groupId, Long... members) {
-		DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.GROUP_USER.schema());
+		DeleteBuilder builder = SqlBuilder.delete(AppIdKey.GROUP_USER.schema());
 		builder.where("group_id = :gid");
 		builder.and("member_uid in ( <accts> )");
 
@@ -171,7 +171,7 @@ public class GroupService extends ServiceSupport implements BaseService {
 		}
 
 		update(builder.build(), paraMap);
-		SelectBuilder select = SqlBuilder.select(MasterIdKey.GROUP_USER.schema());
+		SelectBuilder select = SqlBuilder.select(AppIdKey.GROUP_USER.schema());
 		select.column("member_uid");
 		select.where("group_id = :gid");
 		select.and("member_uid in ( <accts> )");

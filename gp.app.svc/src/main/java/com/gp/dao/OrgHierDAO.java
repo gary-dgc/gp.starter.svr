@@ -37,7 +37,7 @@ public class OrgHierDAO extends DAOSupport implements BaseDAO<OrgHierInfo> {
 
 	public static final RowParser<OrgHierInfo> INFO_PARSER = (rp, ctx) -> {
 		OrgHierInfo info = new OrgHierInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.ORG_HIER);
+		InfoId id = rp.getInfoId(AppIdKey.ORG_HIER);
 		info.setInfoId(id);
 
 		info.setOrgPid(rp.getLong("org_pid"));
@@ -62,7 +62,7 @@ public class OrgHierDAO extends DAOSupport implements BaseDAO<OrgHierInfo> {
 
 	public static final RowMapper<OrgHierInfo> INFO_MAPPER = (rs, ctx) -> {
 		OrgHierInfo info = new OrgHierInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.ORG_HIER, rs.getLong("org_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.ORG_HIER, rs.getLong("org_id"));
 		info.setInfoId(id);
 
 		info.setOrgPid(rs.getLong("org_pid"));
@@ -89,7 +89,7 @@ public class OrgHierDAO extends DAOSupport implements BaseDAO<OrgHierInfo> {
 	 * Default constructor
 	 **/
 	public OrgHierDAO (){
-		this.daoIdKey = MasterIdKey.ORG_HIER;
+		this.daoIdKey = AppIdKey.ORG_HIER;
 	}
 
 	/**

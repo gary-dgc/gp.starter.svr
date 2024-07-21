@@ -69,7 +69,7 @@ public class UserHandler extends BaseApiSupport{
 		String keywords = Filters.filterString(paramap, "keyword");
 		
 		String state = Filters.filterAll(paramap, "state");
-		long sourceId = Filters.filterLong(paramap, "source_id");
+
 		String category = Filters.filterAll(paramap, "category");
 		
 		PageQuery pquery = Filters.filterPageQuery(paramap);
@@ -79,7 +79,7 @@ public class UserHandler extends BaseApiSupport{
 		ActionResult result = null;
 		svcctx.addOperationPredicates(paramap);
 		// query accounts information
-		List<UserInfo> extList = userService.getUsers( keywords, sourceId, 
+		List<UserInfo> extList = userService.getUsers( keywords,
 				Strings.isNullOrEmpty(category) ? null : new UserCategory[] { Enums.getIfPresent(UserCategory.class, category).get() }, 
 				Strings.isNullOrEmpty(state) ? null : new UserState[] { Enums.getIfPresent(UserState.class, category).get() }, false,
 				pquery);
@@ -90,12 +90,7 @@ public class UserHandler extends BaseApiSupport{
 			builder.set("user_id", info.getId().toString());
 			builder.set(info, "user_gid", "username", "email", "mobile", "state",
 					"category", "full_name");
-		
-			builder.set("source", sbuilder -> {
-				sbuilder.set("source_id", info.getProperty("source_id", Long.class).toString());
-				sbuilder.set(info, "source_name");
-			});
-			
+
 			if(info.getCreateTime() != null) {
 				builder.set("create_date", String.valueOf(info.getCreateTime().getTime()));
 			}
@@ -150,7 +145,7 @@ public class UserHandler extends BaseApiSupport{
 		String avatarUrl = Filters.filterString(params, "avatar_url");
 		if(!Strings.isNullOrEmpty(avatarUrl) && avatarUrl.startsWith("data:image/")){
 			// process the avatar base64 image
-			InfoId storageId = IdKeys.getInfoId(MasterIdKey.STORAGE, Filters.filterLong(params, "storage_id"));
+			InfoId storageId = IdKeys.getInfoId(AppIdKey.STORAGE, Filters.filterLong(params, "storage_id"));
 			//avatarUrl = ServiceApiHelper.instance().cacheAvatar(storageId, avatarUrl);
 			
 			uinfo.setAvatarUrl(avatarUrl);
@@ -212,7 +207,7 @@ public class UserHandler extends BaseApiSupport{
 		String avatarUrl = Filters.filterString(params, "avatar_url");
 		if(!Strings.isNullOrEmpty(avatarUrl) && avatarUrl.startsWith("data:image/")){
 			// process the avatar base64 image
-			InfoId storageId = IdKeys.getInfoId(MasterIdKey.STORAGE, Filters.filterLong(params, "storage_id"));
+			InfoId storageId = IdKeys.getInfoId(AppIdKey.STORAGE, Filters.filterLong(params, "storage_id"));
 			//avatarUrl = ServiceApiHelper.instance().cacheAvatar(storageId, avatarUrl);
 			
 			uinfo.setAvatarUrl(avatarUrl);

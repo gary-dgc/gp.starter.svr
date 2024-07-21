@@ -36,7 +36,7 @@ public class RoleDAO extends DAOSupport implements BaseDAO<RoleInfo> {
 
 	public static final RowParser<RoleInfo> INFO_PARSER = (rp, ctx) -> {
 		RoleInfo info = new RoleInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.ROLE);
+		InfoId id = rp.getInfoId(AppIdKey.ROLE);
 		info.setInfoId(id);
 
 		info.setSysId(rp.getLong("sys_id"));
@@ -54,7 +54,7 @@ public class RoleDAO extends DAOSupport implements BaseDAO<RoleInfo> {
 
 	public static final RowMapper<RoleInfo> INFO_MAPPER = (rs, ctx) -> {
 		RoleInfo info = new RoleInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.ROLE, rs.getLong("role_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.ROLE, rs.getLong("role_id"));
 		info.setInfoId(id);
 
 		info.setSysId(rs.getLong("sys_id"));
@@ -74,7 +74,7 @@ public class RoleDAO extends DAOSupport implements BaseDAO<RoleInfo> {
 	 * Default constructor
 	 **/
 	public RoleDAO(){
-		this.daoIdKey = MasterIdKey.ROLE;
+		this.daoIdKey = AppIdKey.ROLE;
 	}
 
 	/**

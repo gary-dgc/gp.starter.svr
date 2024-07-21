@@ -7,7 +7,7 @@ import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
 import com.gp.common.IdKeys;
 import com.gp.common.InfoId;
-import com.gp.common.MasterIdKey;
+import com.gp.common.AppIdKey;
 import com.gp.common.ServiceContext;
 import com.gp.dao.DutyFlatDAO;
 import com.gp.dao.DutyHierDAO;
@@ -45,7 +45,7 @@ public class DutyHierService extends ServiceSupport implements BaseService {
 
         svcctx.setTraceInfo(info);
 
-        InfoId dutyKey = IdKeys.newInfoId(MasterIdKey.DEPT_HIER);
+        InfoId dutyKey = IdKeys.newInfoId(AppIdKey.DEPT_HIER);
         info.setInfoId(dutyKey);
 
         int cnt = dutyHierDAO.create(info);
@@ -64,7 +64,7 @@ public class DutyHierService extends ServiceSupport implements BaseService {
         builder.column("d.*");
         builder.column("cd.child_count");
         builder.from( from -> {
-           from.table(MasterIdKey.DUTY_HIER.schema("d"));
+           from.table(AppIdKey.DUTY_HIER.schema("d"));
            from.leftJoin("(SELECT duty_pid, count(duty_id) AS child_count FROM gp_duty_hier GROUP BY duty_pid) AS cd", "d.duty_id = cd.duty_pid");
         });
         Map<String, Object> params = Maps.newHashMap();

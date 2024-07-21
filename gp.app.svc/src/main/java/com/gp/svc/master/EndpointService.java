@@ -13,7 +13,7 @@ import com.google.common.collect.Maps;
 import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
 import com.gp.common.InfoId;
-import com.gp.common.MasterIdKey;
+import com.gp.common.AppIdKey;
 import com.gp.common.ServiceContext;
 import com.gp.dao.EndpointDAO;
 import com.gp.dao.info.EndpointInfo;
@@ -48,7 +48,7 @@ public class EndpointService extends ServiceSupport implements BaseService {
 	@JdbiTran(readOnly = true)
 	public List<EndpointInfo> getEndpoints(String module, String name, PageQuery pquery) {
 		
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.ENDPOINT.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.ENDPOINT.schema());
 		builder.all();
 		
 		Map<String, Object> paramap = Maps.newHashMap();
@@ -70,7 +70,7 @@ public class EndpointService extends ServiceSupport implements BaseService {
 		if (Objects.nonNull(pquery)) {
 			
 			SelectBuilder countBuilder = builder.clone();
-			countBuilder.column().column("count(" + MasterIdKey.ENDPOINT.idColumn() + ")");
+			countBuilder.column().column("count(" + AppIdKey.ENDPOINT.idColumn() + ")");
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("SQL : {} / PARAMS : {}", countBuilder.build(), paramap);
 			}
