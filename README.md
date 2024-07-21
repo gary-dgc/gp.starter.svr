@@ -8,8 +8,11 @@
      \_____|_|    |_|  \_\______|_____/_____/
 
   * author：gary diao [(gary.diao@yahoo.com)](gary.diao@yahoo.com)
-  * version：0.4.0
+  * version：0.4.1
   * repository: [GP on Central Repository](https://central.sonatype.com/search?q=groupress)
+  * git repo:
+    * [gitee repo](https://gitee.com/groupress/gp.starter.svr)
+    * [github repo](https://github.com/gary-dgc/gp.starter.svr)
 
 ![](./gp.help/frame-commits.png)
 
