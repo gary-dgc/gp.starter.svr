@@ -9,4 +9,6 @@
 /gp.app.api/.flattened-pom.xml
 /gp.app.api/target/
 /gp.app.svc/target/
+/gp.app.api/.DS_Store
+/gp.app.svc/.DS_Store
 /.idea/
