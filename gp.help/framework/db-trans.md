@@ -30,7 +30,7 @@ groupress框架采用jdbi和hikariCP构建数据库的续写控制层，其中Jd
     })
 ```
 
-从上述代码可知，jdbi是利用了lambda函数进行的事务受控代码的疯转，实现了对执行过程的事务控制。
+从上述代码可知，jdbi是利用了lambda函数进行的事务受控代码的封装，实现了对执行过程的事务控制。
 首此启发，GP框架采用如下机制实现对事务注解的实现：
 
 1. 在应用启动时在JVM中注册ClassFileTransformer，该transformer用于对事务注解@JdbiTran进行处理
@@ -62,7 +62,7 @@ groupress框架采用jdbi和hikariCP构建数据库的续写控制层，其中Jd
 
 ## 事务起点的收敛控制
 
-未解决解决开发中的事务收敛控制，GP框架通过接口标记和@JdbiTran注解配合使用，只有实现了
+为解决开发中的事务收敛控制，GP框架通过接口标记和@JdbiTran注解配合使用，只有实现了
 TranService接口的类中标记的@JdbiTran注解的方法才会进行事务方法转化，其他情况忽略处理。
 这种方式在一定程度上避免了@JdbiTran的随意使用，同时也为类Transformer提供了匹配条件，
 保证Transformer对应用性能无影响。
