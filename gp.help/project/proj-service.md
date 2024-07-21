@@ -154,6 +154,10 @@ public class DemoLinker extends LinkerSupport<OptionResult, DemoLink> implements
     @BindAutowired
     AuditDAO auditDAO;
 
+    public DemoLinker(){
+        register();
+    }
+    
     @Override
     protected OptionResult before() throws ServiceException {
 
@@ -215,6 +219,10 @@ public class DemoAction extends ActionSupport<OptionResult, DemoParam> implement
     @BindAutowired
     AuditDAO auditDAO;
 
+    public DemoAction(){
+        register();
+    }
+    
     @Override
     protected OptionResult _perform(DemoParam param) throws ServiceException {
 

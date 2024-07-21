@@ -449,6 +449,10 @@ public class UserService extends ServiceSupport implements BaseService {
 			builder.orderBy(pquery.getOrderBy(), orderType);
 			builder.limit(pagination.getPageStartRow(), pquery.getPageSize());
 		}
+
+		// paginate the query
+		// paginate("count(" + BaseIdKey.USER.idColumn() + ")", builder, params, pquery);
+
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("SQL : " + builder.toString() + " / PARAMS : " + params.toString());
 		}

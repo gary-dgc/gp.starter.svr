@@ -6,6 +6,7 @@ import com.gp.bind.BindComponent;
 import com.gp.dao.AuditDAO;
 import com.gp.dao.info.AuditInfo;
 import com.gp.exception.ServiceException;
+import com.gp.exec.OptionArg;
 import com.gp.exec.OptionResult;
 import com.gp.svc.ActionSupport;
 import com.gp.svc.BaseService;
@@ -16,12 +17,19 @@ public class DemoAction extends ActionSupport<OptionResult, DemoParam> implement
     @BindAutowired
     AuditDAO auditDAO;
 
+    public DemoAction(){
+        register();
+    }
+
     @Override
     protected OptionResult _perform(DemoParam param) throws ServiceException {
 
         System.out.println("demo action");
 
-        return null;
+        OptionResult result = OptionResult.success("ok");
+        result.addArg(OptionArg.newArg("cnt", 123));
+
+        return result;
     }
 
     @Override

@@ -16,6 +16,10 @@ public class DemoLinker extends LinkerSupport<OptionResult, DemoLink> implements
     @BindAutowired
     AuditDAO auditDAO;
 
+    public DemoLinker(){
+        register();
+    }
+
     @Override
     protected OptionResult before() throws ServiceException {
 
