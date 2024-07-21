@@ -17,6 +17,7 @@ import com.gp.action.param.DemoParam;
 import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
 import com.gp.common.InfoId;
+import com.gp.common.ServiceContext;
 import com.gp.common.SymmetricToken;
 import com.gp.dao.UserDAO;
 import com.gp.dao.ext.Sync1Ext;
@@ -110,5 +111,24 @@ public class DebugService extends ServiceSupport implements BaseService {
 		OptionArg<Integer> rtv = result.getArg("cnt");
 
 		return rtv.getValue();
+	}
+
+	@JdbiTran
+	public String demoMeth(ServiceContext context, String username, String password) throws ServiceException {
+
+		List<UserInfo> list =  userdao.query(cond -> {
+			cond.and("username = '" + username +"'");
+		});
+		UserInfo uinfo = Iterables.getFirst(list, null);
+
+		if (null == uinfo) {
+			abort("excp.unexist", "用户信息");
+		}
+
+		// 在开发调试的情况，以下代码抛出异常，导致事务回滚，方便开发调试
+		assertDebug(context);
+
+		return null;
+
 	}
 }

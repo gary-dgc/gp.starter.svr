@@ -36,4 +36,16 @@ public class DevDebugHandler extends BaseApiSupport{
 		this.sendResult(exchange, result);
 	}
 
+	@WebApi(path="debug-demo", open=true)
+	public void handleDemo(HttpServerExchange exchange) throws Exception {
+
+		LOGGER.debug("Update Trace Code");
+
+		ActionResult result = ActionResult.success("success update trace code");
+
+		abort(exchange, "excp.unexist", "用户信息");
+
+		this.sendResult(exchange, result);
+	}
+
 }

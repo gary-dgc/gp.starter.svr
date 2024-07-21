@@ -57,53 +57,53 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
 ### GP框架基本情况
 
-  * [框架结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
+1. [框架结构（第三方依赖情况及使用说明）](./gp.help/framework.md)
 
-  * [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
+2. [开发包结构依赖关系及说明](./gp.help/framework/lib-structure.md)
 
-  * [其他说明](./gp.help/framework/lib-other.md)
+3. [其他说明](./gp.help/framework/lib-other.md)
 
 ### 特性详解
 
-  * [Bean声明及自动绑定设计及实现机制](./gp.help/framework/bean-bind.md)
+1. [Bean声明及自动绑定设计及实现机制](./gp.help/framework/bean-bind.md)
 
-  * [Bean数据读写机制的设计及实现机制](./gp.help/framework/bean-rw.md)
+2. [Bean数据读写机制的设计及实现机制](./gp.help/framework/bean-rw.md)
 
-  * [数据库事物的处理及实现机制](./gp.help/framework/db-trans.md)
+3. [数据库事物的处理及实现机制](./gp.help/framework/db-trans.md)
 
-  * [SQL代码的DSL开发风格设计及实现](./gp.help/framework/sql-dsl.md)
+4. [SQL代码的DSL开发风格设计及实现](./gp.help/framework/sql-dsl.md)
 
-  * [DAO的设计及实现](./gp.help/framework/dao-intro.md)
+5. [DAO的设计及实现](./gp.help/framework/dao-intro.md)
 
-  * [Service数据服务的设计及实现](./gp.help/framework/service-intro.md)
+6. [Service数据服务的设计及实现](./gp.help/framework/service-intro.md)
 
-  * [API服务的设计及实现机制](./gp.help/framework/api-intro.md) 
+7. [API服务的设计及实现机制](./gp.help/framework/api-intro.md) 
 
-  * [接口服务校验的设计及实现](./gp.help/framework/api-valid.md)
+8. [接口服务校验的设计及实现](./gp.help/framework/api-valid.md)
 
-  * [异步事件的处理机制及设计实现](./gp.help/framework/eventbus-intro.md)
+9. [异步事件的处理机制及设计实现](./gp.help/framework/eventbus-intro.md)
 
-  * [应用启动器介绍](./gp.help/framework/app-intro.md)
+10. [应用启动器介绍](./gp.help/framework/app-intro.md)
   
 ***
 
 ## [启动项目结构](./gp.help/project.md)
 
-  * [应用依赖说明及模块命名规范](./gp.help/project/proj-intro.md)
+1. [应用依赖说明及模块命名规范](./gp.help/project/proj-intro.md)
 
-  * [应用环境及资源配置说明](./gp.help/project/proj-env.md)
+2. [应用环境及资源配置说明](./gp.help/project/proj-env.md)
 
-  * [应用启动过程说明](./gp.help/project/proj-start.md)
+3. [应用启动过程说明](./gp.help/project/proj-start.md)
 
-  * [如何生成DAO](./gp.help/project/proj-dao.md)
+4. [如何生成DAO](./gp.help/project/proj-dao.md)
 
-  * [如何生成服务](./gp.help/project/proj-service.md)
+5. [如何生成服务](./gp.help/project/proj-service.md)
 
-  * [如何实现业务设计](./gp.help/project/proj-svc-adv.md)
+6. [如何实现业务设计](./gp.help/project/proj-svc-adv.md)
 
-  * [如何实现接口服务](./gp.help/project/proj-api.md)
+7. [如何实现接口服务](./gp.help/project/proj-api.md)
 
-  * 事件的捕捉和处理
+8. [事件的捕捉和处理](./gp.help/project/proj-abort.md)
 
 ***
 
