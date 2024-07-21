@@ -92,8 +92,8 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
   * [应用依赖说明及模块命名规范](./gp.help/project/proj-intro.md)
   * [应用环境及资源配置说明](./gp.help/project/proj-env.md)
   * [应用启动过程说明](./gp.help/project/proj-start.md)
-  * 如何生成DAO
-  * 如何生成服务
+  * [如何生成DAO](./gp.help/project/proj-dao.md)
+  * [如何生成服务](./gp.help/project/proj-service.md)
   * 如何实现业务设计
   * 如何实现接口服务
   * 事件的捕捉和处理
