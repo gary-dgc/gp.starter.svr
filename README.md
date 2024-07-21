@@ -111,4 +111,6 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
 1. [数据库准备](./gp.help/deploy/database.md)
 
+2. [应用编译打包过程](./gp.help/deploy/build.md)
 
+3. [PostMan调试](./gp.help/deploy/debug.md)
