@@ -36,7 +36,7 @@ public class DutyAcsDAO extends DAOSupport implements BaseDAO<DutyAcsInfo> {
 
 	public static final RowParser<DutyAcsInfo> INFO_PARSER = (rp, ctx) -> {
 		DutyAcsInfo info = new DutyAcsInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.DUTY_ACS);
+		InfoId id = rp.getInfoId(AppIdKey.DUTY_ACS);
 		info.setInfoId(id);
 
 		info.setDutyId(rp.getLong("duty_id"));
@@ -57,7 +57,7 @@ public class DutyAcsDAO extends DAOSupport implements BaseDAO<DutyAcsInfo> {
 
 	public static final RowMapper<DutyAcsInfo> INFO_MAPPER = (rs, ctx) -> {
 		DutyAcsInfo info = new DutyAcsInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.DUTY_ACS, rs.getLong("access_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.DUTY_ACS, rs.getLong("access_id"));
 		info.setInfoId(id);
 
 		info.setDutyId(rs.getLong("duty_id"));
@@ -80,7 +80,7 @@ public class DutyAcsDAO extends DAOSupport implements BaseDAO<DutyAcsInfo> {
 	 * Default constructor
 	 **/
 	public DutyAcsDAO(){
-		this.daoIdKey = MasterIdKey.DUTY_ACS;
+		this.daoIdKey = AppIdKey.DUTY_ACS;
 	}
 
 	/**

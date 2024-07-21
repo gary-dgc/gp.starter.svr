@@ -61,7 +61,7 @@ public class DeptService extends ServiceSupport implements BaseService {
 	public List<DeptHierInfo> getDeptHierNodes(String deptName, InfoId parentNodeId) {
 
 		List<DeptHierInfo> orglist = null;
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.DEPT_HIER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.DEPT_HIER.schema());
 		Map<String, Object> params = Maps.newHashMap();
 		if (!Strings.isNullOrEmpty(deptName)) {
 			builder.and("dept_name LIKE :name");
@@ -121,7 +121,7 @@ public class DeptService extends ServiceSupport implements BaseService {
 		params.put("dept_ids", oids);
 
 		// count the sub nodes of parent node
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.DEPT_HIER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.DEPT_HIER.schema());
 		builder.column("count(dept_id) as grand_cnt", "dept_pid");
 		builder.where("dept_pid in (SELECT dept_id FROM gp_dept_hier WHERE dept_pid IN ( <dept_ids> ) )");
 		// only query under certain org
@@ -139,7 +139,7 @@ public class DeptService extends ServiceSupport implements BaseService {
 			countMap.put(rs.getLong("dept_pid"), rs.getInt("grand_cnt"));
 		}, params);
 
-		builder = SqlBuilder.select(MasterIdKey.DEPT_HIER.schema());
+		builder = SqlBuilder.select(AppIdKey.DEPT_HIER.schema());
 		builder.where("dept_pid IN ( <dept_ids> ) ");
 		if(IdKeys.isValidId(orgid)) {
 			builder.and("org_id = :org_id");
@@ -168,12 +168,12 @@ public class DeptService extends ServiceSupport implements BaseService {
 		
 		svcctx.setTraceInfo(nodeinfo);
 		
-		InfoId deptId = IdKeys.newInfoId(MasterIdKey.DEPT_HIER);
+		InfoId deptId = IdKeys.newInfoId(AppIdKey.DEPT_HIER);
 		nodeinfo.setInfoId(deptId);
 		
 		GroupInfo group = new GroupInfo();
 		group.setGroupName(nodeinfo.getDeptName() +"'s user group");
-		group.setGroupType(MasterIdKey.DEPT_HIER.name());
+		group.setGroupType(AppIdKey.DEPT_HIER.name());
 		group.setManageId(nodeinfo.getId());
 		
 		svcctx.setTraceInfo(group);
@@ -212,7 +212,7 @@ public class DeptService extends ServiceSupport implements BaseService {
 	public boolean removeDeptHierNode(InfoId deptid) {
 
 		// remove dept group and sub-group users
-		DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.GROUP_USER.schema());
+		DeleteBuilder builder = SqlBuilder.delete(AppIdKey.GROUP_USER.schema());
 		builder.where("group_id IN (SELECT group_id FROM gp_group WHERE manage_id = ?)");
 		builder.or("group_in IN ("
 				+ "SELECT g.group_id FROM gp_group g, gp_dept_flat f " +
@@ -280,7 +280,7 @@ public class DeptService extends ServiceSupport implements BaseService {
 		Long orgId = deptHierDao.row(deptId).getOrgId();
 		Long rootDeptId = deptHierDao.row(KVPair.newPair("org_id", orgId), KVPair.newPair("dept_pid", 99)).getId();
 		// check user exists in groups under organization
-		SelectBuilder builder = SqlBuilder.select(MasterIdKey.GROUP_USER.schema());
+		SelectBuilder builder = SqlBuilder.select(AppIdKey.GROUP_USER.schema());
 		builder.where("group_id IN (" +
 				"select " +
 					"g.group_id " +
@@ -296,7 +296,7 @@ public class DeptService extends ServiceSupport implements BaseService {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("SQL: {} / PARAMS: {}", builder.toString(),params);
 			}
-			InfoId mbrid = IdKeys.getInfoId(MasterIdKey.GROUP_USER, -1l);
+			InfoId mbrid = IdKeys.getInfoId(AppIdKey.GROUP_USER, -1l);
 			query(builder.toString(), (rs) -> {
 				mbrid.setId(rs.getLong("rel_id"));
 			}, params);
@@ -307,7 +307,7 @@ public class DeptService extends ServiceSupport implements BaseService {
 				continue;
 			}
 			GroupUserInfo guinfo = new GroupUserInfo();
-			InfoId rid = IdKeys.newInfoId(MasterIdKey.GROUP_USER);
+			InfoId rid = IdKeys.newInfoId(AppIdKey.GROUP_USER);
 			guinfo.setInfoId(rid);
 			guinfo.setGroupId(groupId);
 			guinfo.setType(GroupUsers.MemberType.USER.name());
@@ -326,7 +326,7 @@ public class DeptService extends ServiceSupport implements BaseService {
 
 		for (Long member : members) {
 			
-			DeleteBuilder builder = SqlBuilder.delete(MasterIdKey.GROUP_USER.schema());
+			DeleteBuilder builder = SqlBuilder.delete(AppIdKey.GROUP_USER.schema());
 			builder.where("group_id IN (SELECT group_id FROM gp_group WHERE manage_id = ?)");
 			builder.and("member_uid = ?");
 
@@ -387,7 +387,7 @@ public class DeptService extends ServiceSupport implements BaseService {
 		
 		if (Objects.nonNull(pquery)) {
 			SelectBuilder countBuilder = builder.clone();
-			countBuilder.column().column("count(" + MasterIdKey.GROUP_USER.idColumn() + ")");
+			countBuilder.column().column("count(" + AppIdKey.GROUP_USER.idColumn() + ")");
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("SQL : {} / PARAMS : {}", countBuilder.build(), params);
 			}

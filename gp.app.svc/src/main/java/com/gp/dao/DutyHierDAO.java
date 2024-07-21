@@ -36,7 +36,7 @@ public class DutyHierDAO extends DAOSupport implements BaseDAO<DutyHierInfo> {
 
 	public static final RowParser<DutyHierInfo> INFO_PARSER = (rp, ctx) -> {
 		DutyHierInfo info = new DutyHierInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.DUTY_HIER);
+		InfoId id = rp.getInfoId(AppIdKey.DUTY_HIER);
 		info.setInfoId(id);
 
 		info.setOrgId(rp.getLong("org_id"));
@@ -57,7 +57,7 @@ public class DutyHierDAO extends DAOSupport implements BaseDAO<DutyHierInfo> {
 
 	public static final RowMapper<DutyHierInfo> INFO_MAPPER = (rs, ctx) -> {
 		DutyHierInfo info = new DutyHierInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.DUTY_HIER, rs.getLong("duty_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.DUTY_HIER, rs.getLong("duty_id"));
 		info.setInfoId(id);
 
 		info.setOrgId(rs.getLong("org_id"));
@@ -80,7 +80,7 @@ public class DutyHierDAO extends DAOSupport implements BaseDAO<DutyHierInfo> {
 	 * Default constructor
 	 **/
 	public DutyHierDAO(){
-		this.daoIdKey = MasterIdKey.DUTY_HIER;
+		this.daoIdKey = AppIdKey.DUTY_HIER;
 	}
 
 	/**

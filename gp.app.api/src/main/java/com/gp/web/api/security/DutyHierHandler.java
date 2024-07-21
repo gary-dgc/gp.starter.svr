@@ -53,7 +53,7 @@ public class DutyHierHandler extends BaseApiSupport {
         DutyHierInfo dutyhier = new DutyHierInfo();
 
         dutyhier.setDutyPid(parentId);
-        dutyhier.setInfoId(IdKeys.newInfoId(MasterIdKey.DUTY_HIER));
+        dutyhier.setInfoId(IdKeys.newInfoId(AppIdKey.DUTY_HIER));
         dutyhier.setDutyEcd(Filters.filterString(params, "duty_ecd"));
         dutyhier.setDutyName(Filters.filterString(params, "duty_name"));
         dutyhier.setHeadcount(Filters.filterInt(params, "headcount"));
@@ -84,7 +84,7 @@ public class DutyHierHandler extends BaseApiSupport {
         ArgsValidator.newValidator(params)
                 .require("duty_id")
                 .validate(true);
-        InfoId nodeId = Filters.filterInfoId(params, "duty_id", MasterIdKey.DUTY_HIER);
+        InfoId nodeId = Filters.filterInfoId(params, "duty_id", AppIdKey.DUTY_HIER);
 
         svcctx.setOperationObject(nodeId);
         DutyHierInfo dutyhier =  new DutyHierInfo();
@@ -116,7 +116,7 @@ public class DutyHierHandler extends BaseApiSupport {
 
         Map<String, Object> params = this.getRequestBody(exchange);
 
-        InfoId id = Filters.filterInfoId(params, "duty_id", MasterIdKey.DUTY_HIER);
+        InfoId id = Filters.filterInfoId(params, "duty_id", AppIdKey.DUTY_HIER);
 
         svcctx.setOperationObject(id);
         if(!dutyService.removeDutyHierNode(id)){
@@ -137,7 +137,7 @@ public class DutyHierHandler extends BaseApiSupport {
                 .require("duty_pid", "org_id")
                 .validate(true);
 
-        InfoId oid = Filters.filterInfoId(paramap, "duty_pid", MasterIdKey.DUTY_HIER);
+        InfoId oid = Filters.filterInfoId(paramap, "duty_pid", AppIdKey.DUTY_HIER);
         Long orgid = Filters.filterLong(paramap, "org_id");
         String keyword = Filters.filterString(paramap, "keyword");
 
@@ -174,7 +174,7 @@ public class DutyHierHandler extends BaseApiSupport {
                 .requireOne("duty_id")
                 .validate(true);
 
-        InfoId oid = Filters.filterInfoId(paramap, "duty_id", MasterIdKey.DUTY_HIER);
+        InfoId oid = Filters.filterInfoId(paramap, "duty_id", AppIdKey.DUTY_HIER);
 
         DutyHierInfo info =  dutyService.getDutyHierNode(oid);
 

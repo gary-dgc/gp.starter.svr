@@ -8,7 +8,7 @@
  ******************************************************************************/
 package com.gp.common;
 
-public enum MasterIdKey implements Identifier{
+public enum AppIdKey implements Identifier{
 	
 	ADDRESS("addr_id"),
 
@@ -47,12 +47,12 @@ public enum MasterIdKey implements Identifier{
 	private final String idColumn;
 	private final boolean trace;
 
-	private MasterIdKey(String idColumn){
+	private AppIdKey(String idColumn){
 		this.idColumn = idColumn;
 		this.trace = false;
 	}
 
-	private MasterIdKey(String idColumn, boolean trace){
+	private AppIdKey(String idColumn, boolean trace){
 		this.idColumn = idColumn;
 		this.trace = trace;
 	}
@@ -96,6 +96,6 @@ public enum MasterIdKey implements Identifier{
 	 * Here Register self Enums into the IdKeys 
 	 **/
 	static {
-		IdKeys.addIdentifier(MasterIdKey.values());
+		IdKeys.addIdentifier(AppIdKey.values());
 	}
 }

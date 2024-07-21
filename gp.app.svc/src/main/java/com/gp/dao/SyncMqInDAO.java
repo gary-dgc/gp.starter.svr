@@ -36,7 +36,7 @@ public class SyncMqInDAO extends DAOSupport implements BaseDAO<SyncMqInInfo> {
 
 	public static final RowParser<SyncMqInInfo> INFO_PARSER = (rp, ctx) -> {
 		SyncMqInInfo info = new SyncMqInInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.SYNC_MQ_IN);
+		InfoId id = rp.getInfoId(AppIdKey.SYNC_MQ_IN);
 		info.setInfoId(id);
 
 		info.setTraceId(rp.getLong("trace_id"));
@@ -57,7 +57,7 @@ public class SyncMqInDAO extends DAOSupport implements BaseDAO<SyncMqInInfo> {
 
 	public static final RowMapper<SyncMqInInfo> INFO_MAPPER = (rs, ctx) -> {
 		SyncMqInInfo info = new SyncMqInInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.SYNC_MQ_IN, rs.getLong("msg_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.SYNC_MQ_IN, rs.getLong("msg_id"));
 		info.setInfoId(id);
 
 		info.setTraceId(rs.getLong("trace_id"));
@@ -80,7 +80,7 @@ public class SyncMqInDAO extends DAOSupport implements BaseDAO<SyncMqInInfo> {
 	 * Default constructor
 	 **/
 	public SyncMqInDAO (){
-		this.daoIdKey = MasterIdKey.SYNC_MQ_IN;
+		this.daoIdKey = AppIdKey.SYNC_MQ_IN;
 	}
 
 	/**

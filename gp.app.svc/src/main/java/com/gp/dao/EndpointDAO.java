@@ -36,7 +36,7 @@ public class EndpointDAO extends DAOSupport implements BaseDAO<EndpointInfo> {
 
 	public static final RowParser<EndpointInfo> INFO_PARSER = (rp, ctx) -> {
 		EndpointInfo info = new EndpointInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.ENDPOINT);
+		InfoId id = rp.getInfoId(AppIdKey.ENDPOINT);
 		info.setInfoId(id);
 
 		info.setEndpointName(rp.getString("endpoint_name"));
@@ -54,7 +54,7 @@ public class EndpointDAO extends DAOSupport implements BaseDAO<EndpointInfo> {
 
 	public static final RowMapper<EndpointInfo> INFO_MAPPER = (rs, ctx) -> {
 		EndpointInfo info = new EndpointInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.ENDPOINT, rs.getLong("endpoint_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.ENDPOINT, rs.getLong("endpoint_id"));
 		info.setInfoId(id);
 
 		info.setEndpointName(rs.getString("endpoint_name"));
@@ -74,7 +74,7 @@ public class EndpointDAO extends DAOSupport implements BaseDAO<EndpointInfo> {
 	 * Default constructor
 	 **/
 	public EndpointDAO (){
-		this.daoIdKey = MasterIdKey.ENDPOINT;
+		this.daoIdKey = AppIdKey.ENDPOINT;
 	}
 
 	/**

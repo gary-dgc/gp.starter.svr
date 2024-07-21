@@ -82,7 +82,7 @@ public class GroupHandler extends BaseApiSupport {
 		
 		ActionResult result = ActionResult.success(getMessage(exchange, "mesg.find.groups"));
 	
-		InfoId grpId = IdKeys.getInfoId(MasterIdKey.GROUP, NumberUtils.toLong(groupIdStr));
+		InfoId grpId = IdKeys.getInfoId(AppIdKey.GROUP, NumberUtils.toLong(groupIdStr));
 		
 		List<GroupUserInfo> users =  groupsvc.getGroupMembers(grpId, name, pquery);
 		
@@ -133,7 +133,7 @@ public class GroupHandler extends BaseApiSupport {
 			acnts.add(NumberUtils.toLong(node));
 		});
 		
-		InfoId grpId = IdKeys.getInfoId(MasterIdKey.GROUP, NumberUtils.toLong(idStr));
+		InfoId grpId = IdKeys.getInfoId(AppIdKey.GROUP, NumberUtils.toLong(idStr));
 		
 		svcctx.setOperationObject(grpId);
 		svcctx.addOperationPredicate("members", acnts);
@@ -168,7 +168,7 @@ public class GroupHandler extends BaseApiSupport {
 			acnts.add(NumberUtils.toLong(mbrNode));
 		}
 		
-		InfoId grpId = IdKeys.getInfoId(MasterIdKey.GROUP, NumberUtils.toLong(idStr));
+		InfoId grpId = IdKeys.getInfoId(AppIdKey.GROUP, NumberUtils.toLong(idStr));
 	
 		svcctx.setOperationObject(grpId);
 		svcctx.addOperationPredicate("members", acnts);
@@ -195,7 +195,7 @@ public class GroupHandler extends BaseApiSupport {
 		ginfo.setGroupName(Filters.filterString(params, "group_name"));
 		ginfo.setDescription(Filters.filterString(params, "description"));
 			
-		InfoId grpId = IdKeys.newInfoId(MasterIdKey.GROUP);
+		InfoId grpId = IdKeys.newInfoId(AppIdKey.GROUP);
 		ginfo.setInfoId(grpId);
 		svcctx.setOperationObject(grpId);
 		svcctx.addOperationPredicate("group", ginfo);
@@ -219,7 +219,7 @@ public class GroupHandler extends BaseApiSupport {
 		ServiceContext svcctx = this.getServiceContext(exchange, Operations.GRP_UPD);
 		
 		GroupInfo ginfo = new GroupInfo();
-		InfoId grpId = IdKeys.getInfoId(MasterIdKey.GROUP, Filters.filterLong(params, "group_id"));
+		InfoId grpId = IdKeys.getInfoId(AppIdKey.GROUP, Filters.filterLong(params, "group_id"));
 		ginfo.setInfoId(grpId);
 		
 		ginfo.setGroupType(Filters.filterString(params, "group_type"));
@@ -253,7 +253,7 @@ public class GroupHandler extends BaseApiSupport {
 			.validate(true);
 		
 		long gId = Filters.filterLong(map, "group_id");
-		InfoId grpId = IdKeys.getInfoId(MasterIdKey.GROUP, gId);
+		InfoId grpId = IdKeys.getInfoId(AppIdKey.GROUP, gId);
 		
 		svcctx.setOperationObject(grpId);
 		groupsvc.removeGroup(svcctx, grpId);

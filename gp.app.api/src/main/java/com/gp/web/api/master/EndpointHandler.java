@@ -103,7 +103,7 @@ public class EndpointHandler extends BaseApiSupport{
 		EndpointInfo info = new EndpointInfo();
 		InfoCopier.copyToInfo(params, info);
 		
-		InfoId epKey = IdKeys.getInfoId(MasterIdKey.ENDPOINT, endpointId);
+		InfoId epKey = IdKeys.getInfoId(AppIdKey.ENDPOINT, endpointId);
 		info.setInfoId(epKey);
 		
 		endpointService.updateEndpoint(svcctx, info);
@@ -123,7 +123,7 @@ public class EndpointHandler extends BaseApiSupport{
 			.validate(true);
 		
 		Long endpointId = Filters.filterLong(params, "endpoint_id");
-		InfoId epKey = IdKeys.getInfoId(MasterIdKey.ENDPOINT, endpointId);
+		InfoId epKey = IdKeys.getInfoId(AppIdKey.ENDPOINT, endpointId);
 	
 		endpointService.removeEndpoint(epKey);
 

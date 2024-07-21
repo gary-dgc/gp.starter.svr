@@ -35,7 +35,7 @@ public class RolePermDAO extends DAOSupport implements BaseDAO<RolePermInfo> {
 
 	public static final RowParser<RolePermInfo> INFO_PARSER = (rp, ctx) -> {
 		RolePermInfo info = new RolePermInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.ROLE_PERM);
+		InfoId id = rp.getInfoId(AppIdKey.ROLE_PERM);
 		info.setInfoId(id);
 
 		info.setRoleId(rp.getLong("role_id"));
@@ -51,7 +51,7 @@ public class RolePermDAO extends DAOSupport implements BaseDAO<RolePermInfo> {
 
 	public static final RowMapper<RolePermInfo> INFO_MAPPER = (rs, ctx) -> {
 		RolePermInfo info = new RolePermInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.ROLE_PERM, rs.getLong("perm_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.ROLE_PERM, rs.getLong("perm_id"));
 		info.setInfoId(id);
 
 		info.setRoleId(rs.getLong("role_id"));
@@ -69,7 +69,7 @@ public class RolePermDAO extends DAOSupport implements BaseDAO<RolePermInfo> {
 	 * Default constructor
 	 **/
 	public RolePermDAO(){
-		this.daoIdKey = MasterIdKey.ROLE_PERM;
+		this.daoIdKey = AppIdKey.ROLE_PERM;
 	}
 
 	/**

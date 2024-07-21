@@ -35,7 +35,7 @@ public class DutyFlatDAO extends DAOSupport implements BaseDAO<DutyFlatInfo> {
 
 	public static final RowParser<DutyFlatInfo> INFO_PARSER = (rp, ctx) -> {
 		DutyFlatInfo info = new DutyFlatInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.DUTY_FLAT);
+		InfoId id = rp.getInfoId(AppIdKey.DUTY_FLAT);
 		info.setInfoId(id);
 
 		info.setDutyPid(rp.getLong("duty_pid"));
@@ -50,7 +50,7 @@ public class DutyFlatDAO extends DAOSupport implements BaseDAO<DutyFlatInfo> {
 
 	public static final RowMapper<DutyFlatInfo> INFO_MAPPER = (rs, ctx) -> {
 		DutyFlatInfo info = new DutyFlatInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.DUTY_FLAT, rs.getLong("flat_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.DUTY_FLAT, rs.getLong("flat_id"));
 		info.setInfoId(id);
 
 		info.setDutyPid(rs.getLong("duty_pid"));
@@ -67,7 +67,7 @@ public class DutyFlatDAO extends DAOSupport implements BaseDAO<DutyFlatInfo> {
 	 * Default constructor
 	 **/
 	public DutyFlatDAO (){
-		this.daoIdKey = MasterIdKey.DUTY_FLAT;
+		this.daoIdKey = AppIdKey.DUTY_FLAT;
 	}
 
 	/**

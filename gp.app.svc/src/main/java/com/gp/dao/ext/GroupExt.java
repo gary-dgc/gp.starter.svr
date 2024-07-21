@@ -5,8 +5,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.gp.bind.BindComponent;
-import com.gp.common.MasterIdKey;
-import com.gp.dao.BaseDAO;
+import com.gp.common.AppIdKey;
 import com.gp.dao.DAOSupport;
 import com.gp.dao.ExtendDAO;
 import com.gp.sql.SqlBuilder;
@@ -30,7 +29,7 @@ public class GroupExt extends DAOSupport implements ExtendDAO {
     public Set<Long> getUserGroups(Long userId, Long workgroupId){
         SelectBuilder select = SqlBuilder.select();
         select.column("g.group_id", "func_group_ancestry(g.group_id) AS ancestry_ids");
-        select.from(MasterIdKey.GROUP.schema() + " AS g", MasterIdKey.GROUP_USER.schema() + " AS gu");
+        select.from(AppIdKey.GROUP.schema() + " AS g", AppIdKey.GROUP_USER.schema() + " AS gu");
         select.where("g.group_id = gu.group_id");
         select.and("gu.member_uid = ?");
         List<Object> params = Lists.newArrayList();

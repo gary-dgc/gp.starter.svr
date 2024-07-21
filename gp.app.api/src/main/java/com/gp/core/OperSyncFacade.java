@@ -155,7 +155,7 @@ public class OperSyncFacade {
 			msgOut.setState(Syncs.MessageState.PENDING.name());
 			if(syncRoute.isTargetDest(Syncs.SyncOrigin.INTERN)) {
 
-				InfoId outId = IdKeys.newInfoId(MasterIdKey.SYNC_MQ_OUT);
+				InfoId outId = IdKeys.newInfoId(AppIdKey.SYNC_MQ_OUT);
 				msgOut.setInfoId(outId);
 
 				Set<String> destKey = syncRoute.getDestKey(Syncs.SyncOrigin.INTERN);

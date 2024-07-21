@@ -35,7 +35,7 @@ public class DeptHierDAO extends DAOSupport implements BaseDAO<DeptHierInfo> {
 
 	public static final RowParser<DeptHierInfo> INFO_PARSER = (rp, ctx) -> {
 		DeptHierInfo info = new DeptHierInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.DEPT_HIER);
+		InfoId id = rp.getInfoId(AppIdKey.DEPT_HIER);
 		info.setInfoId(id);
 
 		info.setOrgId(rp.getLong("org_id"));
@@ -52,7 +52,7 @@ public class DeptHierDAO extends DAOSupport implements BaseDAO<DeptHierInfo> {
 
 	public static final RowMapper<DeptHierInfo> INFO_MAPPER = (rs, ctx) -> {
 		DeptHierInfo info = new DeptHierInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.DEPT_HIER, rs.getLong("dept_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.DEPT_HIER, rs.getLong("dept_id"));
 		info.setInfoId(id);
 
 		info.setOrgId(rs.getLong("org_id"));
@@ -71,7 +71,7 @@ public class DeptHierDAO extends DAOSupport implements BaseDAO<DeptHierInfo> {
 	 * Default constructor
 	 **/
 	public DeptHierDAO (){
-		this.daoIdKey = MasterIdKey.DEPT_HIER;
+		this.daoIdKey = AppIdKey.DEPT_HIER;
 	}
 
 	/**

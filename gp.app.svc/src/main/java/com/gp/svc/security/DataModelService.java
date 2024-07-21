@@ -1,13 +1,12 @@
 package com.gp.svc.security;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.gp.bind.BindAutowired;
 import com.gp.bind.BindComponent;
 import com.gp.common.IdKeys;
 import com.gp.common.InfoId;
-import com.gp.common.MasterIdKey;
+import com.gp.common.AppIdKey;
 import com.gp.common.ServiceContext;
 import com.gp.dao.DataModelDAO;
 import com.gp.dao.info.DataModelInfo;
@@ -100,7 +99,7 @@ public class DataModelService extends ServiceSupport implements BaseService {
         if (Objects.nonNull(pquery)) {
 
             SelectBuilder countBuilder = builder.clone();
-            countBuilder.column().column("count(d." + MasterIdKey.DATA_MODEL.idColumn() + ")");
+            countBuilder.column().column("count(d." + AppIdKey.DATA_MODEL.idColumn() + ")");
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("SQL : {} / PARAMS : {}", countBuilder.build(), params);
             }

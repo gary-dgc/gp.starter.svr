@@ -35,7 +35,7 @@ public class DeptFlatDAO extends DAOSupport implements BaseDAO<DeptFlatInfo> {
 
 	public static final RowParser<DeptFlatInfo> INFO_PARSER = (rp, ctx) -> {
 		DeptFlatInfo info = new DeptFlatInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.DEPT_FLAT);
+		InfoId id = rp.getInfoId(AppIdKey.DEPT_FLAT);
 		info.setInfoId(id);
 
 		info.setDeptPid(rp.getLong("dept_pid"));
@@ -50,7 +50,7 @@ public class DeptFlatDAO extends DAOSupport implements BaseDAO<DeptFlatInfo> {
 
 	public static final RowMapper<DeptFlatInfo> INFO_MAPPER = (rs, ctx) -> {
 		DeptFlatInfo info = new DeptFlatInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.DEPT_FLAT, rs.getLong("flat_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.DEPT_FLAT, rs.getLong("flat_id"));
 		info.setInfoId(id);
 
 		info.setDeptPid(rs.getLong("dept_pid"));
@@ -67,7 +67,7 @@ public class DeptFlatDAO extends DAOSupport implements BaseDAO<DeptFlatInfo> {
 	 * Default constructor
 	 **/
 	public DeptFlatDAO (){
-		this.daoIdKey = MasterIdKey.DEPT_FLAT;
+		this.daoIdKey = AppIdKey.DEPT_FLAT;
 	}
 
 	/**

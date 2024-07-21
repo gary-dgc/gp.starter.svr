@@ -35,7 +35,7 @@ public class UserLoginDAO extends DAOSupport implements BaseDAO<UserLoginInfo> {
 
 	public static final RowParser<UserLoginInfo> INFO_PARSER = (rp, ctx) -> {
 		UserLoginInfo info = new UserLoginInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.USER_LOGIN);
+		InfoId id = rp.getInfoId(AppIdKey.USER_LOGIN);
 		info.setInfoId(id);
 
 		info.setUserId(rp.getLong("user_id"));
@@ -51,7 +51,7 @@ public class UserLoginDAO extends DAOSupport implements BaseDAO<UserLoginInfo> {
 
 	public static final RowMapper<UserLoginInfo> INFO_MAPPER = (rs, ctx) -> {
 		UserLoginInfo info = new UserLoginInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.USER_LOGIN, rs.getLong("rel_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.USER_LOGIN, rs.getLong("rel_id"));
 		info.setInfoId(id);
 
 		info.setUserId(rs.getLong("user_id"));
@@ -69,7 +69,7 @@ public class UserLoginDAO extends DAOSupport implements BaseDAO<UserLoginInfo> {
 	 * Default constructor
 	 **/
 	public UserLoginDAO (){
-		this.daoIdKey = MasterIdKey.USER_LOGIN;
+		this.daoIdKey = AppIdKey.USER_LOGIN;
 	}
 
 	/**

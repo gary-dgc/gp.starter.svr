@@ -35,7 +35,7 @@ public class UserTitleDAO extends DAOSupport implements BaseDAO<UserTitleInfo> {
 
 	public static final RowParser<UserTitleInfo> INFO_PARSER = (rp, ctx) -> {
 		UserTitleInfo info = new UserTitleInfo();
-		InfoId id = rp.getInfoId(MasterIdKey.USER_TITLE);
+		InfoId id = rp.getInfoId(AppIdKey.USER_TITLE);
 		info.setInfoId(id);
 
 		info.setUserId(rp.getLong("user_id"));
@@ -51,7 +51,7 @@ public class UserTitleDAO extends DAOSupport implements BaseDAO<UserTitleInfo> {
 
 	public static final RowMapper<UserTitleInfo> INFO_MAPPER = (rs, ctx) -> {
 		UserTitleInfo info = new UserTitleInfo();
-		InfoId id = IdKeys.getInfoId(MasterIdKey.USER_TITLE, rs.getLong("title_id"));
+		InfoId id = IdKeys.getInfoId(AppIdKey.USER_TITLE, rs.getLong("title_id"));
 		info.setInfoId(id);
 
 		info.setUserId(rs.getLong("user_id"));
@@ -69,7 +69,7 @@ public class UserTitleDAO extends DAOSupport implements BaseDAO<UserTitleInfo> {
 	 * Default constructor
 	 **/
 	public UserTitleDAO (){
-		this.daoIdKey = MasterIdKey.USER_TITLE;
+		this.daoIdKey = AppIdKey.USER_TITLE;
 	}
 
 	/**
