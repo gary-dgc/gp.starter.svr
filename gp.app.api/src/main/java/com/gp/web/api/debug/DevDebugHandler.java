@@ -26,7 +26,7 @@ public class DevDebugHandler extends BaseApiSupport{
 		debugService = getBean(DebugService.class);
 	}
 
-	@WebApi(path="debug-test", open=true)
+	@WebApi(path="debug-test", open=true, method = "GET")
 	public void handleUpdateTrace(HttpServerExchange exchange) throws Exception {
 
 		LOGGER.debug("Update Trace Code");
@@ -36,7 +36,7 @@ public class DevDebugHandler extends BaseApiSupport{
 		this.sendResult(exchange, result);
 	}
 
-	@WebApi(path="debug-demo", open=true)
+	@WebApi(path="debug-demo", open=true, method = "GET")
 	public void handleDemo(HttpServerExchange exchange) throws Exception {
 
 		LOGGER.debug("Update Trace Code");
