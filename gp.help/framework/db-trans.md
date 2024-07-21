@@ -1,6 +1,6 @@
 # 数据库事物的处理及实现机制
 
-groupress框架采用jdbi和hikariCP构建数据库的续写控制层，其中Jdbi提供了数据库的事物控制管理。
+groupress框架采用jdbi和hikariCP构建数据库的读写控制层，其中Jdbi提供了数据库的事物控制管理。
 
 熟悉spring开发那么一定对@Transactional注解的使用非常了解。注解的使用确实为开发提供了极大的
 便捷性，但是灵活性也带来了新的问题，估计项目经理对开发中的不定时出现的@Transactional一定深恶痛绝。
