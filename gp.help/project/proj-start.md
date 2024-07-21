@@ -57,7 +57,9 @@
    	         });
           }
          ```
-   5. CoreEngine.startup()启动过程完成
+   5. 延续START事件内部的处理 new CoreDelegate();
+   
+   6. CoreEngine.startup()启动过程完成
    
 5. light-4j启动过程结束
 
