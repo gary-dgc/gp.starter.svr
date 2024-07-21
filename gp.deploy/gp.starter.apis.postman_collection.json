@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "f540be20-b044-4a42-a321-0c5b4441b0d3",
+		"name": "gp.starter.apis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14426676",
+		"_collection_link": "https://planetary-sunset-916014.postman.co/workspace/gpress-lab~fae2bf9b-b938-486a-9ce9-3078812fa96e/collection/14426676-f540be20-b044-4a42-a321-0c5b4441b0d3?action=share&source=collection_link&creator=14426676"
+	},
+	"item": [
+		{
+			"name": "openapi",
+			"item": [
+				{
+					"name": "debug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}{{context}}/opapi/debug-test",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}{{context}}",
+							"path": [
+								"opapi",
+								"debug-test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}{{context}}/opapi/ping",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}{{context}}",
+							"path": [
+								"opapi",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "users-query",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"source_id\": 9999,\n    \"category\": null,\n    \"keyword\": \"\",\n    \"state\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}{{context}}/gpapi/users-query",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}{{context}}",
+							"path": [
+								"gpapi",
+								"users-query"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{Authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"/**",
+							" * There scripts read config variables out of collection scope vars",
+							" * and write back [Authorzation] var, then Authoriation setting be ",
+							" * refreshed automatically.",
+							" * ",
+							" * @author gdiao",
+							" * @version 0.4 2020-09-10 ",
+							" *",
+							"**/",
+							"var postdata = {",
+							"    grant_type: pm.collectionVariables.get(\"grant_type\"),",
+							"    username: pm.collectionVariables.get(\"username\"),",
+							"    password: pm.collectionVariables.get(\"password\"),",
+							"    device: pm.collectionVariables.get(\"device\"),",
+							"    client_id: pm.collectionVariables.get(\"client_id\"),",
+							"    client_secret: pm.collectionVariables.get(\"client_secret\"),",
+							"    scope: pm.collectionVariables.get(\"scope\")",
+							"}",
+							"",
+							"var host = pm.collectionVariables.get(\"host\");",
+							"var port = pm.collectionVariables.get(\"port\");",
+							"var context = pm.collectionVariables.get(\"context\");",
+							"",
+							"var pingUrl = \"http://\" + host + \":\" + port + context + \"gpapi/ping\";",
+							"var authUrl = \"http://\" + host + \":\" + port + context + \"gpapi/authorize\";",
+							"",
+							"var authRequest = {",
+							"    url: authUrl,",
+							"    method: 'POST',",
+							"    header: \"Content-Type:application/json\",",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify(postdata)",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest({",
+							"    url: pingUrl,",
+							"    method: 'GET'",
+							"}, function (err, response) {",
+							"    var token = response.json().data.token;",
+							"    var trace = response.json().data.trace;",
+							"    var hash = CryptoJS.HmacSHA256(postdata.password, token);",
+							"    postdata.password = CryptoJS.enc.Base64.stringify(hash) + '.' + trace;",
+							"",
+							"    authRequest.body.raw = JSON.stringify(postdata)",
+							"",
+							"    pm.sendRequest(authRequest, function(err, response){",
+							"        var resp = response.json()",
+							"        pm.collectionVariables.set(\"Authorization\", resp.data.access_token);",
+							"    });",
+							"}",
+							");"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "grant_type",
+			"value": "password"
+		},
+		{
+			"key": "username",
+			"value": "dev1"
+		},
+		{
+			"key": "password",
+			"value": "1"
+		},
+		{
+			"key": "device",
+			"value": "postman"
+		},
+		{
+			"key": "client_id",
+			"value": "1101"
+		},
+		{
+			"key": "client_secret",
+			"value": "sslssl"
+		},
+		{
+			"key": "scope",
+			"value": "read"
+		},
+		{
+			"key": "host",
+			"value": "gbl.groupress.cn"
+		},
+		{
+			"key": "port",
+			"value": "8081"
+		},
+		{
+			"key": "context",
+			"value": "/"
+		},
+		{
+			"key": "Authorization",
+			"value": ""
+		}
+	]
+}

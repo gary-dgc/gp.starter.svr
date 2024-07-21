@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.44)
 # Database: gpress_starter
-# Generation Time: 2024-07-21 08:00:03 +0000
+# Generation Time: 2024-07-21 08:44:47 +0000
 # ************************************************************
 
 
@@ -21,34 +21,45 @@ SET NAMES utf8mb4;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Dump of table gp_audit
+# Dump of table gp_sys_option
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `gp_audit`;
+DROP TABLE IF EXISTS `gp_sys_option`;
 
-CREATE TABLE `gp_audit` (
-  `audit_id` bigint(20) NOT NULL COMMENT 'audit snowflake id',
-  `instance_id` bigint(20) NOT NULL COMMENT 'audit snowflake id',
-  `client` varchar(128) DEFAULT NULL COMMENT 'client device id',
-  `host` varchar(32) DEFAULT NULL COMMENT 'client host ip address',
-  `app` varchar(32) DEFAULT NULL COMMENT 'application abbr which launch request',
-  `path` varchar(255) DEFAULT NULL COMMENT 'the api path',
-  `version` varchar(32) DEFAULT NULL COMMENT 'version of application',
-  `device` varchar(255) DEFAULT NULL COMMENT 'the device information',
-  `subject` varchar(16) NOT NULL COMMENT 'principal subject',
-  `operation` varchar(32) NOT NULL COMMENT 'request operation',
-  `object_id` varchar(48) DEFAULT NULL COMMENT 'operation target object',
-  `predicates` varchar(2048) DEFAULT NULL COMMENT 'the predicates json string',
-  `state` varchar(10) DEFAULT NULL COMMENT 'state of request',
-  `message` longtext COMMENT 'message of request',
-  `audit_time` datetime DEFAULT NULL COMMENT 'audit time',
-  `elapsed_time` int(11) DEFAULT NULL COMMENT 'fulfill request time expense in millisecond',
+CREATE TABLE `gp_sys_option` (
+  `sys_opt_id` bigint(16) NOT NULL,
+  `opt_group` varchar(48) DEFAULT NULL COMMENT 'the option group',
+  `opt_key` varchar(48) NOT NULL COMMENT 'the option key',
+  `opt_value` varchar(512) DEFAULT NULL COMMENT 'the option value',
+  `description` varchar(128) DEFAULT NULL COMMENT 'description',
   `modifier_uid` bigint(11) DEFAULT NULL,
   `modify_time` datetime DEFAULT NULL,
   `del_flag` tinyint(4) DEFAULT '0',
-  PRIMARY KEY (`audit_id`)
+  PRIMARY KEY (`sys_opt_id`),
+  KEY `opt_key_idx` (`opt_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `gp_sys_option` WRITE;
+/*!40000 ALTER TABLE `gp_sys_option` DISABLE KEYS */;
+
+INSERT INTO `gp_sys_option` (`sys_opt_id`, `opt_group`, `opt_key`, `opt_value`, `description`, `modifier_uid`, `modify_time`, `del_flag`)
+VALUES
+	(11,'BASIC','query.max.rows','20000','最大查询记录数量',1,'2018-08-30 11:48:21',NULL),
+	(12,'BASIC','system.option.ttl','300','系统参数缓存时间',1,'2018-08-30 11:48:21',0),
+	(13,'SECURITY','security.hash.salt','demosalt','加密salt内容',1,'2018-08-30 11:48:21',NULL),
+	(15,'BASIC','audit.enable','true','审计开关',1,'2018-08-30 11:48:21',0),
+	(16,'BASIC','node.app.key','appkey1','node app key',2,'2019-06-09 19:54:49',NULL),
+	(17,'BASIC','node.app.secret','1','node app secret',2,'2019-06-09 19:54:46',NULL),
+	(18,'BASIC','system.version','1.0','系统版本',1,'2018-08-30 11:48:21',NULL),
+	(19,'BASIC','system.app','gpress.web','应用名称',1,'2018-08-30 11:48:21',NULL),
+	(20,'BASIC','valid.msg.resources','classpath:messages','消息文件路径',1,'2018-08-30 11:48:21',NULL),
+	(21,'BASIC','cabinet.version.enable','true','默认是否打开版本控制',1,'2018-08-30 11:48:21',NULL),
+	(22,'SECURITY','security.jwt.secret','!@#$FDD#$sd#','JWT加密密码',1,'2018-08-30 11:48:21',NULL),
+	(36,'NETWORK','file.access','http://192.168.192.57:8082','文件访问地址',1,'2020-04-04 19:31:03',0),
+	(38,'SECURITY','symmetric.crypto.iv','IeeJ#}pr6%nA3ydE','对称加密向量',1,'2019-04-04 15:17:44',NULL);
+
+/*!40000 ALTER TABLE `gp_sys_option` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
