@@ -87,7 +87,7 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
   
 ***
 
-## [启动项目结构](./gp.help/project.md)
+## 启动项目结构
 
 1. [应用依赖说明及模块命名规范](./gp.help/project/proj-intro.md)
 
