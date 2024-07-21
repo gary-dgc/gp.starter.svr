@@ -387,3 +387,6 @@ GP框架目前已经发布到[Central Repository](https://central.sonatype.com/s
 ```
 
 5. 在应用模块中准备filter信息，如：src/main/filters/env-dev.properties中可以配置开发环境参数
+
+*其他：*
+因为项目是多模块配置，开发中可以根据实际情况创建模块。
