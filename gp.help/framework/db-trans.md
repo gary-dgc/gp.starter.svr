@@ -31,7 +31,7 @@ groupress框架采用jdbi和hikariCP构建数据库的读写控制层，其中Jd
 ```
 
 从上述代码可知，jdbi是利用了lambda函数进行的事务受控代码的封装，实现了对执行过程的事务控制。
-首此启发，GP框架采用如下机制实现对事务注解的实现：
+受此启发，GP框架采用如下机制实现对事务注解的实现：
 
 1. 在应用启动时在JVM中注册ClassFileTransformer，该transformer用于对事务注解@JdbiTran进行处理
 2. 类加载后利用ASM的ClassVisitor对内部全部方法遍历，查找标记@JdbiTran注解的方法
