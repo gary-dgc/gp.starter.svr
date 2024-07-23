@@ -2,14 +2,18 @@ package com.gp.core;
 
 import com.gp.audit.SyncEventload;
 import com.gp.bind.BindScanner;
+import com.gp.bind.IBeanBinder;
 import com.gp.common.*;
+import com.gp.dao.info.AuditInfo;
 import com.gp.dao.info.OperationInfo;
 import com.gp.dao.info.SyncMqOutInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.exception.BaseException;
 import com.gp.info.BaseIdKey;
+import com.gp.info.InfoCopier;
 import com.gp.mq.IProducer;
 import com.gp.mq.MQMesg;
+import com.gp.svc.AuditService;
 import com.gp.svc.CommonService;
 import com.gp.svc.OperationService;
 import com.gp.svc.SystemService;
@@ -18,21 +22,24 @@ import com.gp.svc.sync.SyncInternService;
 import com.gp.sync.SyncProcesses;
 import com.gp.sync.SyncRoute;
 import com.gp.util.JsonUtils;
+import com.gp.web.model.Audit;
 import com.gp.web.model.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * This class handle the operation events
  * 
  **/
-public class OperSyncFacade {
+public class PersistFacade implements IBeanBinder {
 
-	static Logger LOGGER = LoggerFactory.getLogger(OperSyncFacade.class);
+	static Logger LOGGER = LoggerFactory.getLogger(PersistFacade.class);
 
+	private final AuditService auditService;
 	private OperationService operationService;
 	private SecurityService securityservice;
 	private SystemService systemService;
@@ -41,27 +48,46 @@ public class OperSyncFacade {
 
 	private IProducer<?> producer ;
 
-	private static OperSyncFacade Instance;
+	private static PersistFacade Instance;
 
-	private OperSyncFacade(){
+	private PersistFacade(){
 
-		operationService = BindScanner.instance().getBean(OperationService.class);
-		securityservice = BindScanner.instance().getBean(SecurityService.class);
-		systemService = BindScanner.instance().getBean(SystemService.class);
-		commonService = BindScanner.instance().getBean(CommonService.class);
+		auditService = getBean(AuditService.class);
+
+		operationService = getBean(OperationService.class);
+		securityservice = getBean(SecurityService.class);
+		systemService = getBean(SystemService.class);
+		commonService = getBean(CommonService.class);
 
 		syncService =  BindScanner.instance().getBean(SyncInternService.class);
 
 		//producer = MQManager.instance().getProducer(MQManager.TYPE_ROCKET);
 	}
 
-	public static OperSyncFacade instance() {
+	public static PersistFacade instance() {
 
 		if(null == Instance) {
-			Instance = new OperSyncFacade();
+			Instance = new PersistFacade();
 		}
 
 		return Instance;
+	}
+
+
+	public void persistAudit(Audit audit)  {
+
+		if(Objects.isNull(audit))
+			return ;
+
+		AuditInfo info = new AuditInfo();
+		InfoCopier.copy(audit, info);
+		info.setPath(audit.getApi());
+		info.setInfoId(audit.getAuditId());
+		info.setModifierUid(GroupUsers.ADMIN_UID.getId());
+		info.setModifyTime(new Date(System.currentTimeMillis()));
+
+		auditService.addAudit( info );
+
 	}
 
 	/**

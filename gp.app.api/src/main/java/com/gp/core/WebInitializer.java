@@ -8,10 +8,14 @@ import com.gp.common.*;
 import com.gp.config.AppStartupHook;
 import com.gp.db.JdbiContext;
 import com.gp.exception.BaseException;
+import com.gp.exec.OptionArg;
 import com.gp.launch.CoreInitializer;
 import com.gp.launch.Lifecycle.LifeState;
+import com.gp.util.Lambdas;
 import com.gp.web.client.NodeAccess;
+import com.gp.web.model.Audit;
 import com.gp.web.model.AuthenData;
+import com.gp.web.model.Operation;
 import com.gp.web.util.ConfigUtils;
 import com.networknt.config.Config;
 import com.networknt.service.SingletonServiceFactory;
@@ -22,6 +26,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * The initializer try to set the core event listeners to Disruptor instance.
@@ -62,9 +68,12 @@ public class WebInitializer extends CoreInitializer{
 			LOGGER.debug("Initialize the datasources");
 			initialDataSource();
 			
-			LOGGER.debug("Initialize the DAOs and Services with BeanScanner");
+			LOGGER.debug("Initialize the DAOs and Services");
 			initialService();
-			
+
+			LOGGER.debug("Initialize persist");
+			initialPersist();
+
 			LOGGER.debug("Initialize the CoreDelegate");
 			// initialize the engine
 			CoreDelegate coreFacade = new CoreDelegate();
@@ -72,6 +81,19 @@ public class WebInitializer extends CoreInitializer{
 
 		});
 		
+	}
+
+	private void initialPersist(){
+
+
+		Consumer<Audit> auditor = PersistFacade.instance()::persistAudit;
+		CoreEngine.enableFeature(CoreConsts.FEATURE_AUDIT, OptionArg.newArg("auditor", auditor));
+
+		Function<Operation, InfoId> oper = Lambdas.rethrow(PersistFacade.instance()::persistOperation);
+		CoreEngine.enableFeature(CoreConsts.FEATURE_TRACE, OptionArg.newArg("persist", oper));
+
+		Consumer<Operation> sync = Lambdas.rethrow(PersistFacade.instance()::persistSync);
+		CoreEngine.enableFeature(CoreConsts.FEATURE_SYNC, OptionArg.newArg("sync", sync));
 	}
 
 	private void initialService() {

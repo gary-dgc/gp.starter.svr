@@ -3,17 +3,13 @@ package com.gp.core;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies.NamingBase;
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.gp.bind.BindScanner;
 import com.gp.bind.IBeanBinder;
 import com.gp.common.*;
 import com.gp.common.GroupUsers.AuthenType;
 import com.gp.dao.info.*;
 import com.gp.exception.BaseException;
-import com.gp.exception.ServiceException;
 import com.gp.exec.OptionArg;
 import com.gp.info.BaseIdKey;
 import com.gp.info.InfoCopier;
@@ -27,9 +23,7 @@ import com.gp.util.JsonUtils;
 import com.gp.util.JwtTokenUtils;
 import com.gp.util.Lambdas;
 import com.gp.util.NumberUtils;
-import com.gp.web.ActionResult;
 import com.gp.web.model.*;
-import com.gp.web.util.WebUtils;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.lang.JoseException;
@@ -80,30 +74,6 @@ public class CoreDelegate implements CoreAdapter, IBeanBinder {
 		initial();
 		AuthenTypes.add(AuthenType.INTERIM);
 
-		Consumer<Audit> auditor = this::persistAudit;
-		CoreEngine.enableFeature(CoreConsts.FEATURE_AUDIT, OptionArg.newArg("auditor", auditor));
-
-		Function<Operation, InfoId> oper = Lambdas.rethrow(OperSyncFacade.instance()::persistOperation);
-		CoreEngine.enableFeature(CoreConsts.FEATURE_TRACE, OptionArg.newArg("persist", oper));
-
-		Consumer<Operation> sync = Lambdas.rethrow(OperSyncFacade.instance()::persistSync);
-		CoreEngine.enableFeature(CoreConsts.FEATURE_SYNC, OptionArg.newArg("sync", sync));
-	}
-
-	public void persistAudit(Audit audit)  {
-		
-		if(Objects.isNull(audit))
-			return ;
-		
-		AuditInfo info = new AuditInfo();
-		InfoCopier.copy(audit, info);
-		info.setPath(audit.getApi());
-		info.setInfoId(audit.getAuditId());
-		info.setModifierUid(GroupUsers.ADMIN_UID.getId());
-		info.setModifyTime(new Date(System.currentTimeMillis()));
-		
-		auditService.addAudit( info );
-		
 	}
 
 	@Override

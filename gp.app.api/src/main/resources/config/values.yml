@@ -1,0 +1,4 @@
+# this is a dummy file, just for hide the duplicated logs in server console
+datasource.dummy: true
+app-status.dummy: true
+handler.dummy: true
