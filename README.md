@@ -72,7 +72,7 @@ Spring框架经过多年的发展，它的优点无须赘述，至于缺点见�
 
 2. [Bean数据读写机制的设计及实现机制](./gp.help/framework/bean-rw.md)
 
-3. [数据库事物的处理及实现机制](./gp.help/framework/db-trans.md)
+3. [数据库事务的处理及实现机制](./gp.help/framework/db-trans.md)
 
 4. [SQL代码的DSL开发风格设计及实现](./gp.help/framework/sql-dsl.md)
 
