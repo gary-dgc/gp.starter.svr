@@ -27,7 +27,9 @@ public class AppHandlerProvider implements HandlerProvider, BaseApiProvider {
     	
     	// Detect api handler in specified package
     	this.detectHandlers(routing, "com.gp.web.api");
-    	
+
+		this.initialDebugHandler(routing);
+
     	// Detect api handler in specified package
     	this.detectHandlers(routing, "com.gp.web.transfer");
         
