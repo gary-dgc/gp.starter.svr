@@ -12,11 +12,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.gp.bind.BindScanner;
 import com.gp.common.*;
-import com.gp.dao.info.*;
+import com.gp.dao.info.DataModelInfo;
+import com.gp.dao.info.OrgHierInfo;
+import com.gp.dao.info.RoleInfo;
+import com.gp.dao.info.UserInfo;
 import com.gp.exception.BaseException;
 import com.gp.exception.WebException;
 import com.gp.info.DataBuilder;
-import com.gp.svc.CommonService;
 import com.gp.svc.master.OrgHierService;
 import com.gp.svc.security.DataModelService;
 import com.gp.svc.security.RolePermService;
@@ -43,7 +45,6 @@ public class CommonHandler extends BaseApiSupport {
 	
 	private OrgHierService orghierService;
 
-	private CommonService commonService;
 
 	private DataModelService dataModelService;
 
@@ -52,7 +53,6 @@ public class CommonHandler extends BaseApiSupport {
 		userService = BindScanner.instance().getBean(UserService.class);
 		rolePermService = BindScanner.instance().getBean(RolePermService.class);
 		orghierService = BindScanner.instance().getBean(OrgHierService.class);
-		commonService = BindScanner.instance().getBean(CommonService.class);
 		dataModelService = BindScanner.instance().getBean(DataModelService.class);
 	}
 

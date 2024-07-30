@@ -18,7 +18,6 @@ import com.gp.exception.CoreException;
 import com.gp.info.DataBuilder;
 import com.gp.info.Principal;
 import com.gp.paging.PageQuery;
-import com.gp.svc.CommonService;
 import com.gp.svc.master.DeptService;
 import com.gp.util.NumberUtils;
 import com.gp.validate.ArgsValidator;
@@ -40,12 +39,9 @@ public class DeptHierHandler extends BaseApiSupport {
 	static Logger LOGGER = LoggerFactory.getLogger(DeptHierHandler.class);
 	
 	private DeptService depthiderSvc;
-	private CommonService commonSvc;
-	
+
 	public DeptHierHandler() {
 		depthiderSvc = BindScanner.instance().getBean(DeptService.class);
-		commonSvc = BindScanner.instance().getBean(CommonService.class);
-		
 	}
 
 	@WebApi(path="dept-node-add")

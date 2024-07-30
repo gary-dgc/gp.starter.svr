@@ -14,7 +14,6 @@ import com.gp.info.InfoCopier;
 import com.gp.mq.IProducer;
 import com.gp.mq.MQMesg;
 import com.gp.svc.AuditService;
-import com.gp.svc.CommonService;
 import com.gp.svc.OperationService;
 import com.gp.svc.SystemService;
 import com.gp.svc.security.SecurityService;
@@ -43,7 +42,7 @@ public class PersistFacade implements IBeanBinder {
 	private OperationService operationService;
 	private SecurityService securityservice;
 	private SystemService systemService;
-	private CommonService commonService;
+
 	private SyncInternService syncService;
 
 	private IProducer<?> producer ;
@@ -57,7 +56,6 @@ public class PersistFacade implements IBeanBinder {
 		operationService = getBean(OperationService.class);
 		securityservice = getBean(SecurityService.class);
 		systemService = getBean(SystemService.class);
-		commonService = getBean(CommonService.class);
 
 		syncService =  BindScanner.instance().getBean(SyncInternService.class);
 

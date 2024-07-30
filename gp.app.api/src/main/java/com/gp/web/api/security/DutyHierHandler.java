@@ -7,7 +7,6 @@ import com.gp.exception.BaseException;
 import com.gp.info.DataBuilder;
 import com.gp.info.FilterMode;
 import com.gp.info.Principal;
-import com.gp.svc.CommonService;
 import com.gp.svc.security.DutyHierService;
 import com.gp.validate.ArgsValidator;
 import com.gp.web.ActionResult;
@@ -27,11 +26,9 @@ public class DutyHierHandler extends BaseApiSupport {
     static Logger LOGGER = LoggerFactory.getLogger(DutyHierHandler.class);
 
     private DutyHierService dutyService;
-    private CommonService commonService;
 
     public DutyHierHandler() {
         dutyService = BindScanner.instance().getBean(DutyHierService.class);
-        commonService = BindScanner.instance().getBean(CommonService.class);
     }
 
     @WebApi(path="duty-node-add")

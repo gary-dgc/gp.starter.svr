@@ -9,7 +9,6 @@ import com.gp.dao.info.DutyAcsInfo;
 import com.gp.exception.BaseException;
 import com.gp.info.DataBuilder;
 import com.gp.info.FilterMode;
-import com.gp.svc.CommonService;
 import com.gp.svc.security.DutyAcsService;
 import com.gp.validate.ArgsValidator;
 import com.gp.web.ActionResult;
@@ -29,11 +28,9 @@ public class DutyAcsHandler extends BaseApiSupport {
     static Logger LOGGER = LoggerFactory.getLogger(DutyAcsHandler.class);
 
     private DutyAcsService dutyAcsService;
-    private CommonService commonService;
 
     public DutyAcsHandler() {
         dutyAcsService = BindScanner.instance().getBean(DutyAcsService.class);
-        commonService = BindScanner.instance().getBean(CommonService.class);
     }
 
     @WebApi(path="duty-acs-add")

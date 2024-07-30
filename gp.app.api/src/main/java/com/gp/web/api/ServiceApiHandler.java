@@ -21,7 +21,7 @@ import com.gp.common.Filters;
 import com.gp.common.InfoId;
 import com.gp.exception.BaseException;
 import com.gp.info.Principal;
-import com.gp.svc.CommonService;
+import com.gp.svc.CommonHelper;
 import com.gp.validate.ArgsValidator;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
@@ -38,11 +38,11 @@ public class ServiceApiHandler extends BaseApiSupport{
 		
 	private ICache extraCache;
 	
-	private CommonService commonService;
+	private CommonHelper commonService;
 	
 	public ServiceApiHandler() {
 		
-		commonService = BindScanner.instance().getBean(CommonService.class);
+		commonService = BindScanner.instance().getBean(CommonHelper.class);
 		extraCache = CacheManager.instance().getCache(Caches.EXTRA_CACHE);
 		
 		ServiceApiHelper.instance();

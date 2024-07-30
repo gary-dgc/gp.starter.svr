@@ -23,7 +23,7 @@ import com.gp.info.BaseIdKey;
 import com.gp.info.DataBuilder;
 import com.gp.info.Principal;
 import com.gp.paging.PageQuery;
-import com.gp.svc.CommonService;
+import com.gp.svc.CommonHelper;
 import com.gp.svc.security.AuthorizeService;
 import com.gp.svc.security.SecurityService;
 import com.gp.svc.user.UserService;
@@ -47,7 +47,7 @@ public class UserHandler extends BaseApiSupport{
 	
 	private UserService userService;
 	private SecurityService securityService;
-	private CommonService commonService;
+	private CommonHelper commonService;
 
 	private AuthorizeService authService;
 	
@@ -55,7 +55,7 @@ public class UserHandler extends BaseApiSupport{
 		
 		userService = BindScanner.instance().getBean(UserService.class);
 		securityService = BindScanner.instance().getBean(SecurityService.class);
-		commonService = BindScanner.instance().getBean(CommonService.class);
+		commonService = BindScanner.instance().getBean(CommonHelper.class);
 		authService = BindScanner.instance().getBean(AuthorizeService.class);
 		
 	}

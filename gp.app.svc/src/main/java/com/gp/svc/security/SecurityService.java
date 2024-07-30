@@ -35,7 +35,6 @@ import com.gp.sql.delete.DeleteBuilder;
 import com.gp.sql.select.SelectBuilder;
 import com.gp.sql.update.UpdateBuilder;
 import com.gp.svc.BaseService;
-import com.gp.svc.CommonService;
 import com.gp.svc.ServiceSupport;
 import com.gp.svc.SystemService;
 import com.gp.util.CryptoUtils;
@@ -60,9 +59,6 @@ public class SecurityService extends ServiceSupport implements BaseService {
 
 	@BindAutowired
 	UserLoginDAO userLoginDao;
-
-	@BindAutowired
-	CommonService idService;
 
 	@BindAutowired
 	SystemService systemservice;

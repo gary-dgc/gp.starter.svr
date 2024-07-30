@@ -8,7 +8,6 @@ import com.gp.exception.BaseException;
 import com.gp.info.DataBuilder;
 import com.gp.info.FilterMode;
 import com.gp.paging.PageQuery;
-import com.gp.svc.CommonService;
 import com.gp.svc.security.DataModelService;
 import com.gp.validate.ArgsValidator;
 import com.gp.web.ActionResult;
@@ -28,11 +27,9 @@ public class DataModelHandler extends BaseApiSupport {
     static Logger LOGGER = LoggerFactory.getLogger(DataModelHandler.class);
 
     private DataModelService dataModelService ;
-    private CommonService commonService;
 
     public DataModelHandler() {
         dataModelService = BindScanner.instance().getBean(DataModelService.class);
-        commonService = BindScanner.instance().getBean(CommonService.class);
     }
 
     @WebApi(path="data-model-add")

@@ -26,15 +26,11 @@ import com.gp.db.JdbiTran;
 import com.gp.info.BaseIdKey;
 import com.gp.info.FilterMode;
 import com.gp.paging.PageQuery;
-import com.gp.paging.Pagination;
-import com.gp.paging.Paginator;
-import com.gp.sql.BaseBuilder.SortOrder;
 import com.gp.sql.SqlBuilder;
 import com.gp.sql.delete.DeleteBuilder;
 import com.gp.sql.select.SelectBuilder;
 import com.gp.sql.update.UpdateBuilder;
 import com.gp.svc.BaseService;
-import com.gp.svc.CommonService;
 import com.gp.svc.ServiceSupport;
 import com.gp.svc.SystemService;
 import com.gp.util.BaseUtils;
@@ -65,9 +61,6 @@ public class UserService extends ServiceSupport implements BaseService {
 
 	@BindAutowired
 	TokenDAO tokendao;
-
-	@BindAutowired
-	CommonService idService;
 
 	@BindAutowired
 	SystemService systemservice;

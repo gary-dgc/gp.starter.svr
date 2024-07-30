@@ -20,7 +20,6 @@ import com.gp.exception.ServiceException;
 import com.gp.info.DataBuilder;
 import com.gp.info.Principal;
 import com.gp.paging.PageQuery;
-import com.gp.svc.CommonService;
 import com.gp.svc.master.OrgHierService;
 import com.gp.util.NumberUtils;
 import com.gp.validate.ArgsValidator;
@@ -43,12 +42,9 @@ public class OrgHierHandler extends BaseApiSupport {
 	static Logger LOGGER = LoggerFactory.getLogger(OrgHierHandler.class);
 	
 	private OrgHierService orghiderSvc;
-	private CommonService commonSvc;
-	
+
 	public OrgHierHandler() {
 		orghiderSvc = BindScanner.instance().getBean(OrgHierService.class);
-		commonSvc = BindScanner.instance().getBean(CommonService.class);
-		
 	}
 
 	@WebApi(path="org-node-add")
