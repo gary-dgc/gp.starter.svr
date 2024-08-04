@@ -15,7 +15,7 @@ system:
 web:
   context.path: 
   interim.key: vUUBD21*fXnKs*Fd
-  cache.json: true
+  cache.json: true # cache request json into exchange
 
 # file upload/download cache setting
 file: 
