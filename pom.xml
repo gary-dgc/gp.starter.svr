@@ -6,7 +6,7 @@
 
     <groupId>com.gpress.starter</groupId>
     <artifactId>gp-starter</artifactId>
-    <version>0.4.0</version>
+    <version>${revision}</version>
 
     <packaging>pom</packaging>
 
@@ -17,6 +17,8 @@
     </parent>
 
     <properties>
+        <!-- version of WMS -->
+        <revision>0.4.0</revision>
         <versions.maven-version>2.4</versions.maven-version>
         <gpress.version>0.4.1</gpress.version>
     </properties>

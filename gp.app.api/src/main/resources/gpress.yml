@@ -1,6 +1,6 @@
 # System information
 system:
-  version: "0.1"
+  version: ${project.version}
   app: gpress.starter
   instance: 1
   audit.enable: true             # audit enable
