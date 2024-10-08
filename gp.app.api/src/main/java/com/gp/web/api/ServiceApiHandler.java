@@ -21,6 +21,7 @@ import com.gp.common.Filters;
 import com.gp.common.InfoId;
 import com.gp.exception.BaseException;
 import com.gp.info.Principal;
+
 import com.gp.svc.CommonHelper;
 import com.gp.validate.ArgsValidator;
 import com.gp.web.ActionResult;
@@ -44,9 +45,7 @@ public class ServiceApiHandler extends BaseApiSupport{
 		
 		commonService = BindScanner.instance().getBean(CommonHelper.class);
 		extraCache = CacheManager.instance().getCache(Caches.EXTRA_CACHE);
-		
-		ServiceApiHelper.instance();
-		
+
 	}
 
 	@WebApi(path="interim-token")
