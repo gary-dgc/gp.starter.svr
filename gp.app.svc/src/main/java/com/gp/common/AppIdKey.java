@@ -11,7 +11,7 @@ package com.gp.common;
 public enum AppIdKey implements Identifier{
 	
 	ADDRESS("addr_id"),
-
+	BINARY("binary_id"),
 	ORG_HIER("org_id"),
 	DEPT_HIER("dept_id"),
 	DEPT_FLAT("flat_id"),

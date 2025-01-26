@@ -149,7 +149,7 @@ public class ResumeHandler extends BaseApiSupport{
         	long cabinetId = NumberUtils.toLong(parts.get("cabinet_id"));
 			long folderPid = NumberUtils.toLong(parts.get("folder_pid"));
 
-			InfoId binaryId = IdKeys.newInfoId(BaseIdKey.BINARY);
+			InfoId binaryId = IdKeys.newInfoId(AppIdKey.BINARY);
 
 			CabBinMeta binMeta = new CabBinMeta(binaryId);
 			// reserve the cabinet id
@@ -253,7 +253,7 @@ public class ResumeHandler extends BaseApiSupport{
     private String getUserTempPath(String symToken) {
     	// {cabinet id}.{folder id}.{user id}.{user name}
     	Map<String, String> parts = ServiceApiHelper.instance().getTokenOrigin(symToken);
-    	HashCode hcode  = Hashing.murmur3_32().hashLong(NumberUtils.toLong(parts.get("user_id")));
+    	HashCode hcode  = Hashing.murmur3_32_fixed().hashLong(NumberUtils.toLong(parts.get("user_id")));
     	
     	StringBuilder hraw = new StringBuilder(hcode.toString());
 		for(int i = 3; i > 0; i --) {

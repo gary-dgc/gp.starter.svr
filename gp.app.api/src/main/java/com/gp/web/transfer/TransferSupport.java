@@ -15,10 +15,7 @@ import com.google.common.io.Files;
 
 import com.gp.cab.CabBinManager;
 import com.gp.cab.CabBinMeta;
-import com.gp.common.IdKeys;
-import com.gp.common.InfoId;
-import com.gp.common.KVPair;
-import com.gp.common.MimeTypes;
+import com.gp.common.*;
 import com.gp.exception.BaseException;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -75,7 +72,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 		
 		long cabinetId = NumberUtils.toLong(parts.get("cabinet_id"));
 
-		InfoId binaryId = IdKeys.newInfoId(BaseIdKey.BINARY);
+		InfoId binaryId = IdKeys.newInfoId(AppIdKey.BINARY);
 		CabBinMeta binMeta = new CabBinMeta(binaryId);
 		// reserve the cabinet id
 		binMeta.setCabinetId(cabinetId);
@@ -122,7 +119,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 		long cabinetId = NumberUtils.toLong(parts.get("cabinet_id"));
 		long folderPid = NumberUtils.toLong(parts.get("folder_pid"));
 
-		InfoId binaryId = IdKeys.newInfoId(BaseIdKey.BINARY);
+		InfoId binaryId = IdKeys.newInfoId(AppIdKey.BINARY);
 		CabBinMeta binMeta = new CabBinMeta(binaryId);
 		// reserve the cabinet id
 		binMeta.setCabinetId(cabinetId);

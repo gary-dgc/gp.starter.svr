@@ -102,7 +102,7 @@ public class TransferHandler extends TransferSupport{
 			
 			String binIdStr = getIdInPath(reqUri);
 			Long binaryId = NumberUtils.toLong(binIdStr);
-			InfoId binId = IdKeys.getInfoId(BaseIdKey.BINARY, binaryId);
+			InfoId binId = IdKeys.getInfoId(AppIdKey.BINARY, binaryId);
 			
 			processBinary(exchange, reqUri.substring( reqUri.lastIndexOf('/') + 1, reqUri.length() ),  binId);
 			
@@ -110,7 +110,7 @@ public class TransferHandler extends TransferSupport{
 		} else if(reqUri.startsWith(BinaryMode.IMAGE.uri()) || reqUri.startsWith(BinaryMode.AVATAR.uri())) {
 			
 			String binIdStr = getIdInPath(reqUri);
-			InfoId binaryId = IdKeys.getInfoId(BaseIdKey.BINARY, NumberUtils.toLong(binIdStr));
+			InfoId binaryId = IdKeys.getInfoId(AppIdKey.BINARY, NumberUtils.toLong(binIdStr));
 			String cacheFileName = Binaries.getBinaryHashPath(binaryId, extension);
 			
 			try {
