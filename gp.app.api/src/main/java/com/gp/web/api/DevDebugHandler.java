@@ -14,7 +14,7 @@ import com.gp.svc.dev.DebugService;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseApiSupport;
 import com.gp.web.anno.WebApi;
-import com.gp.web.sse.EventSourceManager;
+import com.gp.web.extra.EventSourceManager;
 import io.undertow.server.HttpServerExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
