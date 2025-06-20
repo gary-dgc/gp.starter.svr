@@ -83,7 +83,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 		binMeta.setSize(srcFile.length());
 
 		// persist binary record in database
-		CabBinManager.instance().getStorageService().newRawBinary(binMeta);
+		CabBinManager.storage().newRawBinary(binMeta);
 
 
 
@@ -130,7 +130,7 @@ public abstract class TransferSupport extends BaseApiSupport {
 		binMeta.setSize(srcFile.length());
 
 		rtv.setValue(binaryId);
-		InfoId fid = CabBinManager.instance().getCabinetService().newFileBinary(binMeta, folderPid);
+		InfoId fid = CabBinManager.cabinet().newFileBinary(binMeta, folderPid);
 		rtv.setKey(fid);
 
 

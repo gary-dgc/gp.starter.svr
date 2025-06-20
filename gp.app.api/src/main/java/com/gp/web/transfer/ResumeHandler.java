@@ -161,9 +161,9 @@ public class ResumeHandler extends BaseApiSupport{
 			binMeta.setSize(srcFile.length());
 
 			if(IdKeys.isValidId(folderPid)){
-				CabBinManager.instance().getCabinetService().newFileBinary(binMeta, folderPid);
+				CabBinManager.cabinet().newFileBinary(binMeta, folderPid);
 			}else{
-				CabBinManager.instance().getStorageService().newRawBinary(binMeta);
+				CabBinManager.storage().newRawBinary(binMeta);
 			}
 
 			try (InputStream source = new FileInputStream(srcFile)){
